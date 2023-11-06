@@ -182,4 +182,4 @@ replay_pid*
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java
 
 ### 시크릿 파일 ###
-application-secret.yml
+**/application-secret.yml
