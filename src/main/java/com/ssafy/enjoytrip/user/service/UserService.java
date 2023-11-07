@@ -1,5 +1,7 @@
 package com.ssafy.enjoytrip.user.service;
 
+import com.ssafy.enjoytrip.auth.entity.Authority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Transactional
 	public CommonResponse regist(RegistDto registDto) {
@@ -26,7 +29,7 @@ public class UserService {
 			throw new UserExistException("이미 가입되어 있는 유저입니다");
 		}
 
-		User user = User.toUser(registDto);
+		User user = User.toUser(registDto, Authority.ROLE_USER, passwordEncoder);
 
 		return new CommonResponse(true, "Success to create user", userRepository.save(user));
 	}

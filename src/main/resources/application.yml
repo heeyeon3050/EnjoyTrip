@@ -17,10 +17,13 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
+  redis:
+    host:
+    port:
 
 logging:
   level:
@@ -31,3 +34,6 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+### 환경변수
+jwt:
+  secret:
