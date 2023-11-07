@@ -11,7 +11,6 @@ import javax.persistence.Id;
 
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -28,7 +27,7 @@ public class Attraction extends BaseEntity {
     private int category;
     private String description;
 
-    public static Attraction toAtrraction(RegistAttractionDto registAttractionDto) {
+    public static Attraction toAttraction(RegistAttractionDto registAttractionDto) {
         return Attraction.builder()
                 .title(registAttractionDto.getTitle())
                 .latitude(registAttractionDto.getLatitude())

@@ -15,7 +15,7 @@ public class AttractionService {
 
     @Transactional
     public CommonResponse regist(RegistAttractionDto registAttractionDto) {
-        Attraction attraction = Attraction.toAtrraction(registAttractionDto);
+        Attraction attraction = Attraction.toAttraction(registAttractionDto);
         return new CommonResponse(true, "Success to create attraction", attractionRepository.save(attraction));
     }
 }
