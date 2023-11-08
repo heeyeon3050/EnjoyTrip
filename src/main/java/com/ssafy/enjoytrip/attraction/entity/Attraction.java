@@ -1,13 +1,10 @@
 package com.ssafy.enjoytrip.attraction.entity;
 
-import com.ssafy.enjoytrip.attraction.dto.RegistAttractionDto;
+import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
 import com.ssafy.enjoytrip.common.BaseEntity;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -24,19 +21,31 @@ public class Attraction extends BaseEntity {
     private String image_url;
     private String address1;
     private String address2;
-    private int category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
     private String description;
 
-    public static Attraction toAttraction(RegistAttractionDto registAttractionDto) {
+    public static Attraction toAttraction(AttractionDto attractionDto) {
         return Attraction.builder()
-                .title(registAttractionDto.getTitle())
-                .latitude(registAttractionDto.getLatitude())
-                .longitude(registAttractionDto.getLongitude())
-                .image_url(registAttractionDto.getImageUrl())
-                .address1(registAttractionDto.getAddress1())
-                .address2(registAttractionDto.getAddress2())
-                .category(registAttractionDto.getCategory())
-                .description(registAttractionDto.getDescription())
+                .title(attractionDto.getTitle())
+                .latitude(attractionDto.getLatitude())
+                .longitude(attractionDto.getLongitude())
+                .image_url(attractionDto.getImageUrl())
+                .address1(attractionDto.getAddress1())
+                .address2(attractionDto.getAddress2())
+                .category(attractionDto.getCategory())
+                .description(attractionDto.getDescription())
                 .build();
+    }
+
+    public void update(AttractionDto attractionDto) {
+        if (attractionDto.getTitle() != null) { this.title = attractionDto.getTitle(); }
+        if (attractionDto.getLatitude() != null) { this.latitude = attractionDto.getLatitude(); }
+        if (attractionDto.getLongitude() != null) { this.longitude = attractionDto.getLongitude(); }
+        if (attractionDto.getImageUrl() != null) { this.image_url = attractionDto.getImageUrl(); }
+        if (attractionDto.getAddress1() != null) { this.address1 = attractionDto.getAddress1(); }
+        if (attractionDto.getAddress2() != null) { this.address2 = attractionDto.getAddress2(); }
+        if (attractionDto.getCategory() != null) { this.category = attractionDto.getCategory(); }
+        if (attractionDto.getDescription() != null) { this.description = attractionDto.getDescription(); }
     }
 }
