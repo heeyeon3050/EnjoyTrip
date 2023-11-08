@@ -9,6 +9,7 @@ import javax.persistence.Id;
 
 import com.ssafy.enjoytrip.attraction.entity.Category;
 import com.ssafy.enjoytrip.board.dto.BoardDto;
+import com.ssafy.enjoytrip.common.BaseEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Board {
+public class Board extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
