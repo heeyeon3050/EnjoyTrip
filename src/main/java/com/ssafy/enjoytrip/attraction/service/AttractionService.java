@@ -24,7 +24,7 @@ public class AttractionService {
     }
 
     public CommonResponse getByCategory(Category category) {
-        return new CommonResponse(true, "Success to get Attraction.", attractionRepository.getAttractionsByCategory(category));
+        return new CommonResponse(true, "Success to get Attraction.", attractionRepository.findAllByCategory(category));
     }
 
     @Transactional

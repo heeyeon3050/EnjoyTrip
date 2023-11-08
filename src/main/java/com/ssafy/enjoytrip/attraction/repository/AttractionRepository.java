@@ -6,10 +6,13 @@ import com.ssafy.enjoytrip.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public interface AttractionRepository extends JpaRepository<Attraction, Long> {
     boolean existsById(Long id);
-    boolean getAttractionsByCategory(Category category);
+
+    List<Attraction> findAllByCategory(Category category);
 
 }
