@@ -14,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	private final UserService userService;
 
-	@PostMapping("/regist")
+	@PostMapping("/join")
 	public ResponseEntity<?> signup(@RequestBody UserDto userDto) {
-		return ResponseEntity.ok(userService.regist(userDto));
+		return ResponseEntity.ok(userService.join(userDto));
 	}
 	@GetMapping("/{userId}/idCheck")
 	public ResponseEntity<?> idCheck(@PathVariable String userId) {

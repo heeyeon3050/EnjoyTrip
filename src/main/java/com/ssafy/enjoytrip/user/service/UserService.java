@@ -23,13 +23,13 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Transactional
-	public CommonResponse regist(UserDto userDto) {
+	public CommonResponse join(UserDto userDto) { //signin regist 없다며 뭘로 하지
 		if (userRepository.existsByUserId(userDto.getUserId())) {
-			throw new UserExistException("이미 가입되어 있는 유저입니다");
+			throw new UserExistException("이미 있는 아이디입니다");
 		}
 
 		if (userRepository.existsByEmail(userDto.getEmail())) {
-			throw new UserExistException("이미 가입되어 있는 유저입니다");
+			throw new UserExistException("이미 있는 이메일입니다");
 		}
 
 		User user = User.toUser(userDto, Authority.ROLE_USER, passwordEncoder);
