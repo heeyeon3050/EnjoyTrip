@@ -28,4 +28,9 @@ public class BoardController {
 	public ResponseEntity<?> update(@PathVariable Long boardId, @RequestBody BoardDto boardDto) {
 		return ResponseEntity.ok(boardService.update(boardId, boardDto));
 	}
+
+	@PatchMapping("/{boardId}/delete")
+	public ResponseEntity<?> delete(@PathVariable Long boardId) {
+		return ResponseEntity.ok(boardService.delete(boardId));
+	}
 }

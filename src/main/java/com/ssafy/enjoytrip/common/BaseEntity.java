@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Setter
 @MappedSuperclass
 @EntityListeners({AuditingEntityListener.class})
-@Where(clause = "is_deleted = false")
+
 public abstract class BaseEntity implements Serializable {
 
     @CreatedDate

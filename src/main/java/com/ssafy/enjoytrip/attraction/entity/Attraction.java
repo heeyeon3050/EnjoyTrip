@@ -6,11 +6,14 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Where;
+
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Where(clause = "is_deleted = false")
 public class Attraction extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

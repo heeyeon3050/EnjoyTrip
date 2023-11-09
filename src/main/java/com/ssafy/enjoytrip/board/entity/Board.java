@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Where;
+
 import com.ssafy.enjoytrip.board.dto.BoardDto;
 import com.ssafy.enjoytrip.common.BaseEntity;
 
@@ -20,6 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Where(clause = "is_deleted = false")
 public class Board extends BaseEntity {
 
 	@Id

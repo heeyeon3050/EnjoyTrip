@@ -5,11 +5,10 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
-import com.ssafy.enjoytrip.attraction.entity.Attraction;
 import com.ssafy.enjoytrip.attraction.exception.AttractionNotFoundException;
 import com.ssafy.enjoytrip.board.dto.BoardDto;
 import com.ssafy.enjoytrip.board.entity.Board;
+import com.ssafy.enjoytrip.board.exception.BoardNotFoundException;
 import com.ssafy.enjoytrip.board.repository.BoardRepository;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
 
@@ -37,7 +36,18 @@ public class BoardService {
 			board.update(boardDto);
 			return new CommonResponse(true, "Success to update board.", boardRepository.save(board));
 		}
-		throw new AttractionNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", id));
+		throw new BoardNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", id));
 	}
 
+	@Transactional
+	public CommonResponse delete(Long id) {
+		Optional<Board> optionalBoard = boardRepository.findById(id);
+
+		if(optionalBoard.isPresent()) {
+			Board board = optionalBoard.get();
+			board.delete();
+			return new CommonResponse(true, "Success to delete Attraction.", boardRepository.save(board));
+		}
+		throw new BoardNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", id));
+	}
 }

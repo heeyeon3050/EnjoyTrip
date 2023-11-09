@@ -30,8 +30,8 @@ public class AttractionController {
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<?> getByCategory(@RequestParam AttractionCategory attractionCategory) {
-		return ResponseEntity.ok(attractionService.getByCategory(attractionCategory));
+	public ResponseEntity<?> getByCategory(@RequestParam AttractionCategory category) {
+		return ResponseEntity.ok(attractionService.getByCategory(category));
 	}
 }
 
