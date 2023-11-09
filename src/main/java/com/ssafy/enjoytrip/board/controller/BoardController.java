@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import com.ssafy.enjoytrip.board.dto.BoardDto;
-import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.board.entity.BoardCategory;
 import com.ssafy.enjoytrip.board.service.BoardService;
 
@@ -38,9 +36,10 @@ public class BoardController {
 	public ResponseEntity<?> delete(@PathVariable Long boardId) {
 		return ResponseEntity.ok(boardService.delete(boardId));
 	}
-	//
-	// @GetMapping("/search")
-	// public ResponseEntity<?> search(@RequestParam(required = false) BoardCategory category, @RequestParam(required = false) String keyword) {
-	// 	return ResponseEntity.ok(boardService.search(category, keyword));
-	// }
+
+	@GetMapping("/search")
+	public ResponseEntity<?> search(@RequestParam(required = false) BoardCategory category,
+		@RequestParam(required = false) String keyword) {
+		return ResponseEntity.ok(boardService.search(category, keyword));
+	}
 }

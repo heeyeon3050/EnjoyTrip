@@ -1,11 +1,11 @@
 package com.ssafy.enjoytrip.board.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 import com.ssafy.enjoytrip.board.entity.Board;
+import com.ssafy.enjoytrip.board.entity.BoardCategory;
 
 public interface BoardRepositoryCustom {
-	Page<Board> findFaxesByFaxTitle(Long userId, String searchWord, Pageable pageable);
+	List<Board> findDynamicQueryAdvance(BoardCategory category, String keyword);
 
 }
