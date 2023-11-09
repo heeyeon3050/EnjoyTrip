@@ -1,5 +1,8 @@
 package com.ssafy.enjoytrip.board.dto;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import com.ssafy.enjoytrip.board.entity.BoardCategory;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +18,7 @@ public class BoardDto {
 	private long writerId;
 	private String title;
 	private String content;
+	@Enumerated(EnumType.STRING)
 	private BoardCategory category;
 	private double latitude;
 	private double longitude;

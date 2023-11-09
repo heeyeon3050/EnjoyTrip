@@ -29,7 +29,7 @@ public class Board extends BaseEntity {
 	private String content;
 	private int likeCount;
 	@Enumerated(EnumType.STRING)
-	private BoardCategory boardCategory;
+	private BoardCategory category;
 	private double latitude;
 	private double longitude;
 
@@ -37,7 +37,7 @@ public class Board extends BaseEntity {
 		return Board.builder()
 			.title(boardDto.getTitle())
 			.content(boardDto.getContent())
-			.boardCategory(boardDto.getCategory())
+			.category(boardDto.getCategory())
 			.latitude(boardDto.getLatitude())
 			.longitude(boardDto.getLongitude())
 			.build();
@@ -46,7 +46,7 @@ public class Board extends BaseEntity {
 	public void update(BoardDto boardDto) {
 		if (boardDto.getTitle() != null) { this.title = boardDto.getTitle(); }
 		if (boardDto.getContent() != null) { this.content = boardDto.getContent(); }
-		if (boardDto.getCategory() != null) { this.boardCategory = boardDto.getCategory(); }
+		if (boardDto.getCategory() != null) { this.category = boardDto.getCategory(); }
 		if (boardDto.getLatitude() != 0) { this.latitude = boardDto.getLatitude(); }
 		if (boardDto.getLongitude() != 0) { this.longitude = boardDto.getLongitude(); }
 	}
