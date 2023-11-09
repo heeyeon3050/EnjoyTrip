@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.board.dto;
 
-import com.ssafy.enjoytrip.attraction.entity.Category;
+import com.ssafy.enjoytrip.board.entity.BoardCategory;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ public class BoardDto {
 	private long writerId;
 	private String title;
 	private String content;
-	private Category category;
+	private BoardCategory category;
 	private double latitude;
 	private double longitude;
 }

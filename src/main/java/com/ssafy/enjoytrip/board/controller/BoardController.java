@@ -1,6 +1,8 @@
 package com.ssafy.enjoytrip.board.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,5 +22,10 @@ public class BoardController {
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@RequestBody BoardDto boardDto) {
 		return ResponseEntity.ok(boardService.create(boardDto));
+	}
+
+	@PatchMapping("/{boardId}/update")
+	public ResponseEntity<?> update(@PathVariable Long boardId, @RequestBody BoardDto boardDto) {
+		return ResponseEntity.ok(boardService.update(boardId, boardDto));
 	}
 }

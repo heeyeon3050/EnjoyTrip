@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.ssafy.enjoytrip.attraction.entity.Category;
 import com.ssafy.enjoytrip.board.dto.BoardDto;
 import com.ssafy.enjoytrip.common.BaseEntity;
 
@@ -30,7 +29,7 @@ public class Board extends BaseEntity {
 	private String content;
 	private int likeCount;
 	@Enumerated(EnumType.STRING)
-	private Category category;
+	private BoardCategory boardCategory;
 	private double latitude;
 	private double longitude;
 
@@ -38,10 +37,17 @@ public class Board extends BaseEntity {
 		return Board.builder()
 			.title(boardDto.getTitle())
 			.content(boardDto.getContent())
-			.category(boardDto.getCategory())
+			.boardCategory(boardDto.getCategory())
 			.latitude(boardDto.getLatitude())
 			.longitude(boardDto.getLongitude())
 			.build();
 	}
 
+	public void update(BoardDto boardDto) {
+		if (boardDto.getTitle() != null) { this.title = boardDto.getTitle(); }
+		if (boardDto.getContent() != null) { this.content = boardDto.getContent(); }
+		if (boardDto.getCategory() != null) { this.boardCategory = boardDto.getCategory(); }
+		if (boardDto.getLatitude() != 0) { this.latitude = boardDto.getLatitude(); }
+		if (boardDto.getLongitude() != 0) { this.longitude = boardDto.getLongitude(); }
+	}
 }

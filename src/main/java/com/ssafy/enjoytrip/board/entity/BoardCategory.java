@@ -1,5 +1,5 @@
 package com.ssafy.enjoytrip.board.entity;
 
-public enum Category {
+public enum BoardCategory {
 	REVIEW, NORMAL, TIP
 }
