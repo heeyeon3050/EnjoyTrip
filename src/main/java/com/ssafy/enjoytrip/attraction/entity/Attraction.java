@@ -22,7 +22,7 @@ public class Attraction extends BaseEntity {
     private String address1;
     private String address2;
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private AttractionCategory category;
     private String description;
 
     public static Attraction toAttraction(AttractionDto attractionDto) {

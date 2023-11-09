@@ -1,7 +1,5 @@
 package com.ssafy.enjoytrip.user.service;
 
-import com.ssafy.enjoytrip.attraction.entity.Attraction;
-import com.ssafy.enjoytrip.attraction.entity.Category;
 import com.ssafy.enjoytrip.attraction.exception.AttractionNotFoundException;
 import com.ssafy.enjoytrip.auth.entity.Authority;
 import org.springframework.security.crypto.password.PasswordEncoder;

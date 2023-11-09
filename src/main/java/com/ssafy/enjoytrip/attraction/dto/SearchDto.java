@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.attraction.dto;
 
-import com.ssafy.enjoytrip.attraction.entity.Category;
+import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,5 +15,5 @@ import javax.persistence.Enumerated;
 @Builder
 public class SearchDto {
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private AttractionCategory attractionCategory;
 }

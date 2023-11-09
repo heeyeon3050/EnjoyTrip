@@ -2,7 +2,7 @@ package com.ssafy.enjoytrip.attraction.service;
 
 import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
 import com.ssafy.enjoytrip.attraction.entity.Attraction;
-import com.ssafy.enjoytrip.attraction.entity.Category;
+import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import com.ssafy.enjoytrip.attraction.exception.AttractionNotFoundException;
 import com.ssafy.enjoytrip.attraction.repository.AttractionRepository;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
@@ -23,8 +23,9 @@ public class AttractionService {
         return new CommonResponse(true, "Success to create attraction", attractionRepository.save(attraction));
     }
 
-    public CommonResponse getByCategory(Category category) {
-        return new CommonResponse(true, "Success to get Attraction.", attractionRepository.findAllByCategory(category));
+    public CommonResponse getByCategory(AttractionCategory attractionCategory) {
+        return new CommonResponse(true, "Success to get Attraction.", attractionRepository.findAllByCategory(
+            attractionCategory));
     }
 
     @Transactional
@@ -34,8 +35,7 @@ public class AttractionService {
         if(optionalAttraction.isPresent()) {
             Attraction existAttraction = optionalAttraction.get();
             existAttraction.update(attractionDto);
-            attractionRepository.save(existAttraction);
-            return new CommonResponse(true, "Success to update Attraction.", existAttraction);
+            return new CommonResponse(true, "Success to update Attraction.", attractionRepository.save(existAttraction));
         }
         throw new AttractionNotFoundException(String.format("관광지(%s)를 찾을 수 없습니다.", id));
     }
@@ -47,8 +47,7 @@ public class AttractionService {
         if(optionalAttraction.isPresent()) {
             Attraction existAttraction = optionalAttraction.get();
             existAttraction.delete();
-            attractionRepository.save(existAttraction);
-            return new CommonResponse(true, "Success to delete Attraction.", existAttraction);
+            return new CommonResponse(true, "Success to delete Attraction.", attractionRepository.save(existAttraction));
         }
         throw new AttractionNotFoundException(String.format("관광지(%s)를 찾을 수 없습니다.", id));
     }

@@ -1,13 +1,11 @@
 package com.ssafy.enjoytrip.attraction.controller;
 
 import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
-import com.ssafy.enjoytrip.attraction.dto.SearchDto;
-import com.ssafy.enjoytrip.attraction.entity.Category;
+import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import com.ssafy.enjoytrip.attraction.service.AttractionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,14 +24,14 @@ public class AttractionController {
 		return ResponseEntity.ok(attractionService.delete(attractionId));
 	}
 
-	@PatchMapping("/{attractionId}")
+	@PatchMapping("/{attractionId}/update")
 	public ResponseEntity<?> update(@PathVariable Long attractionId, @RequestBody AttractionDto attractionDto) {
 		return ResponseEntity.ok(attractionService.update(attractionId, attractionDto));
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<?> getByCategory(@RequestParam Category category) {
-		return ResponseEntity.ok(attractionService.getByCategory(category));
+	public ResponseEntity<?> getByCategory(@RequestParam AttractionCategory attractionCategory) {
+		return ResponseEntity.ok(attractionService.getByCategory(attractionCategory));
 	}
 }
 

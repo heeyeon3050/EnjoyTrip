@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.attraction.dto;
 
-import com.ssafy.enjoytrip.attraction.entity.Category;
+import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +21,6 @@ public class AttractionDto {
     private String address1;
     private String address2;
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private AttractionCategory category;
     private String description;;
 }

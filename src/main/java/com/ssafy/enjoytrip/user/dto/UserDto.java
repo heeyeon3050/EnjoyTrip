@@ -1,6 +1,5 @@
 package com.ssafy.enjoytrip.user.dto;
 
-import com.ssafy.enjoytrip.attraction.entity.Category;
 import com.ssafy.enjoytrip.auth.entity.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
