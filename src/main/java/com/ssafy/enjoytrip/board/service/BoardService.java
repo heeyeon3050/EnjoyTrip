@@ -12,7 +12,7 @@ import com.querydsl.core.types.Predicate;
 import com.ssafy.enjoytrip.board.dto.BoardDto;
 import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.board.entity.BoardCategory;
-import com.ssafy.enjoytrip.board.entity.QBoard;
+// import com.ssafy.enjoytrip.board.entity.QBoard;
 import com.ssafy.enjoytrip.board.exception.BoardNotFoundException;
 import com.ssafy.enjoytrip.board.repository.BoardRepository;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
@@ -58,23 +58,23 @@ public class BoardService {
 		}
 		throw new BoardNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", id));
 	}
-
-	public CommonResponse search(BoardCategory category, String keyword) {
-		BooleanBuilder builder = new BooleanBuilder();
-		QBoard qBoard = QBoard.board;
-
-		if (category != null) {
-			builder.and(qBoard.category.eq(category));
-		}
-
-		if (keyword != null) {
-			builder.and(qBoard.title.likeIgnoreCase("%" + keyword + "%"));
-		}
-
-		Predicate predicate = builder.getValue();
-		Specification<Board> specification = (root, query, criteriaBuilder) -> (javax.persistence.criteria.Predicate)predicate;
-		Iterable<Board> boards = boardRepository.findAll(specification);
-
-		return new CommonResponse(true, "Success to get Attraction.", boards);
-	}
+	//
+	// public CommonResponse search(BoardCategory category, String keyword) {
+	// 	BooleanBuilder builder = new BooleanBuilder();
+	// 	QBoard qBoard = QBoard.board;
+	//
+	// 	if (category != null) {
+	// 		builder.and(qBoard.category.eq(category));
+	// 	}
+	//
+	// 	if (keyword != null) {
+	// 		builder.and(qBoard.title.likeIgnoreCase("%" + keyword + "%"));
+	// 	}
+	//
+	// 	Predicate predicate = builder.getValue();
+	// 	Specification<Board> specification = (root, query, criteriaBuilder) -> (javax.persistence.criteria.Predicate)predicate;
+	// 	Iterable<Board> boards = boardRepository.findAll(specification);
+	//
+	// 	return new CommonResponse(true, "Success to get Attraction.", boards);
+	// }
 }

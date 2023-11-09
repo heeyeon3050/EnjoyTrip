@@ -38,9 +38,9 @@ public class BoardController {
 	public ResponseEntity<?> delete(@PathVariable Long boardId) {
 		return ResponseEntity.ok(boardService.delete(boardId));
 	}
-
-	@GetMapping("/search")
-	public ResponseEntity<?> search(@RequestParam(required = false) BoardCategory category, @RequestParam(required = false) String keyword) {
-		return ResponseEntity.ok(boardService.search(category, keyword));
-	}
+	//
+	// @GetMapping("/search")
+	// public ResponseEntity<?> search(@RequestParam(required = false) BoardCategory category, @RequestParam(required = false) String keyword) {
+	// 	return ResponseEntity.ok(boardService.search(category, keyword));
+	// }
 }
