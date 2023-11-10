@@ -48,7 +48,7 @@ public class BoardService {
 		if (optionalBoard.isPresent()) {
 			Board board = optionalBoard.get();
 			board.delete();
-			CommonResponse commonResponse = new CommonResponse(true, "Success to delete Attraction.",
+			CommonResponse commonResponse = new CommonResponse(true, "Success to delete board.",
 				boardRepository.save(board));
 			return commonResponse;
 
@@ -58,7 +58,7 @@ public class BoardService {
 
 	public CommonResponse search(BoardCategory category, String keyword) {
 
-		return new CommonResponse(true, "Success to get Attraction.",
+		return new CommonResponse(true, "Success to get board.",
 			boardRepositoryCustom.findDynamicQueryAdvance(category, keyword));
 	}
 
