@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class BoardDto {
-	private long writerId;
+	private Long writerId;
 	private String title;
 	private String content;
 	@Enumerated(EnumType.STRING)
 	private BoardCategory category;
-	private double latitude;
-	private double longitude;
+	private Double latitude;
+	private Double longitude;
 }

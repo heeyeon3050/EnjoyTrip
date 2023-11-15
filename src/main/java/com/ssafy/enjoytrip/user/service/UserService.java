@@ -32,7 +32,7 @@ public class UserService {
 			throw new UserExistException("이미 있는 이메일입니다");
 		}
 
-		User user = User.toUser(userDto, Authority.ROLE_USER, passwordEncoder);
+		User user = User.toUser(userDto, Authority.USER, passwordEncoder);
 
 		return new CommonResponse(true, "Success to create user", userRepository.save(user));
 	}

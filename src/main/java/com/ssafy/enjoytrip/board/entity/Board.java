@@ -27,14 +27,13 @@ public class Board extends BaseEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	private String title;
 	private String content;
-	private int likeCount;
 	@Enumerated(EnumType.STRING)
 	private BoardCategory category;
-	private double latitude;
-	private double longitude;
+	private Double latitude;
+	private Double longitude;
 
 	public static Board toBoard(BoardDto boardDto) {
 		return Board.builder()
@@ -50,7 +49,7 @@ public class Board extends BaseEntity{
 		if (boardDto.getTitle() != null) { this.title = boardDto.getTitle(); }
 		if (boardDto.getContent() != null) { this.content = boardDto.getContent(); }
 		if (boardDto.getCategory() != null) { this.category = boardDto.getCategory(); }
-		if (boardDto.getLatitude() != 0) { this.latitude = boardDto.getLatitude(); }
-		if (boardDto.getLongitude() != 0) { this.longitude = boardDto.getLongitude(); }
+		if (boardDto.getLatitude() != null) { this.latitude = boardDto.getLatitude(); }
+		if (boardDto.getLongitude() != null) { this.longitude = boardDto.getLongitude(); }
 	}
 }
