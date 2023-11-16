@@ -1,11 +1,11 @@
 <script setup>
 import HeadingNavbar from "@/components/layout/HeadingNavbar.vue";
-import BrowseContent from "@/components/browser/BrowseContent.vue";
+import BrowserContent from "@/components/browser/BrowserContent.vue";
 </script>
 
 <template>
   <HeadingNavbar />
-  <BrowseContent />
+  <BrowserContent />
 </template>
 
 <style scoped></style>
