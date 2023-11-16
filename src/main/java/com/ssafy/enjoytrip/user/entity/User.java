@@ -1,9 +1,13 @@
 package com.ssafy.enjoytrip.user.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
 import com.ssafy.enjoytrip.auth.entity.Authority;
+import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.common.BaseEntity;
 import com.ssafy.enjoytrip.user.dto.UserDto;
 
@@ -30,6 +34,8 @@ public class User extends BaseEntity {
 	private String image_url;
 	@Enumerated(EnumType.STRING)
 	private Authority authority;
+	@ManyToMany(mappedBy = "users")
+	private Set<Board> boards = new HashSet<>();
 
 	public static User toUser(UserDto userDto, Authority authority, PasswordEncoder passwordEncoder) {
 		return User.builder()

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.enjoytrip.board.dto.BoardDto;
 import com.ssafy.enjoytrip.board.entity.BoardCategory;
 import com.ssafy.enjoytrip.board.service.BoardService;
+import com.ssafy.enjoytrip.common.rq.Rq;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
+	private final Rq rq;
 	private final BoardService boardService;
 
 	@PostMapping("/create")
@@ -41,5 +43,10 @@ public class BoardController {
 	public ResponseEntity<?> search(@RequestParam(required = false) BoardCategory category,
 		@RequestParam(required = false) String keyword) {
 		return ResponseEntity.ok(boardService.search(category, keyword));
+	}
+
+	@PostMapping("/{boardId}/like")
+	public ResponseEntity<?> like(@PathVariable Long boardId) {
+		return ResponseEntity.ok(boardService.like(boardId, rq.getUser()));
 	}
 }

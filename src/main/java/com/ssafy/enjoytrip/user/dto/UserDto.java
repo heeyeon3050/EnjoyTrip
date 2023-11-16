@@ -1,5 +1,7 @@
 package com.ssafy.enjoytrip.user.dto;
 
+import java.util.Set;
+
 import com.ssafy.enjoytrip.auth.entity.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,4 +24,6 @@ public class UserDto {
 	@Enumerated(EnumType.STRING)
 	private Authority authority;
 	private String imageUrl;
+
+	private Set<Long> boardIds;
 }

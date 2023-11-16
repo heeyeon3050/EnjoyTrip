@@ -2,6 +2,8 @@ package com.ssafy.enjoytrip.board.service;
 
 import java.util.Optional;
 
+import javax.swing.plaf.IconUIResource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,7 @@ import com.ssafy.enjoytrip.board.exception.BoardNotFoundException;
 import com.ssafy.enjoytrip.board.repository.BoardRepository;
 import com.ssafy.enjoytrip.board.repository.BoardRepositoryCustom;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
+import com.ssafy.enjoytrip.user.entity.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -62,4 +65,15 @@ public class BoardService {
 			boardRepositoryCustom.findDynamicQueryAdvance(category, keyword));
 	}
 
+	public CommonResponse like(Long id, User user) {
+		Optional<Board> optionalBoard = boardRepository.findById(id);
+
+		if (optionalBoard.isPresent()) {
+			Board board = optionalBoard.get();
+			board.getUsers().add(user);
+			return new CommonResponse(true, "Success to like board", boardRepository.save(board));
+		}
+
+		throw new BoardNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", id));
+	}
 }

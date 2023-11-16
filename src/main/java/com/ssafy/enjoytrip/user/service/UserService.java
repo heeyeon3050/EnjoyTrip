@@ -73,4 +73,8 @@ public class UserService {
 	public CommonResponse getList() {
 		return new CommonResponse(true, "Success to user list.", userRepository.findAll());
 	}
+
+	public Optional<User> findByName(String name) {
+		return userRepository.findByName(name);
+	}
 }
