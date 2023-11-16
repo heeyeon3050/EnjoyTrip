@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.enjoytrip.board.dto.BoardDto;
 import com.ssafy.enjoytrip.common.BaseEntity;
 import com.ssafy.enjoytrip.user.entity.User;
@@ -42,6 +43,7 @@ public class Board extends BaseEntity{
 	private Double latitude;
 	private Double longitude;
 	@ManyToMany
+	@JsonManagedReference
 	@JoinTable(
 		name = "like_board",
 		joinColumns = @JoinColumn(name = "board_id"),

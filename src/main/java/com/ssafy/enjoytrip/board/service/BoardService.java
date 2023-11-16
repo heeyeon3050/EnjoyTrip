@@ -71,6 +71,8 @@ public class BoardService {
 		if (optionalBoard.isPresent()) {
 			Board board = optionalBoard.get();
 			board.getUsers().add(user);
+			System.out.println("board ..........................." + board);
+			System.out.println("user ............................" + user);
 			return new CommonResponse(true, "Success to like board", boardRepository.save(board));
 		}
 
