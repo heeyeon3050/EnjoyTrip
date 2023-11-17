@@ -1,11 +1,12 @@
 <script setup>
 import HeadingNavbar from "@/components/layout/HeadingNavbar.vue";
-import BoardContent from "@/components/board/BoardContent.vue";
 </script>
 
 <template>
   <HeadingNavbar></HeadingNavbar>
-  <BoardContent />
+  <div class="col-start-3 col-span-8">
+    <router-view></router-view>
+  </div>
 </template>
 
 <style scoped></style>
