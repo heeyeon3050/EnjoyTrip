@@ -1,7 +1,8 @@
 <script setup>
+import LoginModal from "@/components/common/LoginModal.vue";
+import JoinModal from "../common/JoinModal.vue";
 import { useMenuStore } from "@/stores/menu";
 import { storeToRefs } from "pinia";
-import LoginModal from "@/components/common/LoginModal.vue";
 import { ref } from "vue";
 
 const menuStore = useMenuStore();
@@ -16,7 +17,7 @@ const logout = () => {
   changeMenuState();
 };
 
-const loginModalVisible = ref(false);
+const openModal = ref(0);
 </script>
 <template>
   <nav class="w-full h-24 flex justify-between col-span-12">
@@ -51,24 +52,43 @@ const loginModalVisible = ref(false);
         </router-link>
       </ul>
     </div>
-    <div class="flex space-x-5 h-full px-6 w-52">
-      <div class="flex justify-center items-center cursor-pointer">
-        회원가입
+    <template v-if="1 !== 1">
+      <div class="flex space-x-5 h-full px-6 w-52">
+        <div
+          class="flex justify-center items-center cursor-pointer"
+          @click="openModal = 2"
+        >
+          회원가입
+        </div>
+        <div
+          class="flex justify-center items-center cursor-pointer"
+          @click="openModal = 1"
+        >
+          로그인
+        </div>
       </div>
-      <div
-        class="flex justify-center items-center cursor-pointer"
-        @click="loginModalVisible = !loginModalVisible"
+    </template>
+    <template v-else>
+      <router-link
+        :to="{
+          name: 'user-profile',
+          params: { userId: 1 },
+        }"
       >
-        로그인
-      </div>
-    </div>
+        <div class="flex space-x-5 h-full px-6 w-52 items-center">
+          <div class="w-10 h-10 rounded-full bg-slate-500"></div>
+          <h2 class="font-medium text-lg">이유로</h2>
+        </div>
+      </router-link>
+    </template>
   </nav>
   <div
-    v-if="loginModalVisible"
-    @click.stop="loginModalVisible = !loginModalVisible"
+    v-if="openModal !== 0"
+    @click.stop="openModal = 0"
     class="absolute w-full h-full bg-black/40 top-0 left-0 z-30"
   ></div>
-  <LoginModal v-if="loginModalVisible" />
+  <LoginModal v-if="openModal === 1" />
+  <JoinModal v-if="openModal === 2" />
 </template>
 
 <style scoped></style>

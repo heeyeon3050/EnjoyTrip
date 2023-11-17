@@ -40,6 +40,8 @@ const initMap = () => {
     level: 3,
   };
   map = new kakao.maps.Map(container, options);
+  map.setDraggable(false);
+  map.setZoomable(false);
 
   // loadMarkers();
 };
@@ -84,7 +86,9 @@ const loadMarkers = () => {
       <h1 class="font-bold text-2xl px-5">게시글 제목</h1>
       <h3 class="px-5 font-medium text-slate-500">2023.11.14 16:19</h3>
     </div>
-    <div class="h-12 border-y-[1px] border-slate-300 flex items-center p-4 justify-between">
+    <div
+      class="h-12 border-y-[1px] border-slate-300 flex items-center p-4 justify-between"
+    >
       <div class="flex px-2">
         <h3 class="text-lg">작성자</h3>
       </div>
@@ -127,12 +131,13 @@ const loadMarkers = () => {
     </div>
     <div class="w-full min-h-[50vh]">
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus eius ratione minus
-        distinctio voluptates harum possimus placeat corporis qui quis quas nostrum aliquid quod
-        quibusdam explicabo, velit cupiditate optio omnis?
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus eius
+        ratione minus distinctio voluptates harum possimus placeat corporis qui
+        quis quas nostrum aliquid quod quibusdam explicabo, velit cupiditate
+        optio omnis?
       </p>
     </div>
-    <div id="map" class="w-full h-48 my-4"></div>
+    <div id="map" class="w-full h-80 my-4 border-4"></div>
     <div class="w-full flex justify-end my-4 space-x-3">
       <CommonBtn text="수정" />
       <CommonBtn text="삭제" />
@@ -156,9 +161,14 @@ const loadMarkers = () => {
       <div class="w-full"></div>
     </div>
 
-    <div class="w-full h-fit p-2 flex flex-col overflow-y-scroll scrollbar-hide">
+    <div
+      class="w-full h-fit p-2 flex flex-col overflow-y-scroll scrollbar-hide"
+    >
       <div class="space-y-5">
-        <CommentListItem v-for="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" :key="i" />
+        <CommentListItem
+          v-for="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+          :key="i"
+        />
       </div>
     </div>
   </div>

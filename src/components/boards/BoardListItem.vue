@@ -13,7 +13,14 @@
       <div
         class="w-3/5 h-full flex flex-col items-start justify-center space-y-2"
       >
-        <h1 class="text-xl font-semibold">인기 게시글 제목 [8]</h1>
+        <router-link
+          :to="{
+            name: 'board-view',
+            params: { boardId: 1 },
+          }"
+        >
+          <h1 class="text-xl font-semibold">인기 게시글 제목 [8]</h1>
+        </router-link>
         <h4 class="text-sm text-slate-500">카테고리</h4>
       </div>
       <div class="w-2/5 h-full flex justify-around items-center">

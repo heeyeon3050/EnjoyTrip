@@ -67,22 +67,13 @@ const router = createRouter({
     {
       path: "/user",
       name: "user",
-      component: () => import("@/views/TheUserView.vue"),
+      component: () => import("@/views/UserView.vue"),
+      redirect: { name: "user-profile" },
       children: [
         {
-          path: "login",
-          name: "user-login",
-          component: () => import("@/components/users/UserLogin.vue"),
-        },
-        {
-          path: "join",
-          name: "user-join",
-          component: () => import("@/components/users/UserRegister.vue"),
-        },
-        {
-          path: "mypage",
-          name: "user-mypage",
-          component: () => import("@/components/users/UserMyPage.vue"),
+          path: ":userId",
+          name: "user-profile",
+          component: () => import("@/components/users/UserProfile.vue"),
         },
         // {
         //   path: "modify/:userid",

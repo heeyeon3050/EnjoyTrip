@@ -4,7 +4,9 @@ import BoardListItem from "@/components/boards/BoardListItem.vue";
 </script>
 
 <template>
-  <div class="w-full px-3 flex space-x-2 py-10 mb-4 border-b-2 border-b-slate-400">
+  <div
+    class="w-full px-3 flex space-x-2 py-10 mb-4 border-b-2 border-b-slate-400"
+  >
     <CommonBtn text="전체" />
     <CommonBtn text="인기" />
     <CommonBtn text="여행 팁" />
@@ -24,7 +26,10 @@ import BoardListItem from "@/components/boards/BoardListItem.vue";
       <option value="title">제목</option>
       <option value="writer">작성자</option>
     </select>
-    <input type="text" class="w-48 h-10 border-2 rounded-md p-2 border-slate-500" />
+    <input
+      type="text"
+      class="w-48 h-10 border-2 rounded-md p-2 border-slate-500"
+    />
   </div>
   <div class="w-full h-10 my-10 flex space-x-4 justify-center">
     <button>&lt;</button>

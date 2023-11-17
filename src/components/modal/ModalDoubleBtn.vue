@@ -4,7 +4,7 @@ defineProps({ leftText: String, rightText: String });
 
 <template>
   <div
-    class="w-72 h-8 border-[1px] border-slate-950 bg-[#363636] rounded-2xl flex"
+    class="w-full h-9 border-[1px] border-slate-950 bg-[#363636] rounded-2xl flex"
   >
     <div
       class="cursor-pointer h-full w-1/2 flex justify-center items-center gradient gradientText font-semibold border-r-[1px] border-slate-950"

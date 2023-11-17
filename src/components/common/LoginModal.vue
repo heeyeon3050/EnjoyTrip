@@ -22,13 +22,13 @@ import ModalDoubleBtn from "@/components/modal/ModalDoubleBtn.vue";
       class="absolute border-slate-950 border-[1px] w-[32.5rem] h-[17.44rem] -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 rounded-3xl flex flex-col items-center"
     >
       <h1
-        class="w-full text-center font-black text-6xl border-b-[1px] border-slate-950 py-5"
+        class="w-full text-center font-black text-6xl border-b-[1px] border-slate-950 py-3"
       >
         TRAIN TICKET
       </h1>
       <div class="w-full h-full flex">
         <div
-          class="w-3/5 border-r-[1px] border-slate-950 flex flex-col items-center justify-evenly"
+          class="w-3/5 border-r-[1px] border-slate-950 flex flex-col items-center justify-evenly px-2"
         >
           <ModalInput type="text" label="아이디" />
           <ModalInput type="password" label="비밀번호" />
