@@ -38,7 +38,7 @@ public class UserService {
 	}
 
 	public CommonResponse getById(String userId) {
-		return new CommonResponse(true, "Success to get User.", userRepository.existsByUserId(userId));
+		return new CommonResponse(true, "Success to get User.", userRepository.findByUserId(userId));
 	}
 
 	public CommonResponse idCheck(String userId) {
