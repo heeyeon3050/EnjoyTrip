@@ -18,10 +18,6 @@ public class UserController {
 	public ResponseEntity<?> signup(@RequestBody UserDto userDto) {
 		return ResponseEntity.ok(userService.join(userDto));
 	}
-	@GetMapping("/{userId}/idCheck")
-	public ResponseEntity<?> idCheck(@PathVariable String userId) {
-		return ResponseEntity.ok(userService.idCheck(userId));
-	}
 
 	@PatchMapping("/{userId}/delete")
 	public ResponseEntity<?> delete(@PathVariable String userId) {
@@ -41,5 +37,20 @@ public class UserController {
 	@GetMapping("/list")
 	public ResponseEntity<?> getList() {
 		return ResponseEntity.ok(userService.getList());
+	}
+
+	@GetMapping("/{userId}/IdCheck")
+	public ResponseEntity<?> checkIdDuplication(@PathVariable String userId) {
+		return ResponseEntity.ok(userService.checkIdDuplication(userId));
+	}
+
+	@GetMapping("/{name}/NameCheck")
+	public ResponseEntity<?> checkNameDuplication(@PathVariable String name) {
+		return ResponseEntity.ok(userService.checkNameDuplication(name));
+	}
+
+	@GetMapping("/{email}/EmailCheck")
+	public ResponseEntity<?> checkEmailDuplication(@PathVariable String email) {
+		return ResponseEntity.ok(userService.checkEmailDuplication(email));
 	}
 }

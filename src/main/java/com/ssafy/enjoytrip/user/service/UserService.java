@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.user.service;
 
-import com.ssafy.enjoytrip.attraction.exception.AttractionNotFoundException;
 import com.ssafy.enjoytrip.auth.entity.Authority;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
 import com.ssafy.enjoytrip.user.dto.UserDto;
 import com.ssafy.enjoytrip.user.entity.User;
-import com.ssafy.enjoytrip.user.exception.UserExistException;
+import com.ssafy.enjoytrip.user.exception.UserNotFoundException;
 import com.ssafy.enjoytrip.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,26 +23,13 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Transactional
-	public CommonResponse join(UserDto userDto) { //signin regist 없다며 뭘로 하지
-		if (userRepository.existsByUserId(userDto.getUserId())) {
-			throw new UserExistException("이미 있는 아이디입니다");
-		}
-
-		if (userRepository.existsByEmail(userDto.getEmail())) {
-			throw new UserExistException("이미 있는 이메일입니다");
-		}
-
+	public CommonResponse join(UserDto userDto) {
 		User user = User.toUser(userDto, Authority.USER, passwordEncoder);
-
 		return new CommonResponse(true, "Success to create user", userRepository.save(user));
 	}
 
 	public CommonResponse getById(String userId) {
 		return new CommonResponse(true, "Success to get User.", userRepository.findByUserId(userId));
-	}
-
-	public CommonResponse idCheck(String userId) {
-		return new CommonResponse(true, "Success to check userId.", userRepository.existsByUserId(userId));
 	}
 
 	@Transactional
@@ -55,7 +42,7 @@ public class UserService {
 			userRepository.save(existUser);
 			return new CommonResponse(true, "Success to update User.", existUser);
 		}
-		throw new AttractionNotFoundException(String.format("사용자(%s)를 찾을 수 없습니다.", userId));
+		throw new UserNotFoundException(String.format("사용자(%s)를 찾을 수 없습니다.", userId));
 	}
 
 	@Transactional
@@ -68,7 +55,7 @@ public class UserService {
 			userRepository.save(existUser);
 			return new CommonResponse(true, "Success to delete User.", existUser);
 		}
-		throw new AttractionNotFoundException(String.format("관광지(%s)를 찾을 수 없습니다.", userId));
+		throw new UserNotFoundException(String.format("사용자(%s)를 찾을 수 없습니다.", userId));
 	}
 	public CommonResponse getList() {
 		return new CommonResponse(true, "Success to user list.", userRepository.findAll());
@@ -76,5 +63,17 @@ public class UserService {
 
 	public Optional<User> findByUserName(String name) {
 		return userRepository.findByName(name);
+	}
+
+	public CommonResponse checkIdDuplication(String userId) {
+		return new CommonResponse(true, "Success to check userId.", userRepository.existsByUserId(userId));
+	}
+
+	public CommonResponse checkNameDuplication(String name) {
+		return new CommonResponse(true, "Success to check name.", userRepository.existsByName(name));
+	}
+
+	public CommonResponse checkEmailDuplication(String email) {
+		return new CommonResponse(true, "Success to check email.", userRepository.existsByEmail(email));
 	}
 }

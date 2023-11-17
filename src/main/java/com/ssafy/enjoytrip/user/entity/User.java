@@ -5,10 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
 import com.ssafy.enjoytrip.attraction.entity.Attraction;
 import com.ssafy.enjoytrip.auth.entity.Authority;
 import com.ssafy.enjoytrip.board.entity.Board;
@@ -19,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
@@ -56,10 +54,20 @@ public class User extends BaseEntity {
 	}
 
 	public void update(UserDto userDto) {
-		if (userDto.getEmail() != null) { this.email = userDto.getEmail(); }
-		if (userDto.getPassword() != null) { this.password = userDto.getPassword(); }
-		if (userDto.getName() != null) { this.name = userDto.getName(); }
-		if (userDto.getAuthority() != null) { this.authority = userDto.getAuthority(); }
-		if (userDto.getImageUrl() != null) { this.image_url = userDto.getImageUrl(); }
+		if (userDto.getEmail() != null) {
+			this.email = userDto.getEmail();
+		}
+		if (userDto.getPassword() != null) {
+			this.password = userDto.getPassword();
+		}
+		if (userDto.getName() != null) {
+			this.name = userDto.getName();
+		}
+		if (userDto.getAuthority() != null) {
+			this.authority = userDto.getAuthority();
+		}
+		if (userDto.getImageUrl() != null) {
+			this.image_url = userDto.getImageUrl();
+		}
 	}
 }
