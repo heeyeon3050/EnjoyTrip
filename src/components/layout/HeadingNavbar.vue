@@ -66,7 +66,7 @@ const loginModalVisible = ref(false);
   <div
     v-if="loginModalVisible"
     @click.stop="loginModalVisible = !loginModalVisible"
-    class="absolute w-full h-full bg-black/40 top-0 left-0"
+    class="absolute w-full h-full bg-black/40 top-0 left-0 z-30"
   ></div>
   <LoginModal v-if="loginModalVisible" />
 </template>

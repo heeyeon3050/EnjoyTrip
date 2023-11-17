@@ -3,7 +3,7 @@ import { ref, onMounted } from "vue";
 import { listStations } from "@/api/estation";
 import { listSido, listGugun } from "@/api/map";
 
-import VKakaoMap from "@/components/common/VKakaoMap.vue";
+import VKakaoMap from "@/components/map/VKakaoMap.vue";
 import VSelect from "@/components/common/VSelect.vue";
 
 // const serviceKey = import.meta.env.VITE_OPEN_API_SERVICE_KEY;
@@ -88,7 +88,9 @@ const viewStation = (station) => {
       <div class="col d-flex flex-row-reverse">
         <VSelect :selectOption="sidoList" @onKeySelect="onChangeSido" />
       </div>
-      <div class="col"><VSelect :selectOption="gugunList" @onKeySelect="onChangeGugun" /></div>
+      <div class="col">
+        <VSelect :selectOption="gugunList" @onKeySelect="onChangeGugun" />
+      </div>
     </div>
     <VKakaoMap :stations="chargingStations" :selectStation="selectStation" />
     <table class="table table-hover">

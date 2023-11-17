@@ -6,7 +6,7 @@ import ModalDoubleBtn from "@/components/modal/ModalDoubleBtn.vue";
 
 <template>
   <div
-    class="gradient w-[34.5rem] h-[19.44rem] absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 rounded-lg shadow-2xl"
+    class="z-40 gradient w-[34.5rem] h-[19.44rem] absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 rounded-lg shadow-2xl"
   >
     <div
       class="absolute flex justify-center items-center w-24 h-8 bg-[#cde5f3] left-1/2 top-0 z-10 -translate-x-1/2 translate-y-0 text-xl font-bold"

@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <div class="w-full h-96 bg-slate-200 grid grid-cols-3">
+  <div class="w-full h-96 bg-slate-200 grid grid-cols-3 gap-2">
     <img
       src="@/assets/attraction.jpg"
       class="w-full aspect-square bg-cover bg-center"

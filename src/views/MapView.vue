@@ -1,10 +1,9 @@
 <script setup>
-import HeadingNavbar from "@/components/layout/HeadingNavbar.vue";
+import MapContent from "@/components/map/MapContent.vue";
 </script>
 
 <template>
-  <HeadingNavbar></HeadingNavbar>
-  <div>지도</div>
+  <MapContent />
 </template>
 
 <style scoped></style>

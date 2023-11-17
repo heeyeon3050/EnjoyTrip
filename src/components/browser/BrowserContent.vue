@@ -7,7 +7,7 @@ const isSingleView = ref(true);
 </script>
 
 <template>
-  <div class="col-start-3 col-span-8 bg-slate-200">
+  <div class="col-start-3 col-span-8">
     <div class="w-full flex justify-end mb-3">
       <input
         type="checkbox"

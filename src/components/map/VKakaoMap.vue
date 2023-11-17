@@ -7,18 +7,21 @@ const markers = ref([]);
 
 const props = defineProps({ stations: Array, selectStation: Object });
 
-watch(
-  () => props.selectStation.value,
-  () => {
-    // 이동할 위도 경도 위치를 생성합니다
-    var moveLatLon = new kakao.maps.LatLng(props.selectStation.lat, props.selectStation.lng);
+// watch(
+//   () => props.selectStation.value,
+//   () => {
+//     // 이동할 위도 경도 위치를 생성합니다
+//     var moveLatLon = new kakao.maps.LatLng(
+//       props.selectStation.lat,
+//       props.selectStation.lng
+//     );
 
-    // 지도 중심을 부드럽게 이동시킵니다
-    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-    map.panTo(moveLatLon);
-  },
-  { deep: true }
-);
+//     // 지도 중심을 부드럽게 이동시킵니다
+//     // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+//     map.panTo(moveLatLon);
+//   },
+//   { deep: true }
+// );
 
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
@@ -34,21 +37,21 @@ onMounted(() => {
   }
 });
 
-watch(
-  () => props.stations.value,
-  () => {
-    positions.value = [];
-    props.stations.forEach((station) => {
-      let obj = {};
-      obj.latlng = new kakao.maps.LatLng(station.lat, station.lng);
-      obj.title = station.statNm;
+// watch(
+//   () => props.stations.value,
+//   () => {
+//     positions.value = [];
+//     props.stations.forEach((station) => {
+//       let obj = {};
+//       obj.latlng = new kakao.maps.LatLng(station.lat, station.lng);
+//       obj.title = station.statNm;
 
-      positions.value.push(obj);
-    });
-    loadMarkers();
-  },
-  { deep: true }
-);
+//       positions.value.push(obj);
+//     });
+//     loadMarkers();
+//   },
+//   { deep: true }
+// );
 
 const initMap = () => {
   const container = document.getElementById("map");
@@ -107,7 +110,9 @@ const deleteMarkers = () => {
 
 <style>
 #map {
-  width: 100%;
-  height: 700px;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: 0;
 }
 </style>
