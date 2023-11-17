@@ -3,6 +3,8 @@ package com.ssafy.enjoytrip.attraction.controller;
 import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
 import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import com.ssafy.enjoytrip.attraction.service.AttractionService;
+import com.ssafy.enjoytrip.common.rq.Rq;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/attraction")
 @RequiredArgsConstructor
 public class AttractionController {
+	private final Rq rq;
 	private final AttractionService attractionService;
 
 	@PostMapping("/create")
@@ -32,6 +35,11 @@ public class AttractionController {
 	@GetMapping("/search")
 	public ResponseEntity<?> getByCategory(@RequestParam AttractionCategory category) {
 		return ResponseEntity.ok(attractionService.getByCategory(category));
+	}
+
+	@PostMapping("/{attractionId}/like")
+	public ResponseEntity<?> like(@PathVariable Long attractionId) {
+		return ResponseEntity.ok(attractionService.like(attractionId, rq.getUser()));
 	}
 }
 

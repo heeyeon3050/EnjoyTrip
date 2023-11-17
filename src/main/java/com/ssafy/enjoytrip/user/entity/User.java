@@ -8,6 +8,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
+import com.ssafy.enjoytrip.attraction.entity.Attraction;
 import com.ssafy.enjoytrip.auth.entity.Authority;
 import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.common.BaseEntity;
@@ -36,9 +37,12 @@ public class User extends BaseEntity {
 	private String image_url;
 	@Enumerated(EnumType.STRING)
 	private Authority authority;
-	@ManyToMany(mappedBy = "users")
+	@ManyToMany(mappedBy = "board_users")
 	@JsonBackReference
 	private Set<Board> boards = new HashSet<>();
+	@ManyToMany(mappedBy = "attraction_users")
+	@JsonBackReference
+	private Set<Attraction> attractions = new HashSet<>();
 
 	public static User toUser(UserDto userDto, Authority authority, PasswordEncoder passwordEncoder) {
 		return User.builder()

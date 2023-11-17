@@ -1,7 +1,13 @@
 package com.ssafy.enjoytrip.attraction.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
 import com.ssafy.enjoytrip.common.BaseEntity;
+import com.ssafy.enjoytrip.user.entity.User;
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,6 +33,14 @@ public class Attraction extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AttractionCategory category;
     private String description;
+    @ManyToMany
+    @JsonManagedReference
+    @JoinTable(
+        name = "like_attraction",
+        joinColumns = @JoinColumn(name = "attraction_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> attraction_users = new HashSet<>();
 
     public static Attraction toAttraction(AttractionDto attractionDto) {
         return Attraction.builder()

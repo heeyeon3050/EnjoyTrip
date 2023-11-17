@@ -49,7 +49,7 @@ public class Board extends BaseEntity{
 		joinColumns = @JoinColumn(name = "board_id"),
 		inverseJoinColumns = @JoinColumn(name = "user_id")
 	)
-	private Set<User> users = new HashSet<>();
+	private Set<User> board_users = new HashSet<>();
 
 	public static Board toBoard(BoardDto boardDto) {
 		return Board.builder()

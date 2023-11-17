@@ -26,4 +26,5 @@ public class UserDto {
 	private String imageUrl;
 
 	private Set<Long> boardIds;
+	private Set<Long> attractionIds;
 }
