@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from "vue";
-defineProps({ selectOption: Array });
+const params = defineProps({ selectOption: Array });
 const emit = defineEmits(["onKeySelect"]);
 
-const key = ref("");
+const key = ref(params.selectOption[0].value);
 
 const onSelect = () => {
   // console.log(key.value + "선택!!!");
@@ -12,7 +12,7 @@ const onSelect = () => {
 </script>
 
 <template>
-  <select v-model="key" class="form-select form-select-sm w-50" @change="onSelect">
+  <select v-model="key" @change="onSelect">
     <option
       v-for="option in selectOption"
       :key="option.value"

@@ -13,7 +13,14 @@ import CommonBtn from "@/components/common/CommonBtn.vue";
         </div>
       </div>
       <div class="flex items-end space-x-2">
-        <CommonBtn text="수정" />
+        <router-link
+          :to="{
+            name: 'user-update',
+            params: { userId: 'ssafy' },
+          }"
+        >
+          <CommonBtn text="수정" />
+        </router-link>
         <CommonBtn text="탈퇴" />
       </div>
     </div>

@@ -58,9 +58,19 @@ const router = createRouter({
           component: () => import("@/components/boards/BoardList.vue"),
         },
         {
+          path: "write",
+          name: "board-write",
+          component: () => import("@/components/boards/BoardWrite.vue"),
+        },
+        {
           path: ":boardId",
           name: "board-view",
           component: () => import("@/components/boards/BoardDetail.vue"),
+        },
+        {
+          path: ":boardId/update",
+          name: "board-update",
+          component: () => import("@/components/boards/BoardUpdate.vue"),
         },
       ],
     },
@@ -75,11 +85,11 @@ const router = createRouter({
           name: "user-profile",
           component: () => import("@/components/users/UserProfile.vue"),
         },
-        // {
-        //   path: "modify/:userid",
-        //   name: "user-modify",
-        //   component: () => import("@/components/users/UserModify.vue"),
-        // },
+        {
+          path: ":userId/update",
+          name: "user-update",
+          component: () => import("@/components/users/UserUpdate.vue"),
+        },
       ],
     },
     // {

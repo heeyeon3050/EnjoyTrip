@@ -17,19 +17,24 @@ import BoardListItem from "@/components/boards/BoardListItem.vue";
       <BoardListItem v-for="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" :key="i" />
     </div>
   </div>
-  <div class="w-full h-10 my-10">
-    <select
-      name="languages"
-      id="lang"
-      class="w-24 h-10 border-2 mr-3 rounded-md px-3 border-slate-500"
-    >
-      <option value="title">제목</option>
-      <option value="writer">작성자</option>
-    </select>
-    <input
-      type="text"
-      class="w-48 h-10 border-2 rounded-md p-2 border-slate-500"
-    />
+  <div class="w-full h-10 my-10 flex justify-between">
+    <div>
+      <select
+        name="languages"
+        id="lang"
+        class="w-24 h-10 border-2 mr-3 rounded-md px-3 border-slate-500"
+      >
+        <option value="title">제목</option>
+        <option value="writer">작성자</option>
+      </select>
+      <input
+        type="text"
+        class="w-48 h-10 border-2 rounded-md p-2 border-slate-500"
+      />
+    </div>
+    <router-link :to="{ name: 'board-write' }">
+      <CommonBtn text="+ 작성" />
+    </router-link>
   </div>
   <div class="w-full h-10 my-10 flex space-x-4 justify-center">
     <button>&lt;</button>

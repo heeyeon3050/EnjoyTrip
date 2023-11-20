@@ -139,7 +139,14 @@ const loadMarkers = () => {
     </div>
     <div id="map" class="w-full h-80 my-4 border-4"></div>
     <div class="w-full flex justify-end my-4 space-x-3">
-      <CommonBtn text="수정" />
+      <router-link
+        :to="{
+          name: 'board-update',
+          params: { boardId: 1 },
+        }"
+      >
+        <CommonBtn text="수정" />
+      </router-link>
       <CommonBtn text="삭제" />
     </div>
   </div>

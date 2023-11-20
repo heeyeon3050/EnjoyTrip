@@ -2,6 +2,8 @@
 import ModalInput from "@/components/modal/ModalInput.vue";
 import ModalBtn from "@/components/modal/ModalBtn.vue";
 import ModalDoubleBtn from "@/components/modal/ModalDoubleBtn.vue";
+
+defineProps({ join: Function, findPassword: Function });
 </script>
 
 <template>
@@ -33,7 +35,12 @@ import ModalDoubleBtn from "@/components/modal/ModalDoubleBtn.vue";
           <ModalInput type="text" label="아이디" />
           <ModalInput type="password" label="비밀번호" />
           <ModalBtn text="로그인" />
-          <ModalDoubleBtn leftText="회원가입" rightText="비밀번호 찾기" />
+          <ModalDoubleBtn
+            leftText="회원가입"
+            rightText="비밀번호 찾기"
+            :leftClick="join"
+            :rightClick="findPassword"
+          />
         </div>
         <div class="w-2/5 flex flex-col itemx-center justify-between">
           <div class="w-full h-30 flex space-x-4 p-3 justify-center">

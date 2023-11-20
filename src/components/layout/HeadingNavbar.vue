@@ -1,23 +1,23 @@
 <script setup>
 import LoginModal from "@/components/common/LoginModal.vue";
 import JoinModal from "../common/JoinModal.vue";
-import { useMenuStore } from "@/stores/menu";
-import { storeToRefs } from "pinia";
+import FindPasswordModal from "@/components/common/FindPasswordModal.vue";
+import { ModalStatus } from "@/util/constants";
 import { ref } from "vue";
 
-const menuStore = useMenuStore();
+const modalStatus = ref(ModalStatus.CLOSED);
 
-// 반응형을 유지하면서 스토어에서 속성을 추출하려면, storeToRefs()를 사용
-// https://pinia.vuejs.kr/core-concepts/
-const { menuList } = storeToRefs(menuStore);
-const { changeMenuState } = menuStore;
-
-const logout = () => {
-  console.log("로그아웃!!!!");
-  changeMenuState();
+const modalFindPassword = () => {
+  modalStatus.value = ModalStatus.FIND_PASSWORD;
 };
 
-const openModal = ref(0);
+const modalJoin = () => {
+  modalStatus.value = ModalStatus.JOIN;
+};
+
+const modalLogin = () => {
+  modalStatus.value = ModalStatus.LOGIN;
+};
 </script>
 <template>
   <nav class="w-full h-24 flex justify-between col-span-12">
@@ -52,17 +52,17 @@ const openModal = ref(0);
         </router-link>
       </ul>
     </div>
-    <template v-if="1 !== 1">
+    <template v-if="1 === 1">
       <div class="flex space-x-5 h-full px-6 w-52">
         <div
           class="flex justify-center items-center cursor-pointer"
-          @click="openModal = 2"
+          @click="modalStatus = ModalStatus.JOIN"
         >
           회원가입
         </div>
         <div
           class="flex justify-center items-center cursor-pointer"
-          @click="openModal = 1"
+          @click="modalStatus = ModalStatus.LOGIN"
         >
           로그인
         </div>
@@ -72,7 +72,7 @@ const openModal = ref(0);
       <router-link
         :to="{
           name: 'user-profile',
-          params: { userId: 1 },
+          params: { userId: 'ssafy' },
         }"
       >
         <div class="flex space-x-5 h-full px-6 w-52 items-center">
@@ -83,12 +83,17 @@ const openModal = ref(0);
     </template>
   </nav>
   <div
-    v-if="openModal !== 0"
-    @click.stop="openModal = 0"
+    v-if="modalStatus !== ModalStatus.CLOSED"
+    @click.stop="modalStatus = 0"
     class="absolute w-full h-full bg-black/40 top-0 left-0 z-30"
   ></div>
-  <LoginModal v-if="openModal === 1" />
-  <JoinModal v-if="openModal === 2" />
+  <LoginModal
+    v-if="modalStatus === ModalStatus.LOGIN"
+    :join="modalJoin"
+    :findPassword="modalFindPassword"
+  />
+  <JoinModal v-if="modalStatus === ModalStatus.JOIN" :login="modalLogin" />
+  <FindPasswordModal v-if="modalStatus === ModalStatus.FIND_PASSWORD" />
 </template>
 
 <style scoped></style>

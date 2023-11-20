@@ -1,21 +1,28 @@
 <script setup>
-defineProps({ leftText: String, rightText: String });
+defineProps({
+  leftText: String,
+  rightText: String,
+  leftClick: Function,
+  rightClick: Function,
+});
 </script>
 
 <template>
   <div
     class="w-full h-9 border-[1px] border-slate-950 bg-[#363636] rounded-2xl flex"
   >
-    <div
+    <button
       class="cursor-pointer h-full w-1/2 flex justify-center items-center gradient gradientText font-semibold border-r-[1px] border-slate-950"
+      @click="leftClick"
     >
       {{ leftText }}
-    </div>
-    <div
+    </button>
+    <button
       class="cursor-pointer h-full w-1/2 flex justify-center items-center gradient gradientText font-semibold"
+      @click="rightClick"
     >
       {{ rightText }}
-    </div>
+    </button>
   </div>
 </template>
 
