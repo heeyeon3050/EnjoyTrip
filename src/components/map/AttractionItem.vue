@@ -1,4 +1,11 @@
-<script setup></script>
+<script setup>
+import noImg from "@/assets/no_image.jpg";
+const params = defineProps({ attraction: Object });
+
+const replaceNoImg = (event) => {
+  event.target.src = noImg;
+};
+</script>
 
 <template>
   <div class="w-full h-44 p-2 bg-blue-100 shadow-md flex relative">
@@ -19,20 +26,28 @@
 
     <img
       class="h-full aspect-square mr-3"
-      src="@/assets/attraction.jpg"
+      :src="params.attraction.image_url"
+      @error="replaceNoImg"
       alt=""
     />
     <div class="flex flex-col justify-between p-2 overflow-hidden">
-      <h3 class="text-slate-900 font-bold text-sm ml-1">카테고리</h3>
-      <h1 class="text-slate-900 font-semibold text-3xl">관광지명</h1>
-      <h4 class="text-sm text-slate-500">서울시 강남구 테헤란로 212</h4>
+      <h3 class="text-slate-900 font-bold text-sm ml-1">
+        {{ params.attraction.category }}
+      </h3>
+      <h1
+        class="text-overflow-clip overflow-ellipsis break-words line-clamp-1 text-slate-900 font-semibold text-3xl"
+      >
+        {{ params.attraction.title }}
+      </h1>
+      <h4
+        class="text-overflow-clip overflow-ellipsis break-words line-clamp-1 text-sm text-slate-500"
+      >
+        {{ params.attraction.address1 }}
+      </h4>
       <p
         class="text-overflow-clip overflow-ellipsis break-words line-clamp-1 text-sm text-slate-600"
       >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque
-        optio cupiditate, atque asperiores laboriosam nisi a aut dicta
-        exercitationem pariatur corporis sapiente. Repellendus dolore nihil
-        reprehenderit odit praesentium, sequi laudantium?
+        {{ params.attraction.description }}
       </p>
     </div>
   </div>

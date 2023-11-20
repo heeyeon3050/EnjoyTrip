@@ -1,6 +1,65 @@
 <script setup>
 import CommonBtn from "@/components/common/CommonBtn.vue";
 import BoardListItem from "@/components/boards/BoardListItem.vue";
+import { searchBoard } from "@/api/board";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const selectOption = ref([
+  { text: "검색조건", value: "" },
+  { text: "글번호", value: "article_no" },
+  { text: "제목", value: "subject" },
+  { text: "작성자아이디", value: "user_id" },
+]);
+
+const boards = ref([]);
+const currentPage = ref(1);
+const totalPage = ref(0);
+const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
+const param = ref({
+  pgno: currentPage.value,
+  spp: VITE_ARTICLE_LIST_SIZE,
+  key: "",
+  word: "",
+});
+
+onMounted(() => {
+  getBoardList();
+});
+
+const changeKey = (val) => {
+  console.log("BoarList에서 선택한 조건 : " + val);
+  param.value.key = val;
+};
+
+const getBoardList = () => {
+  console.log("서버에서 글목록 얻어오자!!!", param.value);
+  searchBoard(
+    param.value,
+    ({ data }) => {
+      console.log(data);
+      boards.value = data.data;
+      currentPage.value = data.currentPage;
+      totalPage.value = data.totalPageCount;
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
+};
+
+const onPageChange = (val) => {
+  console.log(val + "번 페이지로 이동 준비 끝!!!");
+  currentPage.value = val;
+  param.value.pgno = val;
+  getBoardList();
+};
+
+const moveWrite = () => {
+  router.push({ name: "article-write" });
+};
 </script>
 
 <template>
@@ -14,7 +73,7 @@ import BoardListItem from "@/components/boards/BoardListItem.vue";
   </div>
   <div class="w-full h-fit p-2 flex flex-col overflow-y-scroll scrollbar-hide">
     <div>
-      <BoardListItem v-for="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" :key="i" />
+      <BoardListItem v-for="board in boards" :key="board.id" :board="board" />
     </div>
   </div>
   <div class="w-full h-10 my-10 flex justify-between">

@@ -2,6 +2,37 @@
 import VKakaoMap from "@/components/map/VKakaoMap.vue";
 import CommonBtn from "../common/CommonBtn.vue";
 import AttractionItem from "@/components/map/AttractionItem.vue";
+import { searchAttraction } from "@/api/attraction";
+import { ref, onMounted } from "vue";
+
+const attractionList = ref([]);
+const attraction = ref({});
+
+const params = ref({
+  pageNo: 1,
+  numOfRows: 20,
+  category: "NORMAL",
+});
+
+onMounted(() => {
+  getAttractionLsit();
+});
+
+const getAttractionLsit = () => {
+  searchAttraction(
+    params.value,
+    ({ data: { data } }) => {
+      attractionList.value = data;
+    },
+    (error) => {
+      console.log(err);
+    }
+  );
+};
+
+const viewLocation = (location) => {
+  attraction.value = location;
+};
 </script>
 
 <template>
@@ -33,7 +64,7 @@ import AttractionItem from "@/components/map/AttractionItem.vue";
         </div>
       </router-link>
     </div>
-    <div class="w-full px-10 py-3">
+    <form class="w-full px-10 py-3">
       <div class="w-full h-10 relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -53,25 +84,35 @@ import AttractionItem from "@/components/map/AttractionItem.vue";
           type="text"
           name=""
           id=""
+          @keyup.enter="login"
           class="w-full h-full rounded-sm p-2 focus:outline-none focus:ring-1 focus:ring-slate-500"
         />
       </div>
       <div class="w-full h-10 flex justify-around py-3">
+        <input type="checkbox" name="category" value="TRAIN" />
         <CommonBtn text="기차역" />
+        <input type="checkbox" name="category" value="NORMAL" />
         <CommonBtn text="관광지" />
+        <input type="checkbox" name="category" value="MEDIA" />
         <CommonBtn text="촬영지" />
+        <input type="checkbox" name="category" value="HERITAGE" />
         <CommonBtn text="문화재" />
       </div>
-    </div>
+    </form>
     <div
       class="w-full h-full p-2 flex flex-col overflow-y-scroll scrollbar-hide"
     >
       <div class="space-y-2">
-        <AttractionItem v-for="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" :key="i" />
+        <AttractionItem
+          v-for="attraction in attractionList"
+          :key="attraction.id"
+          :attraction="attraction"
+          @click="viewLocation(attraction)"
+        />
       </div>
     </div>
   </div>
-  <VKakaoMap />
+  <VKakaoMap :list="attractionList" :selected="attraction" />
 </template>
 
 <style scoped></style>

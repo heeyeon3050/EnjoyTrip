@@ -1,4 +1,6 @@
-<script setup></script>
+<script setup>
+const params = defineProps({ board: Object });
+</script>
 
 <template>
   <div
@@ -16,17 +18,17 @@
         <router-link
           :to="{
             name: 'board-view',
-            params: { boardId: 1 },
+            params: { boardId: params.board.id },
           }"
         >
-          <h1 class="text-xl font-semibold">인기 게시글 제목 [8]</h1>
+          <h1 class="text-xl font-semibold">{{ params.board.title }} [8]</h1>
         </router-link>
-        <h4 class="text-sm text-slate-500">카테고리</h4>
+        <h4 class="text-sm text-slate-500">{{ params.board.category }}</h4>
       </div>
       <div class="w-2/5 h-full flex justify-around items-center">
-        <div>작성자</div>
-        <div class="font-semibold">11/15</div>
-        <div class="font-semibold">15</div>
+        <div>{{ params.board.writer }}</div>
+        <div class="font-semibold">{{ params.board.createdAt }}</div>
+        <div class="font-semibold">{{ params.board.board_users.length }}</div>
       </div>
     </div>
   </div>

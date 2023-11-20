@@ -1,5 +1,11 @@
 <script setup>
 import CommonBtn from "@/components/common/CommonBtn.vue";
+import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from "pinia";
+
+const memberStore = useMemberStore();
+
+const { userInfo } = storeToRefs(memberStore);
 </script>
 
 <template>
@@ -8,8 +14,8 @@ import CommonBtn from "@/components/common/CommonBtn.vue";
       <div class="w-auto flex space-x-12">
         <div class="w-32 h-32 bg-slate-700 rounded-full"></div>
         <div class="flex flex-col space-y-4 justify-center">
-          <h1 class="text-5xl font-semibold">이유로</h1>
-          <h3 class="text-lg text-slate-400">@eurohand</h3>
+          <h1 class="text-5xl font-semibold">{{ userInfo.name }}</h1>
+          <h3 class="text-lg text-slate-400">@{{ userInfo.userId }}</h3>
         </div>
       </div>
       <div class="flex items-end space-x-2">
@@ -30,26 +36,8 @@ import CommonBtn from "@/components/common/CommonBtn.vue";
       </div>
       <div class="w-full grid grid-cols-6 gap-2">
         <img
-          src="@/assets/attraction.jpg"
-          class="w-full aspect-square bg-cover bg-center"
-        />
-        <img
-          src="@/assets/attraction.jpg"
-          class="w-full aspect-square bg-cover bg-center"
-        />
-        <img
-          src="@/assets/attraction.jpg"
-          class="w-full aspect-square bg-cover bg-center"
-        />
-        <img
-          src="@/assets/attraction.jpg"
-          class="w-full aspect-square bg-cover bg-center"
-        />
-        <img
-          src="@/assets/attraction.jpg"
-          class="w-full aspect-square bg-cover bg-center"
-        />
-        <img
+          v-for="attraction in userInfo.attractions"
+          :key="attraction.id"
           src="@/assets/attraction.jpg"
           class="w-full aspect-square bg-cover bg-center"
         />
@@ -61,26 +49,8 @@ import CommonBtn from "@/components/common/CommonBtn.vue";
       </div>
       <div class="w-full grid grid-cols-6 gap-2">
         <img
-          src="@/assets/attraction.jpg"
-          class="w-full aspect-square bg-cover bg-center"
-        />
-        <img
-          src="@/assets/attraction.jpg"
-          class="w-full aspect-square bg-cover bg-center"
-        />
-        <img
-          src="@/assets/attraction.jpg"
-          class="w-full aspect-square bg-cover bg-center"
-        />
-        <img
-          src="@/assets/attraction.jpg"
-          class="w-full aspect-square bg-cover bg-center"
-        />
-        <img
-          src="@/assets/attraction.jpg"
-          class="w-full aspect-square bg-cover bg-center"
-        />
-        <img
+          v-for="board in userInfo.boards"
+          :key="board.id"
           src="@/assets/attraction.jpg"
           class="w-full aspect-square bg-cover bg-center"
         />

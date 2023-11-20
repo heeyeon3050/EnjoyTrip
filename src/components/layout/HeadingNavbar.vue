@@ -4,8 +4,23 @@ import JoinModal from "../common/JoinModal.vue";
 import FindPasswordModal from "@/components/common/FindPasswordModal.vue";
 import { ModalStatus } from "@/util/constants";
 import { ref } from "vue";
+import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const memberStore = useMemberStore();
+const { userLogout } = memberStore;
+
+const { isLogin, loginUserName } = storeToRefs(memberStore);
 
 const modalStatus = ref(ModalStatus.CLOSED);
+
+const logout = () => {
+  userLogout();
+  router.push("/");
+};
 
 const modalFindPassword = () => {
   modalStatus.value = ModalStatus.FIND_PASSWORD;
@@ -13,6 +28,10 @@ const modalFindPassword = () => {
 
 const modalJoin = () => {
   modalStatus.value = ModalStatus.JOIN;
+};
+
+const modalClose = () => {
+  modalStatus.value = ModalStatus.CLOSED;
 };
 
 const modalLogin = () => {
@@ -52,7 +71,7 @@ const modalLogin = () => {
         </router-link>
       </ul>
     </div>
-    <template v-if="1 === 1">
+    <template v-if="!isLogin">
       <div class="flex space-x-5 h-full px-6 w-52">
         <div
           class="flex justify-center items-center cursor-pointer"
@@ -69,17 +88,29 @@ const modalLogin = () => {
       </div>
     </template>
     <template v-else>
-      <router-link
-        :to="{
-          name: 'user-profile',
-          params: { userId: 'ssafy' },
-        }"
-      >
-        <div class="flex space-x-5 h-full px-6 w-52 items-center">
-          <div class="w-10 h-10 rounded-full bg-slate-500"></div>
-          <h2 class="font-medium text-lg">이유로</h2>
+      <div class="flex space-x-5 h-full px-6 w-96">
+        <router-link
+          :to="{
+            name: 'user-profile',
+            params: { userId: 'ssafy' },
+          }"
+        >
+          <div class="flex space-x-5 h-full px-6 w-44 items-center">
+            <div class="w-10 h-10 shrink-0 rounded-full bg-slate-500"></div>
+            <h2
+              class="font-medium text-lg text-overflow-clip overflow-ellipsis break-words line-clamp-1"
+            >
+              {{ loginUserName }}
+            </h2>
+          </div>
+        </router-link>
+        <div
+          class="flex justify-center items-center cursor-pointer"
+          @click="logout"
+        >
+          로그아웃
         </div>
-      </router-link>
+      </div>
     </template>
   </nav>
   <div
@@ -91,6 +122,7 @@ const modalLogin = () => {
     v-if="modalStatus === ModalStatus.LOGIN"
     :join="modalJoin"
     :findPassword="modalFindPassword"
+    :close="modalClose"
   />
   <JoinModal v-if="modalStatus === ModalStatus.JOIN" :login="modalLogin" />
   <FindPasswordModal v-if="modalStatus === ModalStatus.FIND_PASSWORD" />

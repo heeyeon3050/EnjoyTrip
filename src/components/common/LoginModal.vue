@@ -2,8 +2,44 @@
 import ModalInput from "@/components/modal/ModalInput.vue";
 import ModalBtn from "@/components/modal/ModalBtn.vue";
 import ModalDoubleBtn from "@/components/modal/ModalDoubleBtn.vue";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+import { useMemberStore } from "@/stores/member";
+import { ref } from "vue";
 
-defineProps({ join: Function, findPassword: Function });
+defineProps({ join: Function, findPassword: Function, close: Function });
+
+const router = useRouter();
+const memberStore = useMemberStore();
+
+const { isLogin } = storeToRefs(memberStore);
+const { userLogin, getUserInfo } = memberStore;
+
+const loginUser = ref({
+  userId: "",
+  password: "",
+});
+
+const onChangeUserId = (event) => {
+  loginUser.value.userId = event.target.value;
+};
+const onChangePassword = (event) => {
+  loginUser.value.password = event.target.value;
+};
+
+const login = async () => {
+  console.log("login ing!!!! !!!");
+  await userLogin(loginUser.value);
+  let token = sessionStorage.getItem("accessToken");
+  console.log("111. ", token);
+  console.log("isLogin: ", isLogin);
+
+  if (isLogin) {
+    console.log("로그인 성공아닌가???");
+    await getUserInfo();
+    router.go(0);
+  }
+};
 </script>
 
 <template>
@@ -32,9 +68,19 @@ defineProps({ join: Function, findPassword: Function });
         <div
           class="w-3/5 border-r-[1px] border-slate-950 flex flex-col items-center justify-evenly px-2"
         >
-          <ModalInput type="text" label="아이디" />
-          <ModalInput type="password" label="비밀번호" />
-          <ModalBtn text="로그인" />
+          <ModalInput
+            type="text"
+            label="아이디"
+            :value="loginUser.userId"
+            @change="onChangeUserId"
+          />
+          <ModalInput
+            type="password"
+            label="비밀번호"
+            :value="loginUser.password"
+            @change="onChangePassword"
+          />
+          <ModalBtn text="로그인" @click="login" />
           <ModalDoubleBtn
             leftText="회원가입"
             rightText="비밀번호 찾기"

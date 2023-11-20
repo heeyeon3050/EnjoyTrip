@@ -2,8 +2,9 @@
 import CommonBtn from "@/components/common/CommonBtn.vue";
 import CommentListItem from "@/components/comments/CommentListItem.vue";
 import { ref, watch, onMounted } from "vue";
+import { CommentListByBoardId } from "@/api/comment";
 
-var map;
+var boardMap;
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
     initMap();
@@ -16,6 +17,19 @@ onMounted(() => {
     script.onload = () => kakao.maps.load(() => initMap());
     document.head.appendChild(script);
   }
+
+  CommentListByBoardId(
+    param.value,
+    ({ data }) => {
+      console.log(data);
+      boards.value = data.data;
+      currentPage.value = data.currentPage;
+      totalPage.value = data.totalPageCount;
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
 });
 // watch(
 //   () => props.stations.value,
@@ -39,9 +53,9 @@ const initMap = () => {
     center: new kakao.maps.LatLng(33.450701, 126.570667),
     level: 3,
   };
-  map = new kakao.maps.Map(container, options);
-  map.setDraggable(false);
-  map.setZoomable(false);
+  boardMap = new kakao.maps.Map(container, options);
+  boardMap.setDraggable(false);
+  boardMap.setZoomable(false);
 
   // loadMarkers();
 };
@@ -60,7 +74,7 @@ const loadMarkers = () => {
   markers.value = [];
   positions.value.forEach((position) => {
     const marker = new kakao.maps.Marker({
-      map: map, // 마커를 표시할 지도
+      map: boardMap, // 마커를 표시할 지도
       position: position.latlng, // 마커를 표시할 위치
       title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됨.
       clickable: true, // // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
@@ -76,7 +90,7 @@ const loadMarkers = () => {
     new kakao.maps.LatLngBounds()
   );
 
-  map.setBounds(bounds);
+  boardMap.setBounds(bounds);
 };
 </script>
 
@@ -181,4 +195,9 @@ const loadMarkers = () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#map {
+  width: 100% !important;
+  height: 20rem !important;
+}
+</style>

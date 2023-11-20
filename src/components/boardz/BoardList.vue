@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { listArticle } from "@/api/board.js";
+import { searchBoard } from "@/api/board.js";
 
 import VSelect from "@/components/common/VSelect.vue";
 import BoardListItem from "@/components/boards/item/BoardListItem.vue";
@@ -38,7 +38,7 @@ const changeKey = (val) => {
 
 const getArticleList = () => {
   console.log("서버에서 글목록 얻어오자!!!", param.value);
-  listArticle(
+  searchBoard(
     param.value,
     ({ data }) => {
       articles.value = data.articles;
@@ -74,7 +74,11 @@ const moveWrite = () => {
       <div class="col-lg-10">
         <div class="row align-self-center mb-2">
           <div class="col-md-2 text-start">
-            <button type="button" class="btn btn-outline-primary btn-sm" @click="moveWrite">
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm"
+              @click="moveWrite"
+            >
               글쓰기
             </button>
           </div>
@@ -88,7 +92,13 @@ const moveWrite = () => {
                   v-model="param.word"
                   placeholder="검색어..."
                 />
-                <button class="btn btn-dark" type="button" @click="getArticleList">검색</button>
+                <button
+                  class="btn btn-dark"
+                  type="button"
+                  @click="getArticleList"
+                >
+                  검색
+                </button>
               </div>
             </form>
           </div>

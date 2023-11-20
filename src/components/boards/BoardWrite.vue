@@ -1,12 +1,48 @@
 <script setup>
-import VSelect from "../common/VSelect.vue";
-import CommonBtn from "../common/CommonBtn.vue";
+import VSelect from "@/components/common/VSelect.vue";
+import CommonBtn from "@/components/common/CommonBtn.vue";
+import { createBoard } from "@/api/board";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const boardCategory = [
   { value: "NORMAL", text: "일반" },
   { value: "TIP", text: "팁" },
   { value: "REVIEW", text: "후기" },
 ];
+
+const title = ref("");
+const content = ref("");
+const category = ref("NORMAL");
+const latitude = ref(0);
+const longitude = ref(0);
+
+const onChangeKey = (value) => {
+  category.value = value;
+};
+
+const onSubmit = () => {
+  if (title.value === "" || content.value === "") return;
+
+  createBoard(
+    {
+      title: title.value,
+      category: category.value,
+      content: content.value,
+      latitude: latitude.value,
+      longitude: longitude.value,
+    },
+    (response) => {
+      console.log(response);
+      router.replace(`/board/${response.data.data.id}`);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
 </script>
 
 <template>
@@ -14,10 +50,13 @@ const boardCategory = [
     <div class="w-full h-20 flex justify-between my-10">
       <VSelect
         :selectOption="boardCategory"
+        @onKeySelect="onChangeKey"
+        v-model="category"
         class="w-32 border-2 bg-gray-50 text-xl text-slate-700 text-center font-semibold border-slate-200 rounded-l-xl"
       />
       <input
         type="text"
+        v-model="title"
         class="w-full p-4 text-2xl placeholder:text-slate-950 placeholder:text-2xl border-2 border-slate-200 rounded-r-xl focus:outline-none"
         placeholder="게시글 제목..."
       />
@@ -81,6 +120,7 @@ const boardCategory = [
           <textarea
             id="editor"
             rows="20"
+            v-model="content"
             class="resize-none block w-full p-10 text-xl text-gray-800 bg-white border-0 focus:outline-none"
             placeholder="Write an article..."
             required
@@ -91,7 +131,11 @@ const boardCategory = [
         <router-link :to="{ name: 'board-list' }">
           <CommonBtn text="취소" />
         </router-link>
-        <CommonBtn text="등록" />
+        <CommonBtn
+          text="등록"
+          @click="onSubmit"
+          :disabled="title === '' || content === ''"
+        />
       </div>
     </div>
   </div>
