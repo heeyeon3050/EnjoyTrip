@@ -76,4 +76,8 @@ public class BoardService {
 
 		throw new BoardNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", id));
 	}
+
+	public CommonResponse getById(Long boardId) {
+		return new CommonResponse(true, "Success to get User.", boardRepository.findById(boardId));
+	}
 }

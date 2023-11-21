@@ -45,6 +45,11 @@ public class BoardController {
 		return ResponseEntity.ok(boardService.search(category, keyword));
 	}
 
+	@GetMapping("/{boardId}")
+	public ResponseEntity<?> detail(@PathVariable Long boardId) {
+		return ResponseEntity.ok(boardService.getById(boardId));
+	}
+
 	@PostMapping("/{boardId}/like")
 	public ResponseEntity<?> like(@PathVariable Long boardId) {
 		return ResponseEntity.ok(boardService.like(boardId, rq.getUser()));
