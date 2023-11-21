@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.attraction.controller;
 import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
 import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import com.ssafy.enjoytrip.attraction.service.AttractionService;
+import com.ssafy.enjoytrip.board.entity.BoardCategory;
 import com.ssafy.enjoytrip.common.rq.Rq;
 
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,15 @@ public class AttractionController {
 		return ResponseEntity.ok(attractionService.update(attractionId, attractionDto));
 	}
 
+	// @GetMapping("/search")
+	// public ResponseEntity<?> getByCategory(@RequestParam AttractionCategory category) {
+	// 	return ResponseEntity.ok(attractionService.getByCategory(category));
+	// }
+
 	@GetMapping("/search")
-	public ResponseEntity<?> getByCategory(@RequestParam AttractionCategory category) {
-		return ResponseEntity.ok(attractionService.getByCategory(category));
+	public ResponseEntity<?> search(@RequestParam(required = false) AttractionCategory category,
+		@RequestParam(required = false) String keyword) {
+		return ResponseEntity.ok(attractionService.search(category, keyword));
 	}
 
 	@PostMapping("/{attractionId}/like")

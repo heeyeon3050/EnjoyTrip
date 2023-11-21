@@ -5,8 +5,12 @@ import com.ssafy.enjoytrip.attraction.entity.Attraction;
 import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import com.ssafy.enjoytrip.attraction.exception.AttractionNotFoundException;
 import com.ssafy.enjoytrip.attraction.repository.AttractionRepository;
+import com.ssafy.enjoytrip.attraction.repository.AttractionRepositoryCustom;
+import com.ssafy.enjoytrip.board.dto.BoardResponseDto;
 import com.ssafy.enjoytrip.board.entity.Board;
+import com.ssafy.enjoytrip.board.entity.BoardCategory;
 import com.ssafy.enjoytrip.board.exception.BoardNotFoundException;
+import com.ssafy.enjoytrip.board.repository.BoardRepositoryCustom;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
 import com.ssafy.enjoytrip.user.entity.User;
 
@@ -14,12 +18,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AttractionService {
     private final AttractionRepository attractionRepository;
+    private final AttractionRepositoryCustom attractionRepositoryCustom;
 
     @Transactional
     public CommonResponse create(AttractionDto attractionDto) {
@@ -31,6 +38,11 @@ public class AttractionService {
         return new CommonResponse(true, "Success to get Attraction.", attractionRepository.findAllByCategory(
             attractionCategory));
     }
+
+    public CommonResponse search(AttractionCategory category, String keyword) {
+        return new CommonResponse(true, "Success to get board.", attractionRepositoryCustom.findDynamicQueryAdvance(category, keyword));
+    }
+
 
     @Transactional
     public CommonResponse update(Long id, AttractionDto attractionDto) {
