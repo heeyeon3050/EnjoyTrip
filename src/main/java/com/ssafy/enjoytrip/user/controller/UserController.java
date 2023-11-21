@@ -24,7 +24,7 @@ public class UserController {
 		return ResponseEntity.ok(userService.delete(userId));
 	}
 
-	@PatchMapping("/{userId}")
+	@PatchMapping("/{userId}/update")
 	public ResponseEntity<?> update(@PathVariable String userId, @RequestBody UserDto userDto) {
 		return ResponseEntity.ok(userService.update(userId, userDto));
 	}
