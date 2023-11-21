@@ -17,7 +17,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ResponseDto {
+public class BoardResponseDto {
+	private Long id;
 	private String writerId;
 	private String writerName;
 	private String title;
@@ -31,12 +32,13 @@ public class ResponseDto {
 
 	private Long commentCount;
 
-	public static ResponseDto toResponseDto(Board board) {
+	public static BoardResponseDto toBoardResponseDto(Board board) {
 		if (board == null) {
 			return null;
 		}
 
-		return ResponseDto.builder()
+		return BoardResponseDto.builder()
+			.id(board.getId())
 			.title(board.getTitle())
 			.writerId(board.getWriter().getUserId())
 			.writerName(board.getWriter().getName())

@@ -74,8 +74,8 @@ public class UserService {
 		return new CommonResponse(true, "Success to user list.", userRepository.findAll());
 	}
 
-	public Optional<User> findByUserName(String name) {
-		return userRepository.findByName(name);
+	public Optional<User> findByUserId(String userId) {
+		return userRepository.findByUserId(userId);
 	}
 
 	public CommonResponse checkIdDuplication(String userId) {

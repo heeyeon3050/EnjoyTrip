@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.enjoytrip.board.dto.BoardDto;
-import com.ssafy.enjoytrip.board.dto.ResponseDto;
+import com.ssafy.enjoytrip.board.dto.BoardResponseDto;
 import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.board.entity.BoardCategory;
 import com.ssafy.enjoytrip.board.exception.BoardNotFoundException;
@@ -62,11 +62,10 @@ public class BoardService {
 
 	public CommonResponse search(BoardCategory category, String keyword) {
 		List<Board> boards = boardRepositoryCustom.findDynamicQueryAdvance(category, keyword);
-		List<ResponseDto> responseDtos = boards.stream()
-			.map(ResponseDto::toResponseDto)
+		List<BoardResponseDto> boardResponseDtos = boards.stream()
+			.map(BoardResponseDto::toBoardResponseDto)
 			.collect(Collectors.toList());
-		System.out.println("aaaaaaaa");
-		return new CommonResponse(true, "Success to get board.", responseDtos);
+		return new CommonResponse(true, "Success to get board.", boardResponseDtos);
 	}
 
 	public CommonResponse like(Long id, User user) {

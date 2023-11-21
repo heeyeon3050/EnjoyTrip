@@ -56,7 +56,7 @@ public class Rq {
 
 		// 데이터가 없는지 체크
 		if (user == null) {
-			user = userService.findByUserName(security_user.getUsername()).orElseThrow();
+			user = userService.findByUserId(security_user.getUsername()).orElseThrow();
 		}
 
 		return user;
