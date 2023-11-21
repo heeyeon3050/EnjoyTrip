@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
 import com.ssafy.enjoytrip.user.dto.UserDto;
 import com.ssafy.enjoytrip.user.entity.User;
+import com.ssafy.enjoytrip.user.exception.UserExistException;
 import com.ssafy.enjoytrip.user.exception.UserNotFoundException;
 import com.ssafy.enjoytrip.user.repository.UserRepository;
 
@@ -24,6 +25,18 @@ public class UserService {
 
 	@Transactional
 	public CommonResponse join(UserDto userDto) {
+		if (userRepository.existsByUserId(userDto.getUserId())) {
+			throw new UserExistException("이미 가입되어 있는 유저입니다.");
+		}
+
+		if (userRepository.existsByName(userDto.getName())) {
+			throw new UserExistException("이미 가입되어 있는 닉네임입니다.");
+		}
+
+		if (userRepository.existsByEmail(userDto.getEmail())) {
+			throw new UserExistException("이미 가입되어 있는 이메일입니다.");
+		}
+
 		User user = User.toUser(userDto, Authority.USER, passwordEncoder);
 		return new CommonResponse(true, "Success to create user", userRepository.save(user));
 	}
