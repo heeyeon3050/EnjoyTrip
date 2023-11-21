@@ -2,14 +2,12 @@ package com.ssafy.enjoytrip.comment.service;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
-import com.ssafy.enjoytrip.attraction.entity.Attraction;
-import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import com.ssafy.enjoytrip.attraction.exception.AttractionNotFoundException;
-import com.ssafy.enjoytrip.attraction.repository.AttractionRepository;
 import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.board.repository.BoardRepository;
 import com.ssafy.enjoytrip.comment.dto.CommentDto;
@@ -24,52 +22,52 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-    private final BoardRepository boardRepository;
-    private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
-    
-    @Transactional
-    public CommonResponse create(CommentDto commentDto) {
-        User writer = userRepository.findById(commentDto.getWriterId())
-            .orElseThrow(() -> new IllegalArgumentException("작성자 번호가 적정하지 않음"));
-        Board board = boardRepository.findById(commentDto.getBoardId())
-            .orElseThrow(() -> new IllegalArgumentException("게시판 번호가 적정하지 않음"));
-        Comment saved = commentRepository.save(
-            Comment.toComment(commentDto.getContent(), writer, board));
-        return new CommonResponse(true, "Success to create comment", saved.getId());
-    }
+	private final BoardRepository boardRepository;
+	private final CommentRepository commentRepository;
+	private final UserRepository userRepository;
 
-    public CommonResponse getByWriterId(Long writerId) {
-        return new CommonResponse(true, "Success to get comment.", commentRepository.findAllByWriterId(
-            writerId));
-    }
+	@Transactional
+	public CommonResponse create(CommentDto commentDto) {
+		User writer = userRepository.findById(commentDto.getWriterId())
+			.orElseThrow(() -> new IllegalArgumentException("작성자 번호가 적정하지 않음"));
+		Board board = boardRepository.findById(commentDto.getBoardId())
+			.orElseThrow(() -> new IllegalArgumentException("게시판 번호가 적정하지 않음"));
+		Comment saved = commentRepository.save(
+			Comment.toComment(commentDto.getContent(), writer, board));
+		return new CommonResponse(true, "Success to create comment", saved.getId());
+	}
 
-    public CommonResponse getByBoardId(Long boardId) {
-        return new CommonResponse(true, "Success to get comment.", commentRepository.findAllByBoardId(
-            boardId));
-    }
+	public CommonResponse getByWriterId(Long writerId) {
+		return new CommonResponse(true, "Success to get comment.", commentRepository.findAllByWriterId(writerId));
+	}
 
-    @Transactional
-    public CommonResponse update(Long id, CommentDto commentDto) {
-        Optional<Comment> optionalComment = commentRepository.findById(id);
+	public CommonResponse getByBoardId(Long boardId, Pageable pageable) {
+		Page<Comment> commentsPage = commentRepository.findByBoardId(boardId, pageable);
+		// return commentsPage.map(comment -> convertToDto(comment));
+		// return new CommonResponse(true, "Success to get comment.", commentsPage);
+	}
 
-        if(optionalComment.isPresent()) {
-            Comment existComment = optionalComment.get();
-            // existComment.update(commentDto);
-            return new CommonResponse(true, "Success to update comment.", commentRepository.save(existComment));
-        }
-        throw new AttractionNotFoundException(String.format("댓글(%s)를 찾을 수 없습니다.", id));
-    }
+	@Transactional
+	public CommonResponse update(Long id, CommentDto commentDto) {
+		Optional<Comment> optionalComment = commentRepository.findById(id);
 
-    @Transactional
-    public CommonResponse delete(Long id) {
-        Optional<Comment> optionalComment = commentRepository.findById(id);
+		if (optionalComment.isPresent()) {
+			Comment existComment = optionalComment.get();
+			// existComment.update(commentDto);
+			return new CommonResponse(true, "Success to update comment.", commentRepository.save(existComment));
+		}
+		throw new AttractionNotFoundException(String.format("댓글(%s)를 찾을 수 없습니다.", id));
+	}
 
-        if(optionalComment.isPresent()) {
-            Comment existComment = optionalComment.get();
-            existComment.delete();
-            return new CommonResponse(true, "Success to delete comment.", commentRepository.save(existComment));
-        }
-        throw new AttractionNotFoundException(String.format("댓글(%s)를 찾을 수 없습니다.", id));
-    }
+	@Transactional
+	public CommonResponse delete(Long id) {
+		Optional<Comment> optionalComment = commentRepository.findById(id);
+
+		if (optionalComment.isPresent()) {
+			Comment existComment = optionalComment.get();
+			existComment.delete();
+			return new CommonResponse(true, "Success to delete comment.", commentRepository.save(existComment));
+		}
+		throw new AttractionNotFoundException(String.format("댓글(%s)를 찾을 수 없습니다.", id));
+	}
 }

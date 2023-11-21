@@ -1,9 +1,6 @@
 package com.ssafy.enjoytrip.comment.dto;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
-import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
+import com.ssafy.enjoytrip.comment.entity.Comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +12,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CommentDto {
-    private Long writerId;
-    private Long boardId;
-    private String content;
+	private Long writerId;
+	private Long boardId;
+	private String content;
+
+	public static CommentDto fromEntity(Comment comment) {
+		return new CommentDto(
+			comment.getWriter().getId(),
+			comment.getBoard().getId(),
+			comment.getContent()
+		);
+	}
 }

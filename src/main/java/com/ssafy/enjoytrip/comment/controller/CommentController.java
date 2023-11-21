@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.comment.controller;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -7,12 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
-import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
-import com.ssafy.enjoytrip.attraction.service.AttractionService;
 import com.ssafy.enjoytrip.comment.dto.CommentDto;
 import com.ssafy.enjoytrip.comment.service.CommentService;
 
@@ -28,7 +25,6 @@ public class CommentController {
 
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@RequestBody CommentDto commentDto) {
-		log.info("댓글 작성");
 		return ResponseEntity.ok(commentService.create(commentDto));
 	}
 
@@ -43,8 +39,8 @@ public class CommentController {
 	}
 
 	@GetMapping("/board/{boardId}")
-	public ResponseEntity<?> getByBoardId(@PathVariable Long boardId) {
-		return ResponseEntity.ok(commentService.getByBoardId(boardId));
+	public ResponseEntity<?> getByBoardId(@PathVariable Long boardId, Pageable pageable) {
+		return ResponseEntity.ok(commentService.getByBoardId(boardId, pageable));
 	}
 
 	@GetMapping("/writer/{writerId}")
