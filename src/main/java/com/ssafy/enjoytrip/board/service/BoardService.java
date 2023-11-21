@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,8 +64,8 @@ public class BoardService {
 		throw new BoardNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", id));
 	}
 
-	public CommonResponse search(BoardCategory category, String keyword) {
-		List<Board> boards = boardRepositoryCustom.findDynamicQueryAdvance(category, keyword);
+	public CommonResponse getItems(BoardCategory category, String keyword, Pageable pageable) {
+		Page<Board> boards = boardRepositoryCustom.findDynamicQueryAdvance(category, keyword, pageable);
 		List<BoardResponseDto> boardResponseDtos = boards.stream()
 			.map(board -> {
 				long commentCount = commentRepository.countByBoardId(board.getId());
@@ -87,5 +89,9 @@ public class BoardService {
 
 	public CommonResponse getById(Long boardId) {
 		return new CommonResponse(true, "Success to get Board.", boardRepository.findById(boardId));
+	}
+
+	public CommonResponse findAll(Pageable pageable) {
+		return new CommonResponse(true, "Success to get Fax.", boardRepository.findAll(pageable));
 	}
 }

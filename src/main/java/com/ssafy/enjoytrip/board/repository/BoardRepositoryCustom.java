@@ -1,11 +1,12 @@
 package com.ssafy.enjoytrip.board.repository;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.board.entity.BoardCategory;
 
 public interface BoardRepositoryCustom {
-	List<Board> findDynamicQueryAdvance(BoardCategory category, String keyword);
+	Page<Board> findDynamicQueryAdvance(BoardCategory category, String keyword, Pageable pageable);
 
 }

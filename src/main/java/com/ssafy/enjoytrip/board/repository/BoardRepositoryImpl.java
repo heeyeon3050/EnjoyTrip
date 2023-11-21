@@ -1,13 +1,16 @@
 package com.ssafy.enjoytrip.board.repository;
 
 import static com.ssafy.enjoytrip.board.entity.QBoard.*;
-import static com.ssafy.enjoytrip.user.entity.QUser.*;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.board.entity.BoardCategory;
@@ -19,13 +22,20 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public List<Board> findDynamicQueryAdvance(BoardCategory category, String keyword) {
-		return queryFactory
+	public Page<Board> findDynamicQueryAdvance(BoardCategory category, String keyword, Pageable pageable) {
+		JPAQuery<Board> query = queryFactory
 			.selectFrom(board)
 			.leftJoin(board.writer).fetchJoin()
-			.where(eqCategory(category),
-				eqKeyword(keyword))
+			.where(eqCategory(category), eqKeyword(keyword));
+
+		long total = query.fetchCount(); // 전체 항목 수 계산
+
+		List<Board> boards = query
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
 			.fetch();
+
+		return new PageImpl<>(boards, pageable, total);
 	}
 
 	private BooleanExpression eqCategory(BoardCategory category) {

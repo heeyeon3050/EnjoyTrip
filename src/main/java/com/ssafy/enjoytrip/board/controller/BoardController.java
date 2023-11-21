@@ -1,5 +1,7 @@
 package com.ssafy.enjoytrip.board.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -39,14 +41,14 @@ public class BoardController {
 		return ResponseEntity.ok(boardService.delete(boardId));
 	}
 
-	@GetMapping("/search")
-	public ResponseEntity<?> search(@RequestParam(required = false) BoardCategory category,
-		@RequestParam(required = false) String keyword) {
-		return ResponseEntity.ok(boardService.search(category, keyword));
+	@GetMapping("/list")
+	public ResponseEntity<?> getItems(@RequestParam(required = false) BoardCategory category,
+		@RequestParam(required = false) String keyword, @PageableDefault(size = 5) Pageable pageable) {
+		return ResponseEntity.ok(boardService.getItems(category, keyword, pageable));
 	}
 
 	@GetMapping("/{boardId}")
-	public ResponseEntity<?> detail(@PathVariable Long boardId) {
+	public ResponseEntity<?> getById(@PathVariable Long boardId) {
 		return ResponseEntity.ok(boardService.getById(boardId));
 	}
 
