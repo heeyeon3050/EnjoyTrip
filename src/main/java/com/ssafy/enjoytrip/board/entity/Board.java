@@ -44,6 +44,7 @@ public class Board extends BaseEntity{
 	@ManyToOne
 	private User writer;
 	@OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private List<Comment> comments;
 	private String title;
 	private String content;

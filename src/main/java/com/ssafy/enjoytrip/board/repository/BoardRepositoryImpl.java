@@ -23,7 +23,6 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 		return queryFactory
 			.selectFrom(board)
 			.leftJoin(board.writer).fetchJoin()
-			.leftJoin(board.comments).fetchJoin()
 			.where(eqCategory(category),
 				eqKeyword(keyword))
 			.fetch();

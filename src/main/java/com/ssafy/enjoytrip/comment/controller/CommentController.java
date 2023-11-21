@@ -17,7 +17,9 @@ import com.ssafy.enjoytrip.comment.dto.CommentDto;
 import com.ssafy.enjoytrip.comment.service.CommentService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/comment")
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ public class CommentController {
 
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@RequestBody CommentDto commentDto) {
+		log.info("댓글 작성");
 		return ResponseEntity.ok(commentService.create(commentDto));
 	}
 

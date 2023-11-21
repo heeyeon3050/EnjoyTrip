@@ -10,22 +10,33 @@ import com.ssafy.enjoytrip.attraction.entity.Attraction;
 import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import com.ssafy.enjoytrip.attraction.exception.AttractionNotFoundException;
 import com.ssafy.enjoytrip.attraction.repository.AttractionRepository;
+import com.ssafy.enjoytrip.board.entity.Board;
+import com.ssafy.enjoytrip.board.repository.BoardRepository;
 import com.ssafy.enjoytrip.comment.dto.CommentDto;
 import com.ssafy.enjoytrip.comment.entity.Comment;
 import com.ssafy.enjoytrip.comment.repository.CommentRepository;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
+import com.ssafy.enjoytrip.user.entity.User;
+import com.ssafy.enjoytrip.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
+    private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
-
+    private final UserRepository userRepository;
+    
     @Transactional
     public CommonResponse create(CommentDto commentDto) {
-        Comment comment = Comment.toComment(commentDto);
-        return new CommonResponse(true, "Success to create comment", commentRepository.save(comment));
+        User writer = userRepository.findById(commentDto.getWriterId())
+            .orElseThrow(() -> new IllegalArgumentException("작성자 번호가 적정하지 않음"));
+        Board board = boardRepository.findById(commentDto.getBoardId())
+            .orElseThrow(() -> new IllegalArgumentException("게시판 번호가 적정하지 않음"));
+        Comment saved = commentRepository.save(
+            Comment.toComment(commentDto.getContent(), writer, board));
+        return new CommonResponse(true, "Success to create comment", saved.getId());
     }
 
     public CommonResponse getByWriterId(Long writerId) {
@@ -44,7 +55,7 @@ public class CommentService {
 
         if(optionalComment.isPresent()) {
             Comment existComment = optionalComment.get();
-            existComment.update(commentDto);
+            // existComment.update(commentDto);
             return new CommonResponse(true, "Success to update comment.", commentRepository.save(existComment));
         }
         throw new AttractionNotFoundException(String.format("댓글(%s)를 찾을 수 없습니다.", id));

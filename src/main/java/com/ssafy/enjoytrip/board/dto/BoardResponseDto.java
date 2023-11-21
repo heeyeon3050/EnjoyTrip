@@ -28,11 +28,10 @@ public class BoardResponseDto {
 	private Double latitude;
 	private Double longitude;
 
-
 	private Long commentCount;
 	private Long likeCount;
 
-	public static BoardResponseDto toBoardResponseDto(Board board) {
+	public static BoardResponseDto toBoardResponseDto(Board board, long commentCount) {
 		if (board == null) {
 			return null;
 		}
@@ -47,7 +46,7 @@ public class BoardResponseDto {
 			.latitude(board.getLatitude())
 			.longitude(board.getLongitude())
 			.likeCount(Long.valueOf(board.getBoard_users().size()))
-			.commentCount(Long.valueOf(board.getComments().size()))
+			.commentCount(commentCount)
 			.build();
 	}
 }

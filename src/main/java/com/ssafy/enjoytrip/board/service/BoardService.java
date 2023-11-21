@@ -14,6 +14,7 @@ import com.ssafy.enjoytrip.board.entity.BoardCategory;
 import com.ssafy.enjoytrip.board.exception.BoardNotFoundException;
 import com.ssafy.enjoytrip.board.repository.BoardRepository;
 import com.ssafy.enjoytrip.board.repository.BoardRepositoryCustom;
+import com.ssafy.enjoytrip.comment.repository.CommentRepository;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
 import com.ssafy.enjoytrip.user.entity.User;
 
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardService {
 	private final BoardRepository boardRepository;
+	private final CommentRepository commentRepository;
 	private final BoardRepositoryCustom boardRepositoryCustom;
 
 	@Transactional
@@ -63,7 +65,10 @@ public class BoardService {
 	public CommonResponse search(BoardCategory category, String keyword) {
 		List<Board> boards = boardRepositoryCustom.findDynamicQueryAdvance(category, keyword);
 		List<BoardResponseDto> boardResponseDtos = boards.stream()
-			.map(BoardResponseDto::toBoardResponseDto)
+			.map(board -> {
+				long commentCount = commentRepository.countByBoardId(board.getId());
+				return BoardResponseDto.toBoardResponseDto(board, commentCount);
+			})
 			.collect(Collectors.toList());
 		return new CommonResponse(true, "Success to get board.", boardResponseDtos);
 	}

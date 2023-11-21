@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ssafy.enjoytrip.attraction.entity.Attraction;
 import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
+import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.comment.entity.Comment;
 
 @Repository
@@ -22,4 +23,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByWriterId(Long writerId);
 
     List<Comment> findAllByBoardId(Long boardId);
+
+    long countByBoardId(Long boardId);
 }
