@@ -6,6 +6,6 @@ import com.ssafy.enjoytrip.attraction.entity.Attraction;
 import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 
 public interface AttractionRepositoryCustom {
-	List<Attraction> findDynamicQueryAdvance(AttractionCategory category, String keyword);
+	List<Attraction> findDynamicQueryAdvance(List<AttractionCategory> categories, String keyword);
 
 }

@@ -1,5 +1,7 @@
 package com.ssafy.enjoytrip.attraction.controller;
 
+import java.util.List;
+
 import com.ssafy.enjoytrip.attraction.dto.AttractionDto;
 import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import com.ssafy.enjoytrip.attraction.service.AttractionService;
@@ -33,15 +35,10 @@ public class AttractionController {
 		return ResponseEntity.ok(attractionService.update(attractionId, attractionDto));
 	}
 
-	// @GetMapping("/search")
-	// public ResponseEntity<?> getByCategory(@RequestParam AttractionCategory category) {
-	// 	return ResponseEntity.ok(attractionService.getByCategory(category));
-	// }
-
 	@GetMapping("/search")
-	public ResponseEntity<?> search(@RequestParam(required = false) AttractionCategory category,
+	public ResponseEntity<?> search(@RequestParam(required = false) List<AttractionCategory> categories,
 		@RequestParam(required = false) String keyword) {
-		return ResponseEntity.ok(attractionService.search(category, keyword));
+		return ResponseEntity.ok(attractionService.search(categories, keyword));
 	}
 
 	@PostMapping("/{attractionId}/like")

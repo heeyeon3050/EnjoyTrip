@@ -39,8 +39,8 @@ public class AttractionService {
             attractionCategory));
     }
 
-    public CommonResponse search(AttractionCategory category, String keyword) {
-        return new CommonResponse(true, "Success to get board.", attractionRepositoryCustom.findDynamicQueryAdvance(category, keyword));
+    public CommonResponse search(List<AttractionCategory> categories, String keyword) {
+        return new CommonResponse(true, "Success to get board.", attractionRepositoryCustom.findDynamicQueryAdvance(categories, keyword));
     }
 
 
