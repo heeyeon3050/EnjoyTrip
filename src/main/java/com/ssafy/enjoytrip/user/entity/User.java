@@ -10,6 +10,7 @@ import com.ssafy.enjoytrip.attraction.entity.Attraction;
 import com.ssafy.enjoytrip.auth.entity.Authority;
 import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.common.BaseEntity;
+import com.ssafy.enjoytrip.user.dto.UpdateDto;
 import com.ssafy.enjoytrip.user.dto.UserDto;
 
 import lombok.AllArgsConstructor;
@@ -54,21 +55,15 @@ public class User extends BaseEntity {
 			.build();
 	}
 
-	public void update(UserDto userDto) {
-		if (userDto.getEmail() != null) {
-			this.email = userDto.getEmail();
+	public void update(UpdateDto updateDto, PasswordEncoder passwordEncoder) {
+		if (updateDto.getEmail() != null) {
+			this.email = updateDto.getEmail();
 		}
-		if (userDto.getPassword() != null) {
-			this.password = userDto.getPassword();
+		if (updateDto.getPassword_new() != null) {
+			this.password = passwordEncoder.encode(updateDto.getPassword_new());
 		}
-		if (userDto.getName() != null) {
-			this.name = userDto.getName();
-		}
-		if (userDto.getAuthority() != null) {
-			this.authority = userDto.getAuthority();
-		}
-		if (userDto.getImageUrl() != null) {
-			this.image_url = userDto.getImageUrl();
+		if (updateDto.getName() != null) {
+			this.name = updateDto.getName();
 		}
 	}
 }

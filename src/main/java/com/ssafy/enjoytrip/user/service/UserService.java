@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
+import com.ssafy.enjoytrip.user.dto.UpdateDto;
 import com.ssafy.enjoytrip.user.dto.UserDto;
 import com.ssafy.enjoytrip.user.entity.User;
+import com.ssafy.enjoytrip.user.exception.PasswordNotEqualException;
 import com.ssafy.enjoytrip.user.exception.UserExistException;
 import com.ssafy.enjoytrip.user.exception.UserNotFoundException;
 import com.ssafy.enjoytrip.user.repository.UserRepository;
@@ -46,23 +48,27 @@ public class UserService {
 	}
 
 	@Transactional
-	public CommonResponse update(String userId, UserDto userDto) {
+	public CommonResponse update(String userId, UpdateDto updateDto, User user) {
 		Optional<User> optionalUser = userRepository.findByUserId(userId);
 
-		if(optionalUser.isPresent()) {
-			User existUser = optionalUser.get();
-			existUser.update(userDto);
-			userRepository.save(existUser);
-			return new CommonResponse(true, "Success to update User.", existUser);
-		}
-		throw new UserNotFoundException(String.format("사용자(%s)를 찾을 수 없습니다.", userId));
+		if (!optionalUser.isPresent())
+			throw new UserNotFoundException(String.format("사용자(%s)를 찾을 수 없습니다.", userId));
+
+		if (!updateDto.getPassword_old().equals(user.getPassword()))
+			throw new PasswordNotEqualException("비밀번호가 불일치합니다.");
+
+		User existUser = optionalUser.get();
+		existUser.update(updateDto, passwordEncoder);
+		userRepository.save(existUser);
+
+		return new CommonResponse(true, "Success to update User.", existUser);
 	}
 
 	@Transactional
 	public CommonResponse delete(String userId) {
 		Optional<User> optionalUser = userRepository.findByUserId(userId);
 
-		if(optionalUser.isPresent()) {
+		if (optionalUser.isPresent()) {
 			User existUser = optionalUser.get();
 			existUser.delete();
 			userRepository.save(existUser);
@@ -70,6 +76,7 @@ public class UserService {
 		}
 		throw new UserNotFoundException(String.format("사용자(%s)를 찾을 수 없습니다.", userId));
 	}
+
 	public CommonResponse getList() {
 		return new CommonResponse(true, "Success to user list.", userRepository.findAll());
 	}

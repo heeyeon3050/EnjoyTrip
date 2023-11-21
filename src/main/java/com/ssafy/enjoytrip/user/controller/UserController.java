@@ -3,6 +3,8 @@ package com.ssafy.enjoytrip.user.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.ssafy.enjoytrip.common.rq.Rq;
+import com.ssafy.enjoytrip.user.dto.UpdateDto;
 import com.ssafy.enjoytrip.user.dto.UserDto;
 import com.ssafy.enjoytrip.user.service.UserService;
 
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
+	private final Rq rq;
 	private final UserService userService;
 
 	@PostMapping("/join")
@@ -25,8 +28,8 @@ public class UserController {
 	}
 
 	@PatchMapping("/{userId}/update")
-	public ResponseEntity<?> update(@PathVariable String userId, @RequestBody UserDto userDto) {
-		return ResponseEntity.ok(userService.update(userId, userDto));
+	public ResponseEntity<?> update(@PathVariable String userId, @RequestBody UpdateDto updateDto) {
+		return ResponseEntity.ok(userService.update(userId, updateDto, rq.getUser()));
 	}
 
 	@GetMapping("/{userId}")
