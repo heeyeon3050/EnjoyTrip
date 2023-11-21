@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.board.dto;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.EnumType;
@@ -31,6 +32,8 @@ public class BoardResponseDto {
 	private Long commentCount;
 	private Long likeCount;
 
+	private LocalDateTime createdAt;
+
 	public static BoardResponseDto toBoardResponseDto(Board board, long commentCount) {
 		if (board == null) {
 			return null;
@@ -47,6 +50,7 @@ public class BoardResponseDto {
 			.longitude(board.getLongitude())
 			.likeCount(Long.valueOf(board.getBoard_users().size()))
 			.commentCount(commentCount)
+			.createdAt(board.getCreatedAt())
 			.build();
 	}
 }
