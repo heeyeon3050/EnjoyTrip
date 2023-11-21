@@ -81,6 +81,6 @@ public class BoardService {
 	}
 
 	public CommonResponse getById(Long boardId) {
-		return new CommonResponse(true, "Success to get User.", boardRepository.findById(boardId));
+		return new CommonResponse(true, "Success to get Board.", boardRepository.findById(boardId));
 	}
 }

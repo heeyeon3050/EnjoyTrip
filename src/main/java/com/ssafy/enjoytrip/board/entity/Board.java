@@ -1,11 +1,13 @@
 package com.ssafy.enjoytrip.board.entity;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,7 @@ import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.enjoytrip.board.dto.BoardDto;
+import com.ssafy.enjoytrip.comment.entity.Comment;
 import com.ssafy.enjoytrip.common.BaseEntity;
 import com.ssafy.enjoytrip.user.entity.User;
 
@@ -40,6 +43,8 @@ public class Board extends BaseEntity{
 	private Long id;
 	@ManyToOne
 	private User writer;
+	@OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+	private List<Comment> comments;
 	private String title;
 	private String content;
 	@Enumerated(EnumType.STRING)
