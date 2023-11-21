@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Where;
 
@@ -36,6 +38,8 @@ public class Board extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	//@ManyToOne
+	private Long writerId;
 	private String title;
 	private String content;
 	@Enumerated(EnumType.STRING)
@@ -51,9 +55,10 @@ public class Board extends BaseEntity{
 	)
 	private Set<User> board_users = new HashSet<>();
 
-	public static Board toBoard(BoardDto boardDto) {
+	public static Board toBoard(BoardDto boardDto, User user) {
 		return Board.builder()
 			.title(boardDto.getTitle())
+			.writerId(user.getId())
 			.content(boardDto.getContent())
 			.category(boardDto.getCategory())
 			.latitude(boardDto.getLatitude())

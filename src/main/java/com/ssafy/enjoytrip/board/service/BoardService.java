@@ -1,13 +1,14 @@
 package com.ssafy.enjoytrip.board.service;
 
+import java.util.List;
 import java.util.Optional;
-
-import javax.swing.plaf.IconUIResource;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.enjoytrip.board.dto.BoardDto;
+import com.ssafy.enjoytrip.board.dto.ResponseDto;
 import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.board.entity.BoardCategory;
 import com.ssafy.enjoytrip.board.exception.BoardNotFoundException;
@@ -25,9 +26,9 @@ public class BoardService {
 	private final BoardRepositoryCustom boardRepositoryCustom;
 
 	@Transactional
-	public CommonResponse create(BoardDto boardDto) {
+	public CommonResponse create(BoardDto boardDto, User user) {
 
-		Board board = Board.toBoard(boardDto);
+		Board board = Board.toBoard(boardDto, user);
 
 		return new CommonResponse(true, "Success to create board", boardRepository.save(board));
 	}
@@ -60,9 +61,12 @@ public class BoardService {
 	}
 
 	public CommonResponse search(BoardCategory category, String keyword) {
-
-		return new CommonResponse(true, "Success to get board.",
-			boardRepositoryCustom.findDynamicQueryAdvance(category, keyword));
+		List<Board> boards = boardRepositoryCustom.findDynamicQueryAdvance(category, keyword);
+		List<ResponseDto> responseDtos = boards.stream()
+			.map(ResponseDto::toResponseDto)
+			.collect(Collectors.toList());
+		System.out.println("aaaaaaaa");
+		return new CommonResponse(true, "Success to get board.", responseDtos);
 	}
 
 	public CommonResponse like(Long id, User user) {

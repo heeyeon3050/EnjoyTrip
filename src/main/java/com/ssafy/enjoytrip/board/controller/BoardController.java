@@ -26,7 +26,7 @@ public class BoardController {
 
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@RequestBody BoardDto boardDto) {
-		return ResponseEntity.ok(boardService.create(boardDto));
+		return ResponseEntity.ok(boardService.create(boardDto, rq.getUser()));
 	}
 
 	@PatchMapping("/{boardId}/update")
