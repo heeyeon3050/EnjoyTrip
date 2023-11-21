@@ -92,49 +92,6 @@ const router = createRouter({
         },
       ],
     },
-    // {
-    //   path: "/boardz",
-    //   name: "boardz",
-    //   // component: TheBoardView,
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import("../views/TheBoardView.vue"),
-    //   redirect: { name: "article-list" },
-    //   children: [
-    //     {
-    //       path: "list",
-    //       name: "article-list",
-    //       component: () => import("@/components/boards/BoardList.vue"),
-    //     },
-    //     {
-    //       path: "view/:articleno",
-    //       name: "article-view",
-    //       component: () => import("@/components/boards/BoardDetail.vue"),
-    //     },
-    //     {
-    //       path: "write",
-    //       name: "article-write",
-    //       component: () => import("@/components/boards/BoardWrite.vue"),
-    //     },
-    //     {
-    //       path: "modify/:articleno",
-    //       name: "article-modify",
-    //       component: () => import("@/components/boards/BoardModify.vue"),
-    //     },
-    //   ],
-    // },
-    // {
-    //   path: "/estations",
-    //   name: "estations",
-    //   // beforeEnter: onlyAuthUser,
-    //   component: TheElectricChargingStationView,
-    // },
-    {
-      path: "/todos",
-      name: "todos",
-      component: () => import("@/views/TheTodoView.vue"),
-    },
   ],
 });
 

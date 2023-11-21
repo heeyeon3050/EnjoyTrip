@@ -38,7 +38,7 @@ const replaceNoImg = (event) => {
       <div class="w-2/5 h-full flex justify-around items-center">
         <div>{{ params.board.writerName }}</div>
         <div class="font-semibold">
-          {{ formatDate(params.board.createdAt) }}
+          {{ params.board?.createdAt && formatDate(params.board?.createdAt) }}
         </div>
         <div class="flex space-x-2">
           <svg
