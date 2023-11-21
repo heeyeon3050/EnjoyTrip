@@ -38,8 +38,8 @@ public class Board extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	//@ManyToOne
-	private Long writerId;
+	@ManyToOne
+	private User writer;
 	private String title;
 	private String content;
 	@Enumerated(EnumType.STRING)
@@ -55,10 +55,10 @@ public class Board extends BaseEntity{
 	)
 	private Set<User> board_users = new HashSet<>();
 
-	public static Board toBoard(BoardDto boardDto, User user) {
+	public static Board toBoard(BoardDto boardDto, User writer) {
 		return Board.builder()
 			.title(boardDto.getTitle())
-			.writerId(user.getId())
+			.writer(writer)
 			.content(boardDto.getContent())
 			.category(boardDto.getCategory())
 			.latitude(boardDto.getLatitude())

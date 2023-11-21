@@ -1,8 +1,10 @@
 package com.ssafy.enjoytrip.board.repository;
 
 import static com.ssafy.enjoytrip.board.entity.QBoard.*;
+import static com.ssafy.enjoytrip.user.entity.QUser.*;
 
 import java.util.List;
+
 import org.springframework.util.StringUtils;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -20,6 +22,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 	public List<Board> findDynamicQueryAdvance(BoardCategory category, String keyword) {
 		return queryFactory
 			.selectFrom(board)
+			.leftJoin(board.writer).fetchJoin()
 			.where(eqCategory(category),
 				eqKeyword(keyword))
 			.fetch();

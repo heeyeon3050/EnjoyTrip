@@ -23,8 +23,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class BoardDto {
-	private Long writerId;
-	private String writerName;
 	private String title;
 	private String content;
 	@Enumerated(EnumType.STRING)

@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ResponseDto {
-	private Long writerId;
-	// private String writerName;
+	private String writerId;
+	private String writerName;
 	private String title;
 	private String content;
 	@Enumerated(EnumType.STRING)
@@ -36,11 +36,10 @@ public class ResponseDto {
 			return null;
 		}
 
-		// System.out.println("User : " + board.getUser());
-
 		return ResponseDto.builder()
 			.title(board.getTitle())
-			.writerId(board.getWriterId())
+			.writerId(board.getWriter().getUserId())
+			.writerName(board.getWriter().getName())
 			.content(board.getContent())
 			.category(board.getCategory())
 			.latitude(board.getLatitude())
