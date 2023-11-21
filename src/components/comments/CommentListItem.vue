@@ -1,4 +1,6 @@
-<script setup></script>
+<script setup>
+const params = defineProps({ comment: Object });
+</script>
 
 <template>
   <div class="w-full h-20 flex items-center space-x-4 relative">
@@ -36,12 +38,13 @@
     <div class="w-12 h-12 rounded-full shrink-0 bg-slate-800"></div>
     <div class="w-full flex flex-col space-y-2">
       <div class="flex space-x-6 items-center">
-        <h3 class="text-slate-800 text-lg font-semibold">@user-pe5mt6cm7z</h3>
+        <h3 class="text-slate-800 text-lg font-semibold">
+          @{{ params.comment.userId }}
+        </h3>
         <h4 class="text-slate-400 text-xs">10개월 전</h4>
       </div>
       <p>
-        음악을 듣고 있으니 연말 감성이 느껴져 너무 좋아요. 올 한해를 잘 마무리 하고 행복한 새해를
-        기대해 봅니다.
+        {{ params.comment.content }}
       </p>
     </div>
   </div>

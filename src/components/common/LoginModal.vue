@@ -79,6 +79,7 @@ const login = async () => {
             label="비밀번호"
             :value="loginUser.password"
             @change="onChangePassword"
+            @keyup.enter="login"
           />
           <ModalBtn text="로그인" @click="login" />
           <ModalDoubleBtn

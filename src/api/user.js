@@ -20,4 +20,19 @@ async function userUpdate(userid, param, success, fail) {
   await local.patch(`/user/${userid}`, param).then(success).catch(fail);
 }
 
-export { userJoin, findById, userUpdate };
+async function idCheck(userId, success, fail) {
+  await local.get(`/user/${userId}/IdCheck`).then(success).catch(fail);
+  console.log("userJoin ok");
+}
+
+async function nameCheck(name, success, fail) {
+  await local.get(`/user/${name}/NameCheck`).then(success).catch(fail);
+  console.log("userJoin ok");
+}
+
+async function emailCheck(email, success, fail) {
+  await local.get(`/user/${email}/EmailCheck`).then(success).catch(fail);
+  console.log("userJoin ok");
+}
+
+export { userJoin, findById, userUpdate, idCheck, nameCheck, emailCheck };

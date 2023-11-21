@@ -1,7 +1,7 @@
 <script setup>
 import ModalInput from "@/components/modal/ModalInput.vue";
 import ModalBtn from "@/components/modal/ModalBtn.vue";
-import { userJoin } from "@/api/user";
+import { userJoin, idCheck, nameCheck, emailCheck } from "@/api/user";
 import { ref } from "vue";
 
 const params = defineProps({ login: Function });
@@ -65,24 +65,69 @@ const onSubmit = () => {
 };
 
 const onChangeUserId = (event) => {
+  if (!event.type) return;
+  const newValue = event.target.value;
   userIdError.value = "";
-  userId.value = event.target.value;
+  userId.value = newValue;
+  if (newValue !== "") {
+    idCheck(
+      newValue,
+      ({ data: { data } }) => {
+        if (data === true) {
+          userIdError.value = "아이디가 중복되었습니다";
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 };
 const onChangePassword = (event) => {
+  if (!event.type) return;
   passwordError.value = "";
   password.value = event.target.value;
 };
 const onChangePassword2 = (event) => {
+  if (!event.type) return;
   password2Error.value = "";
   password2.value = event.target.value;
 };
 const onChangeName = (event) => {
+  if (!event.type) return;
+  const newValue = event.target.value;
   nameError.value = "";
-  name.value = event.target.value;
+  name.value = newValue;
+
+  if (newValue !== "") {
+    nameCheck(
+      newValue,
+      ({ data: { data } }) => {
+        if (data === true) {
+          nameError.value = "중복된 닉네임입니다";
+        }
+      },
+      (error) => console.log(error)
+    );
+  }
 };
 const onChangeEmail = (event) => {
+  if (!event.type) return;
+  const newValue = event.target.value;
   emailError.value = "";
-  email.value = event.target.value;
+  email.value = newValue;
+
+  if (newValue !== "") {
+    emailCheck(
+      newValue,
+      ({ data: { data } }) => {
+        if (data === true) {
+          emailError.value = "중복된 닉네임입니다";
+        }
+      },
+      (error) => console.log(error)
+    );
+  }
 };
 </script>
 
@@ -116,7 +161,7 @@ const onChangeEmail = (event) => {
           label="아이디"
           :value="userId"
           :error="userIdError !== ''"
-          @change="onChangeUserId"
+          @input="onChangeUserId"
         />
         <span class="h-3 p-0 -mt-5 text-red-400">{{ userIdError }}</span>
         <ModalInput
@@ -124,7 +169,7 @@ const onChangeEmail = (event) => {
           label="비밀번호"
           :value="password"
           :error="passwordError !== ''"
-          @change="onChangePassword"
+          @input="onChangePassword"
         />
         <span class="h-3 p-0 -mt-5 text-red-400">{{ passwordError }}</span>
         <ModalInput
@@ -132,7 +177,7 @@ const onChangeEmail = (event) => {
           label="비밀번호 확인"
           :value="password2"
           :error="password2Error !== ''"
-          @change="onChangePassword2"
+          @input="onChangePassword2"
         />
         <span class="h-3 p-0 -mt-5 text-red-400">{{ password2Error }}</span>
         <ModalInput
@@ -140,7 +185,7 @@ const onChangeEmail = (event) => {
           label="닉네임"
           :value="name"
           :error="nameError !== ''"
-          @change="onChangeName"
+          @input="onChangeName"
         />
         <span class="h-3 p-0 -mt-5 text-red-400">{{ nameError }}</span>
         <ModalInput
@@ -148,10 +193,20 @@ const onChangeEmail = (event) => {
           label="이메일"
           :value="email"
           :error="emailError !== ''"
-          @change="onChangeEmail"
+          @input="onChangeEmail"
+          @keyup.enter="onSubmit"
         />
         <span class="h-3 p-0 -mt-5 text-red-400">{{ emailError }}</span>
-        <ModalBtn text="회원가입" />
+        <ModalBtn
+          text="회원가입"
+          :disabled="
+            userIdError !== '' ||
+            passwordError !== '' ||
+            password2Error !== '' ||
+            nameError !== '' ||
+            emailError !== ''
+          "
+        />
       </div>
     </div>
   </form>

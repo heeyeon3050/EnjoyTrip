@@ -91,6 +91,7 @@ const moveWrite = () => {
                   class="form-control"
                   v-model="param.word"
                   placeholder="검색어..."
+                  @keyup.enter="getArticleList"
                 />
                 <button
                   class="btn btn-dark"

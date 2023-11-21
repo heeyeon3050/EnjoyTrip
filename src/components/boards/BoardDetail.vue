@@ -2,55 +2,64 @@
 import CommonBtn from "@/components/common/CommonBtn.vue";
 import CommentListItem from "@/components/comments/CommentListItem.vue";
 import { ref, watch, onMounted } from "vue";
-import { CommentListByBoardId } from "@/api/comment";
+import { commentListByBoardId, createComment } from "@/api/comment";
+import { deleteBoard } from "@/api/board";
+import { getBoardById } from "@/api/board";
+import { useRoute, useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
+import { useMemberStore } from "@/stores/member";
+
+const memberStore = useMemberStore();
+const { isLogin, loginUserId } = storeToRefs(memberStore);
+const route = useRoute();
+const router = useRouter();
 
 var boardMap;
-onMounted(() => {
-  if (window.kakao && window.kakao.maps) {
-    initMap();
-  } else {
-    const script = document.createElement("script");
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
-      import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
-    }&libraries=services,clusterer`;
-    /* global kakao */
-    script.onload = () => kakao.maps.load(() => initMap());
-    document.head.appendChild(script);
-  }
 
-  CommentListByBoardId(
-    param.value,
+const board = ref({});
+const comments = ref([]);
+const commentContent = ref("");
+
+onMounted(() => {
+  const boardId = route.params.boardId;
+  getBoardById(
+    boardId,
     ({ data }) => {
-      console.log(data);
-      boards.value = data.data;
-      currentPage.value = data.currentPage;
-      totalPage.value = data.totalPageCount;
+      board.value = data.data;
+      if (window.kakao && window.kakao.maps) {
+        initMap();
+      } else {
+        const script = document.createElement("script");
+        script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
+          import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
+        }&libraries=services,clusterer`;
+        /* global kakao */
+        script.onload = () => kakao.maps.load(() => initMap());
+        document.head.appendChild(script);
+      }
+
+      commentListByBoardId(
+        boardId,
+        {},
+        ({ data }) => {
+          console.log(data.data);
+          comments.value = data.data;
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
     },
     (error) => {
-      console.error(error);
+      console.log(error);
     }
   );
 });
-// watch(
-//   () => props.stations.value,
-//   () => {
-//     positions.value = [];
-//     props.stations.forEach((station) => {
-//       let obj = {};
-//       obj.latlng = new kakao.maps.LatLng(station.lat, station.lng);
-//       obj.title = station.statNm;
-
-//       positions.value.push(obj);
-//     });
-//     loadMarkers();
-//   },
-//   { deep: true }
-// );
 
 const initMap = () => {
-  const container = document.getElementById("map");
+  const container = document.getElementById("boardMap");
   const options = {
-    center: new kakao.maps.LatLng(33.450701, 126.570667),
+    center: new kakao.maps.LatLng(board.value.latitude, board.value.longitude),
     level: 3,
   };
   boardMap = new kakao.maps.Map(container, options);
@@ -92,19 +101,58 @@ const loadMarkers = () => {
 
   boardMap.setBounds(bounds);
 };
+
+const addComment = () => {
+  createComment(
+    {
+      boardId: route.params.boardId,
+      content: commentContent.value,
+    },
+    ({ data }) => {
+      console.log(data);
+      comments.value = [data.data, ...comments.value];
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+
+const onDelete = () => {
+  const comfirmDelete = confirm("삭제하시겠습니까?");
+
+  if (!comfirmDelete) return;
+  deleteBoard(
+    route.params.boardId,
+    (response) => {
+      console.log(response);
+      router.replace({ name: "board-list" });
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
 </script>
 
 <template>
-  <div class="w-full h-fit flex flex-col mt-10 border-y-2 border-slate-300">
-    <div class="h-20 bg-slate-200 flex items-center p-4 justify-between">
-      <h1 class="font-bold text-2xl px-5">게시글 제목</h1>
-      <h3 class="px-5 font-medium text-slate-500">2023.11.14 16:19</h3>
+  <div class="w-full h-fit flex flex-col mt-10">
+    <div class="w-full h-8 px-3">
+      <span class="text-sm font-medium">{{ board.category }}</span>
+    </div>
+    <div
+      class="h-20 bg-slate-200 flex items-center p-4 justify-between border-y-2 border-slate-300"
+    >
+      <h1 class="font-bold text-2xl px-5">{{ board.title }}</h1>
+      <h3 class="px-5 font-medium text-slate-500">
+        {{ board.createdAt?.replaceAll("T", " ") }}
+      </h3>
     </div>
     <div
       class="h-12 border-y-[1px] border-slate-300 flex items-center p-4 justify-between"
     >
       <div class="flex px-2">
-        <h3 class="text-lg">작성자</h3>
+        <h3 class="text-lg">{{ board.writer?.name }}</h3>
       </div>
       <div class="flex h-full w-32 justify-between items-center">
         <div class="flex space-x-2">
@@ -122,7 +170,7 @@ const loadMarkers = () => {
               d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z"
             />
           </svg>
-          <span>15</span>
+          <span>{{ board.board_users?.length }}</span>
         </div>
         <div class="flex space-x-2">
           <svg
@@ -139,35 +187,32 @@ const loadMarkers = () => {
               d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
             />
           </svg>
-          <span>20</span>
+          <span>{{ board.comments?.length }}</span>
         </div>
       </div>
     </div>
-    <div class="w-full min-h-[50vh]">
+    <div class="w-full min-h-[50vh] p-5">
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus eius
-        ratione minus distinctio voluptates harum possimus placeat corporis qui
-        quis quas nostrum aliquid quod quibusdam explicabo, velit cupiditate
-        optio omnis?
+        {{ board.content }}
       </p>
     </div>
-    <div id="map" class="w-full h-80 my-4 border-4"></div>
+    <div id="boardMap" class="w-full h-80 my-4 border-4"></div>
     <div class="w-full flex justify-end my-4 space-x-3">
       <router-link
         :to="{
           name: 'board-update',
-          params: { boardId: 1 },
+          params: { boardId: route.params.boardId },
         }"
       >
         <CommonBtn text="수정" />
       </router-link>
-      <CommonBtn text="삭제" />
+      <CommonBtn text="삭제" @click="onDelete" />
     </div>
   </div>
 
   <div class="w-full flex flex-col my-4">
     <div class="w-full flex flex-col p-4 mb-12">
-      <h1 class="my-6 font-semibold text-xl">댓글 15개</h1>
+      <h1 class="my-6 font-semibold text-xl">댓글 {{}}개</h1>
       <div class="flex items-center space-x-6">
         <div class="w-16 h-16 rounded-full shrink-0 bg-slate-800"></div>
         <input
@@ -175,10 +220,17 @@ const loadMarkers = () => {
           name=""
           id=""
           placeholder="댓글 작성..."
+          v-model="commentContent"
           class="w-full h-16 bg-blue-50/30 rounded-t-md focus:outline-none px-4 focus:border-b-2 focus:border-blue-600"
         />
       </div>
-      <div class="flex justify-end p-4"><CommonBtn text="등록" /></div>
+      <div class="flex justify-end p-4">
+        <CommonBtn
+          text="등록"
+          @click="addComment"
+          :disabled="commentContent === ''"
+        />
+      </div>
       <div class="w-full"></div>
     </div>
 
@@ -187,8 +239,9 @@ const loadMarkers = () => {
     >
       <div class="space-y-5">
         <CommentListItem
-          v-for="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-          :key="i"
+          v-for="comment in comments"
+          :key="comment.id"
+          :comment="comment"
         />
       </div>
     </div>
@@ -196,7 +249,7 @@ const loadMarkers = () => {
 </template>
 
 <style scoped>
-#map {
+#boardMap {
   width: 100% !important;
   height: 20rem !important;
 }

@@ -122,7 +122,7 @@ const onSubmit = () => {
             rows="20"
             v-model="content"
             class="resize-none block w-full p-10 text-xl text-gray-800 bg-white border-0 focus:outline-none"
-            placeholder="Write an article..."
+            placeholder="내용을 입력하세요.."
             required
           ></textarea>
         </div>

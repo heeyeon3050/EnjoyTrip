@@ -10,11 +10,11 @@ function createComment(comment, success, fail) {
     .catch(fail);
 }
 
-function CommentListByBoardId(boardId, param, success, fail) {
+function commentListByBoardId(boardId, param, success, fail) {
   local
     .get(`/comment/board/${boardId}`, { params: param })
     .then(success)
     .catch(fail);
 }
 
-export { createComment, CommentListByBoardId };
+export { createComment, commentListByBoardId };

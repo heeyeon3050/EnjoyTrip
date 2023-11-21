@@ -3,15 +3,52 @@ import VKakaoMap from "@/components/map/VKakaoMap.vue";
 import CommonBtn from "../common/CommonBtn.vue";
 import AttractionItem from "@/components/map/AttractionItem.vue";
 import { searchAttraction } from "@/api/attraction";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch, toRaw } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+const route = useRoute();
+const router = useRouter();
+
+const categories = ref([]);
+const keyword = ref("");
+
+const normal = ref(true);
+const heritage = ref(false);
+const media = ref(false);
+const train = ref(false);
 
 const attractionList = ref([]);
 const attraction = ref({});
 
+const replaceRoute = () => {
+  changeCategory();
+  const query = {
+    keyword: keyword.value,
+    categories: categories.value,
+  };
+  router.push({ name: "map", query: query });
+  getAttractionLsit();
+};
+
+const changeCategory = () => {
+  let c = [];
+  if (normal.value) c.push("NORMAL");
+  if (heritage.value) c.push("HERITAGE");
+  if (media.value) c.push("MEDIA");
+  if (train.value) c.push("TRAIN");
+  categories.value = c;
+};
+
+watch(() => categories.value, replaceRoute, { deep: true });
+watch(() => normal.value, changeCategory, { deep: true });
+watch(() => heritage.value, changeCategory, { deep: true });
+watch(() => media.value, changeCategory, { deep: true });
+watch(() => train.value, changeCategory, { deep: true });
+
 const params = ref({
   pageNo: 1,
   numOfRows: 20,
-  category: "NORMAL",
+  category: "",
 });
 
 onMounted(() => {
@@ -20,12 +57,15 @@ onMounted(() => {
 
 const getAttractionLsit = () => {
   searchAttraction(
-    params.value,
+    {
+      keyword: keyword.value,
+      categories: categories.value,
+    },
     ({ data: { data } }) => {
       attractionList.value = data;
     },
     (error) => {
-      console.log(err);
+      console.log(error);
     }
   );
 };
@@ -64,7 +104,7 @@ const viewLocation = (location) => {
         </div>
       </router-link>
     </div>
-    <form class="w-full px-10 py-3">
+    <div class="w-full px-10 py-3">
       <div class="w-full h-10 relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -72,6 +112,7 @@ const viewLocation = (location) => {
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
+          @click="replaceRoute"
           class="w-6 h-6 absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
         >
           <path
@@ -82,23 +123,35 @@ const viewLocation = (location) => {
         </svg>
         <input
           type="text"
-          name=""
-          id=""
-          @keyup.enter="login"
+          name="keyword"
+          v-model="keyword"
+          @keyup.enter="replaceRoute"
           class="w-full h-full rounded-sm p-2 focus:outline-none focus:ring-1 focus:ring-slate-500"
         />
       </div>
       <div class="w-full h-10 flex justify-around py-3">
-        <input type="checkbox" name="category" value="TRAIN" />
-        <CommonBtn text="기차역" />
-        <input type="checkbox" name="category" value="NORMAL" />
-        <CommonBtn text="관광지" />
-        <input type="checkbox" name="category" value="MEDIA" />
-        <CommonBtn text="촬영지" />
-        <input type="checkbox" name="category" value="HERITAGE" />
-        <CommonBtn text="문화재" />
+        <CommonBtn
+          text="기차역"
+          @click="train = !train"
+          :class="{ 'ring-2 ring-blue-700 bg-blue-500': train }"
+        />
+        <CommonBtn
+          text="관광지"
+          @click="normal = !normal"
+          :class="{ 'ring-2 ring-blue-700 bg-blue-500': normal }"
+        />
+        <CommonBtn
+          text="촬영지"
+          @click="media = !media"
+          :class="{ 'ring-2 ring-blue-700 bg-blue-500': media }"
+        />
+        <CommonBtn
+          text="문화재"
+          @click="heritage = !heritage"
+          :class="{ 'ring-2 ring-blue-700 bg-blue-500': heritage }"
+        />
       </div>
-    </form>
+    </div>
     <div
       class="w-full h-full p-2 flex flex-col overflow-y-scroll scrollbar-hide"
     >

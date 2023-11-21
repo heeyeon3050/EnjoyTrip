@@ -7,12 +7,8 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const selectOption = ref([
-  { text: "검색조건", value: "" },
-  { text: "글번호", value: "article_no" },
-  { text: "제목", value: "subject" },
-  { text: "작성자아이디", value: "user_id" },
-]);
+const searchOption = ref("TITLE");
+const keyword = ref("");
 
 const boards = ref([]);
 const currentPage = ref(1);
@@ -41,8 +37,35 @@ const getBoardList = () => {
     ({ data }) => {
       console.log(data);
       boards.value = data.data;
-      currentPage.value = data.currentPage;
-      totalPage.value = data.totalPageCount;
+      // currentPage.value = data.currentPage;
+      // totalPage.value = data.totalPageCount;
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
+};
+
+const search = () => {
+  const query = {
+    option: searchOption.value,
+    keyword: keyword.value,
+    ...param.value,
+  };
+  searchBoard(
+    {
+      option: searchOption.value,
+      keyword: keyword.value,
+      ...param.value,
+    },
+    ({ data }) => {
+      console.log(data);
+      boards.value = data.data;
+      // currentPage.value = data.currentPage;
+      // totalPage.value = data.totalPageCount;
+      router.replace({ name: "board-list", query: query });
+      searchOption.value = "TITLE";
+      keyword.value = "";
     },
     (error) => {
       console.error(error);
@@ -82,13 +105,16 @@ const moveWrite = () => {
         name="languages"
         id="lang"
         class="w-24 h-10 border-2 mr-3 rounded-md px-3 border-slate-500"
+        v-model="searchOption"
       >
-        <option value="title">제목</option>
-        <option value="writer">작성자</option>
+        <option value="TITLE">제목</option>
+        <option value="WRITER">작성자</option>
       </select>
       <input
         type="text"
         class="w-48 h-10 border-2 rounded-md p-2 border-slate-500"
+        v-model="keyword"
+        @keyup.enter="search"
       />
     </div>
     <router-link :to="{ name: 'board-write' }">
