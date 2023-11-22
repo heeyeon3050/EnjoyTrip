@@ -67,7 +67,11 @@ public class AttractionService {
 
 		if (optionalAttraction.isPresent()) {
 			Attraction attraction = optionalAttraction.get();
-			attraction.getAttraction_users().add(user);
+
+			if(attraction.getAttraction_users().contains(user))
+				attraction.getAttraction_users().remove(user);
+			else
+				attraction.getAttraction_users().add(user);
 			return new CommonResponse(true, "Success to like Attraction", attractionRepository.save(attraction));
 		}
 
