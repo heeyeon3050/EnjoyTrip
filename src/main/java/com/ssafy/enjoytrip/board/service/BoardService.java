@@ -33,9 +33,7 @@ public class BoardService {
 
 	@Transactional
 	public CommonResponse create(BoardDto boardDto, User user) {
-
 		Board board = Board.toBoard(boardDto, user);
-
 		return new CommonResponse(true, "Success to create board", boardRepository.save(board));
 	}
 
@@ -58,20 +56,19 @@ public class BoardService {
 		if (optionalBoard.isPresent()) {
 			Board board = optionalBoard.get();
 			board.delete();
-			CommonResponse commonResponse = new CommonResponse(true, "Success to delete board.",
-				boardRepository.save(board));
+			CommonResponse commonResponse = new CommonResponse(true, "Success to delete board.", boardRepository.save(board));
 			return commonResponse;
 
 		}
 		throw new BoardNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", id));
 	}
 
-	public CommonResponse getItems(BoardCategory category, String keyword, Pageable pageable) {
+	public CommonResponse getItems(BoardCategory category, String keyword, User user, Pageable pageable) {
 		Page<Board> boards = boardRepositoryCustom.findDynamicQueryAdvance(category, keyword, pageable);
 		List<BoardResponseDto> boardResponseDtos = boards.stream()
 			.map(board -> {
 				long commentCount = commentRepository.countByBoardId(board.getId());
-				return BoardResponseDto.toBoardResponseDto(board, commentCount);
+				return BoardResponseDto.toBoardResponseDto(board, commentCount, board.getBoard_users().contains(user));
 			})
 			.collect(Collectors.toList());
 
@@ -94,7 +91,17 @@ public class BoardService {
 		throw new BoardNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", id));
 	}
 
-	public CommonResponse getById(Long boardId) {
-		return new CommonResponse(true, "Success to get Board.", boardRepository.findById(boardId));
+	public CommonResponse getById(Long boardId, User user) {
+		Optional<Board> optionalBoard = boardRepository.findById(boardId);
+
+		if (optionalBoard.isPresent()) {
+			Board board = optionalBoard.get();
+			long commentCount = commentRepository.countByBoardId(board.getId());
+			BoardResponseDto boardResponseDto = BoardResponseDto.toBoardResponseDto(board, commentCount, board.getBoard_users().contains(user));
+
+			return new CommonResponse(true, "Success to get board", boardResponseDto);
+		}
+
+		throw new BoardNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", boardId));
 	}
 }

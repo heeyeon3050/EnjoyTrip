@@ -28,13 +28,12 @@ public class BoardResponseDto {
 	private BoardCategory category;
 	private Double latitude;
 	private Double longitude;
-
+	private LocalDateTime createdAt;
 	private Long commentCount;
 	private Long likeCount;
+	private Boolean isLike;
 
-	private LocalDateTime createdAt;
-
-	public static BoardResponseDto toBoardResponseDto(Board board, long commentCount) {
+	public static BoardResponseDto toBoardResponseDto(Board board, Long commentCount, Boolean isLike) {
 		if (board == null) {
 			return null;
 		}
@@ -51,6 +50,7 @@ public class BoardResponseDto {
 			.likeCount(Long.valueOf(board.getBoard_users().size()))
 			.commentCount(commentCount)
 			.createdAt(board.getCreatedAt())
+			.isLike(isLike)
 			.build();
 	}
 }

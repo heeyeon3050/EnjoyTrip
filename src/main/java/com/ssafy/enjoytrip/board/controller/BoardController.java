@@ -45,18 +45,16 @@ public class BoardController {
 	@GetMapping("/list")
 	public ResponseEntity<?> getItems(@RequestParam(required = false) BoardCategory category,
 		@RequestParam(required = false) String keyword, @PageableDefault(size = 5) Pageable pageable) {
-		return ResponseEntity.ok(boardService.getItems(category, keyword, pageable));
+		return ResponseEntity.ok(boardService.getItems(category, keyword, rq.getUser(), pageable));
 	}
 
 	@GetMapping("/{boardId}")
 	public ResponseEntity<?> getById(@PathVariable Long boardId) {
-		return ResponseEntity.ok(boardService.getById(boardId));
+		return ResponseEntity.ok(boardService.getById(boardId, rq.getUser()));
 	}
 
 	@PostMapping("/{boardId}/like")
 	public ResponseEntity<?> like(@PathVariable Long boardId) {
 		return ResponseEntity.ok(boardService.like(boardId, rq.getUser()));
 	}
-
-
 }
