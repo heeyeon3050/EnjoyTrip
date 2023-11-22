@@ -1,5 +1,7 @@
 package com.ssafy.enjoytrip.comment.service;
 
+import static com.ssafy.enjoytrip.board.entity.QBoard.*;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,11 +49,10 @@ public class CommentService {
 	}
 
 	public CommonResponse getByBoardId(Long boardId, Pageable pageable) {
-		Page<Comment> comments = commentRepository.findByBoardId(boardId, pageable);
+		Page<Comment> comments = commentRepository.findByBoardIdOrderByCreatedAtDesc(boardId, pageable);
 		List<CommentResponseDto> commentResponseDtos = comments.stream()
 			.map(CommentResponseDto::toCommentResponseDto)
 			.collect(Collectors.toList());
-
 		return new CommonResponse(true, "Success to get comment.", new PageImpl<>(commentResponseDtos, comments.getPageable(), comments.getTotalElements()));
 	}
 

@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.board.repository;
 
+import static com.ssafy.enjoytrip.attraction.entity.QAttraction.*;
 import static com.ssafy.enjoytrip.board.entity.QBoard.*;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 		List<Board> boards = query
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
+			.orderBy(board.createdAt.desc())
 			.fetch();
 
 		return new PageImpl<>(boards, pageable, total);
