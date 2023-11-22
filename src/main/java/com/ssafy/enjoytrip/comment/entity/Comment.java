@@ -12,6 +12,7 @@ import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.enjoytrip.board.entity.Board;
+import com.ssafy.enjoytrip.comment.dto.CommentDto;
 import com.ssafy.enjoytrip.common.BaseEntity;
 import com.ssafy.enjoytrip.user.entity.User;
 
@@ -57,9 +58,7 @@ public class Comment extends BaseEntity {
         board.getComments().add(this);
     }
 
-    // public void update(CommentDto commentDto) {
-    //     if (commentDto.getWriterId() != null) { this.writerId = commentDto.getWriterId(); }
-    //     if (commentDto.getBoardId() != null) { this.boardId = commentDto.getBoardId(); }
-    //     if (commentDto.getContent() != null) { this.content = commentDto.getContent(); }
-    // }
+    public void update(CommentDto commentDto) {
+        if (commentDto.getContent() != null) { this.content = commentDto.getContent(); }
+    }
 }

@@ -45,10 +45,5 @@ public class CommentController {
 	public ResponseEntity<?> getByBoardId(@PathVariable Long boardId, @PageableDefault(size = 5) Pageable pageable) {
 		return ResponseEntity.ok(commentService.getByBoardId(boardId, pageable));
 	}
-
-	@GetMapping("/writer/{writerId}")
-	public ResponseEntity<?> getByCategory(@PathVariable Long writerId) {
-		return ResponseEntity.ok(commentService.getByWriterId(writerId));
-	}
 }
 

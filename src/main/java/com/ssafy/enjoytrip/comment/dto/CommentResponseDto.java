@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class CommentResponseDto {
 	private Long id;
 	private Long boardId;
+	private String writerName;
 	private String content;
 
 	public static CommentResponseDto toCommentResponseDto(Comment comment) {
@@ -23,6 +24,7 @@ public class CommentResponseDto {
 
 		return CommentResponseDto.builder()
 			.id(comment.getId())
+			.writerName(comment.getWriter().getName())
 			.boardId(comment.getBoard().getId())
 			.content(comment.getContent())
 			.build();

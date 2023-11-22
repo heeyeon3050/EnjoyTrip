@@ -24,7 +24,7 @@ public class AttractionRepositoryImpl implements AttractionRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public Page<Attraction> findDynamicQueryAdvance(List<AttractionCategory> categories, String keyword, double x, double y,
+	public Page<Attraction> findDynamicQueryAdvance(List<AttractionCategory> categories, String keyword, double latitude, double longitude,
 		Pageable pageable) {
 		BooleanBuilder builder = new BooleanBuilder();
 
@@ -51,7 +51,7 @@ public class AttractionRepositoryImpl implements AttractionRepositoryCustom {
 			//수정
 			.orderBy(Expressions.stringTemplate("ST_Distance_Sphere({0}, {1})",
 					Expressions.stringTemplate("POINT({0}, {1})",
-						x, y
+						longitude, latitude
 					),
 					Expressions.stringTemplate("POINT({0}, {1})",
 						attraction.longitude,

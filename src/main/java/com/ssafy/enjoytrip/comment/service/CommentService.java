@@ -1,7 +1,5 @@
 package com.ssafy.enjoytrip.comment.service;
 
-import static com.ssafy.enjoytrip.board.entity.QBoard.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.enjoytrip.attraction.exception.AttractionNotFoundException;
-import com.ssafy.enjoytrip.board.dto.BoardResponseDto;
 import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.board.repository.BoardRepository;
 import com.ssafy.enjoytrip.comment.dto.CommentDto;
@@ -37,13 +34,10 @@ public class CommentService {
 	public CommonResponse create(CommentDto commentDto, User writer) {
 		Board board = boardRepository.findById(commentDto.getBoardId())
 			.orElseThrow(() -> new IllegalArgumentException("게시판 번호가 적정하지 않음"));
-		Comment saved = commentRepository.save(
+		Comment comment = commentRepository.save(
 			Comment.toComment(commentDto.getContent(), writer, board));
-		return new CommonResponse(true, "Success to create comment", saved);
-	}
-
-	public CommonResponse getByWriterId(Long writerId) {
-		return new CommonResponse(true, "Success to get comment.", commentRepository.findAllByWriterId(writerId));
+		CommentResponseDto commentResponseDto = CommentResponseDto.toCommentResponseDto(comment);
+		return new CommonResponse(true, "Success to create comment", commentResponseDto);
 	}
 
 	public CommonResponse getByBoardId(Long boardId, Pageable pageable) {
@@ -51,7 +45,8 @@ public class CommentService {
 		List<CommentResponseDto> commentResponseDtos = comments.stream()
 			.map(CommentResponseDto::toCommentResponseDto)
 			.collect(Collectors.toList());
-		return new CommonResponse(true, "Success to get comment.", new PageImpl<>(commentResponseDtos, comments.getPageable(), comments.getTotalElements()));
+		return new CommonResponse(true, "Success to get comment.",
+			new PageImpl<>(commentResponseDtos, comments.getPageable(), comments.getTotalElements()));
 	}
 
 	@Transactional
@@ -60,8 +55,10 @@ public class CommentService {
 
 		if (optionalComment.isPresent()) {
 			Comment existComment = optionalComment.get();
-			// existComment.update(commentDto);
-			return new CommonResponse(true, "Success to update comment.", commentRepository.save(existComment));
+			existComment.update(commentDto);
+			Comment comment = commentRepository.save(existComment);
+			CommentResponseDto commentResponseDto = CommentResponseDto.toCommentResponseDto(comment);
+			return new CommonResponse(true, "Success to update comment.", commentResponseDto);
 		}
 		throw new AttractionNotFoundException(String.format("댓글(%s)를 찾을 수 없습니다.", id));
 	}

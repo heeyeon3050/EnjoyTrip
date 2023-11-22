@@ -30,9 +30,9 @@ public class AttractionService {
 		return new CommonResponse(true, "Success to create attraction", attractionRepository.save(attraction));
 	}
 
-	public CommonResponse getItems(List<AttractionCategory> categories, String keyword, double x, double y, Pageable pageable) {
+	public CommonResponse getItems(List<AttractionCategory> categories, String keyword, double latitude, double longitude, Pageable pageable) {
 		return new CommonResponse(true, "Success to get board.",
-			attractionRepositoryCustom.findDynamicQueryAdvance(categories, keyword, x, y, pageable));
+			attractionRepositoryCustom.findDynamicQueryAdvance(categories, keyword, latitude, longitude, pageable));
 	}
 
 	@Transactional
