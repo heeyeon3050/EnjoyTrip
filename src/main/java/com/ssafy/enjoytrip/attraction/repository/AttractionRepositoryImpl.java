@@ -57,8 +57,8 @@ public class AttractionRepositoryImpl implements AttractionRepositoryCustom {
 						attraction.longitude,
 						attraction.latitude
 					)
-				).asc(),
-				attraction.createdAt.desc())
+				).asc())
+				//attraction.createdAt.desc())
 			//수정 끝
 			.fetch();
 

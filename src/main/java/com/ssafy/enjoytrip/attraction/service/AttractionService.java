@@ -54,7 +54,7 @@ public class AttractionService {
 
 		if (optionalAttraction.isPresent()) {
 			Attraction existAttraction = optionalAttraction.get();
-			existAttraction.delete();
+			//existAttraction.delete();
 			return new CommonResponse(true, "Success to delete Attraction.",
 				attractionRepository.save(existAttraction));
 		}

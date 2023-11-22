@@ -20,7 +20,7 @@ import org.hibernate.annotations.Where;
 @NoArgsConstructor
 @Builder
 @Where(clause = "is_deleted = false")
-public class Attraction extends BaseEntity {
+public class Attraction{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
