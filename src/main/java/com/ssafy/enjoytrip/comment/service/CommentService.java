@@ -33,7 +33,7 @@ public class CommentService {
 
 	@Transactional
 	public CommonResponse create(CommentDto commentDto) {
-		User writer = userRepository.findById(commentDto.getWriterId())
+		User writer = userRepository.findByUserId(commentDto.getWriterId())
 			.orElseThrow(() -> new IllegalArgumentException("작성자 번호가 적정하지 않음"));
 		Board board = boardRepository.findById(commentDto.getBoardId())
 			.orElseThrow(() -> new IllegalArgumentException("게시판 번호가 적정하지 않음"));
@@ -49,15 +49,10 @@ public class CommentService {
 	public CommonResponse getByBoardId(Long boardId, Pageable pageable) {
 		Page<Comment> comments = commentRepository.findByBoardId(boardId, pageable);
 		List<CommentResponseDto> commentResponseDtos = comments.stream()
-			.map(comment -> {
-				return CommentResponseDto.toCommentResponseDto(comment);
-			})
+			.map(CommentResponseDto::toCommentResponseDto)
 			.collect(Collectors.toList());
 
 		return new CommonResponse(true, "Success to get comment.", new PageImpl<>(commentResponseDtos, comments.getPageable(), comments.getTotalElements()));
-
-		// return commentsPage.map(comment -> convertToDto(comment));
-		// return new CommonResponse(true, "Success to get comment.", commentsPage);
 	}
 
 	@Transactional

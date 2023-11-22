@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CommentResponseDto {
 	private Long id;
-	private Long writerId;
+	private String writerId;
 	private Long boardId;
 	private String content;
 
@@ -26,7 +26,7 @@ public class CommentResponseDto {
 
 		return CommentResponseDto.builder()
 			.id(comment.getId())
-			.writerId(comment.getWriter().getId())
+			.writerId(comment.getWriter().getUserId())
 			.boardId(comment.getBoard().getId())
 			.content(comment.getContent())
 			.build();
