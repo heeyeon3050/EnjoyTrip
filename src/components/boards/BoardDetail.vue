@@ -2,9 +2,12 @@
 import CommonBtn from "@/components/common/CommonBtn.vue";
 import CommentListItem from "@/components/comments/CommentListItem.vue";
 import { ref, onMounted } from "vue";
-import { commentListByBoardId, createComment } from "@/api/comment";
-import { deleteBoard } from "@/api/board";
-import { getBoardById } from "@/api/board";
+import {
+  commentListByBoardId,
+  createComment,
+  updateComment,
+} from "@/api/comment";
+import { getBoardById, deleteBoard, likeBoard } from "@/api/board";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
@@ -23,6 +26,7 @@ const currentCommentPage = ref(1);
 const totalCommentPage = ref(1);
 const commentsLoading = ref(false);
 const liked = ref(false);
+const modifyCommentId = ref(null);
 
 onMounted(() => {
   const boardId = route.params.boardId;
@@ -140,7 +144,44 @@ const onDelete = () => {
   );
 };
 
-const onLike = () => {};
+const onLike = () => {
+  likeBoard(
+    route.params.boardId,
+    (response) => {
+      console.log(response);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+
+const modifyStart = (commentId) => {
+  modifyCommentId.value = commentId;
+};
+const onDeleteComment = (commentId) => {
+  comments.value = comments.value.filter((c) => c.id !== commentId);
+  modifyCommentId.value = null;
+};
+const onModifyComment = (commentId, content) => {
+  updateComment(
+    commentId,
+    { content: content },
+    ({ data: data }) => {
+      comments.value = comments.value.map((c) => {
+        if (c.id === commentId) {
+          return data.data;
+        } else {
+          return c;
+        }
+      });
+      modifyCommentId.value = null;
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
 
 window.addEventListener("scroll", () => {
   if (commentsLoading.value) return;
@@ -169,12 +210,6 @@ window.addEventListener("scroll", () => {
     }, 1000);
   }
 });
-
-const onDeleteComment = (commentId) => {
-  comments.value = comments.value.filter((c) => {
-    c.id !== commentId;
-  });
-};
 </script>
 
 <template>
@@ -294,6 +329,10 @@ const onDeleteComment = (commentId) => {
           v-for="comment in comments"
           :key="comment.id"
           :comment="comment"
+          :modify="modifyCommentId === comment.id"
+          @modifyStart="modifyStart"
+          @onDeleteComment="onDeleteComment"
+          @onModifyComment="onModifyComment"
         />
       </div>
     </div>

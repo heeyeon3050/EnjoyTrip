@@ -18,8 +18,12 @@ function commentListByBoardId(boardId, param, success, fail) {
     .catch(fail);
 }
 
-function deleteComment(commentId, success, fail) {
-  local.get(`/comment/${commentId}/delete`).then(success).catch(fail);
+function updateComment(commentId, param, success, fail) {
+  local.patch(`/comment/${commentId}/update`, param).then(success).catch(fail);
 }
 
-export { createComment, commentListByBoardId, deleteComment };
+function deleteComment(commentId, success, fail) {
+  local.patch(`/comment/${commentId}/delete`).then(success).catch(fail);
+}
+
+export { createComment, commentListByBoardId, updateComment, deleteComment };

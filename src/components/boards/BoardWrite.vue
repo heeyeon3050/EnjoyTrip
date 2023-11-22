@@ -2,7 +2,7 @@
 import VSelect from "@/components/common/VSelect.vue";
 import CommonBtn from "@/components/common/CommonBtn.vue";
 import { createBoard } from "@/api/board";
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -19,6 +19,46 @@ const category = ref("NORMAL");
 const latitude = ref(0);
 const longitude = ref(0);
 const locationKey = ref("KEYWORD");
+const locationKeyword = ref("");
+
+onMounted(() => {
+  if (window.kakao && window.kakao.maps) {
+    initSearch();
+  } else {
+    const script = document.createElement("script");
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
+      import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
+    }&libraries=services,clusterer`;
+    /* global kakao */
+    script.onload = () => kakao.maps.load(() => initSearch());
+    document.head.appendChild(script);
+  }
+});
+
+watch(() => locationKeyword.value, locationSearch, { deep: true });
+
+const initSearch = () => {
+  var ps = new kakao.maps.services.Places();
+
+  ps.keywordSearch("이태원 맛집", placesSearchCB);
+
+  // 키워드 검색 완료 시 호출되는 콜백함수 입니다
+  function placesSearchCB(data, status, pagination) {
+    if (status === kakao.maps.services.Status.OK) {
+      // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+      // LatLngBounds 객체에 좌표를 추가합니다
+      var bounds = new kakao.maps.LatLngBounds();
+
+      for (var i = 0; i < data.length; i++) {
+        displayMarker(data[i]);
+        bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+      }
+
+      // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+      map.setBounds(bounds);
+    }
+  }
+};
 
 const onChangeBoardKey = (value) => {
   category.value = value;
@@ -121,7 +161,7 @@ const onSubmit = () => {
             />
             <input
               type="text"
-              v-model="title"
+              v-model="locationKeyword"
               class="w-full p-4 text-2xl placeholder:text-slate-950 placeholder:text-2xl border-2 border-slate-200 focus:outline-none"
               placeholder="검색어 입력"
             />

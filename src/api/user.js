@@ -22,7 +22,6 @@ async function userUpdate(userid, param, success, fail) {
 
 async function idCheck(userId, success, fail) {
   await local.get(`/user/${userId}/IdCheck`).then(success).catch(fail);
-  console.log("userJoin ok");
 }
 
 async function nameCheck(name, success, fail) {
