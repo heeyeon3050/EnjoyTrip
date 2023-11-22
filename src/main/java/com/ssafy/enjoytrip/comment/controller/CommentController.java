@@ -42,7 +42,7 @@ public class CommentController {
 	}
 
 	@GetMapping("/board/{boardId}")
-	public ResponseEntity<?> getByBoardId(@PathVariable Long boardId, @PageableDefault(size = 5) Pageable pageable) {
+	public ResponseEntity<?> getByBoardId(@PathVariable Long boardId, @PageableDefault(size = 10) Pageable pageable) {
 		return ResponseEntity.ok(commentService.getByBoardId(boardId, pageable));
 	}
 }

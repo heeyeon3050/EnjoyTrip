@@ -44,7 +44,7 @@ public class BoardController {
 
 	@GetMapping("/list")
 	public ResponseEntity<?> getItems(@RequestParam(required = false) BoardCategory category,
-		@RequestParam(required = false) String keyword, @PageableDefault(size = 5) Pageable pageable) {
+		@RequestParam(required = false) String keyword, @PageableDefault(size = 10) Pageable pageable) {
 		return ResponseEntity.ok(boardService.getItems(category, keyword, rq.getUser(), pageable));
 	}
 
