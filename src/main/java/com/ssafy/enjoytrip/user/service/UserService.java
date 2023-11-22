@@ -54,8 +54,10 @@ public class UserService {
 		if (!optionalUser.isPresent())
 			throw new UserNotFoundException(String.format("사용자(%s)를 찾을 수 없습니다.", userId));
 
-		if (!updateDto.getPassword_old().equals(user.getPassword()))
-			throw new PasswordNotEqualException("비밀번호가 불일치합니다.");
+		if(updateDto.getPassword_old() != null) {
+			if (!updateDto.getPassword_old().equals(user.getPassword()))
+				throw new PasswordNotEqualException("비밀번호가 불일치합니다.");
+		}
 
 		User existUser = optionalUser.get();
 		existUser.update(updateDto, passwordEncoder);
