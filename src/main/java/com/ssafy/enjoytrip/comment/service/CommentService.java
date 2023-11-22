@@ -28,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 public class CommentService {
 	private final BoardRepository boardRepository;
 	private final CommentRepository commentRepository;
-	private final UserRepository userRepository;
 
 	@Transactional
 	public CommonResponse create(CommentDto commentDto, User writer) {

@@ -57,4 +57,6 @@ public class BoardController {
 	public ResponseEntity<?> like(@PathVariable Long boardId) {
 		return ResponseEntity.ok(boardService.like(boardId, rq.getUser()));
 	}
+
+
 }

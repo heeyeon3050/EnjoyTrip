@@ -80,10 +80,14 @@ public class BoardService {
 
 	public CommonResponse like(Long id, User user) {
 		Optional<Board> optionalBoard = boardRepository.findById(id);
-
 		if (optionalBoard.isPresent()) {
 			Board board = optionalBoard.get();
-			board.getBoard_users().add(user);
+
+			if(board.getBoard_users().contains(user))
+				board.getBoard_users().remove(user);
+			else
+				board.getBoard_users().add(user);
+
 			return new CommonResponse(true, "Success to like board", boardRepository.save(board));
 		}
 
@@ -92,9 +96,5 @@ public class BoardService {
 
 	public CommonResponse getById(Long boardId) {
 		return new CommonResponse(true, "Success to get Board.", boardRepository.findById(boardId));
-	}
-
-	public CommonResponse findAll(Pageable pageable) {
-		return new CommonResponse(true, "Success to get Fax.", boardRepository.findAll(pageable));
 	}
 }
