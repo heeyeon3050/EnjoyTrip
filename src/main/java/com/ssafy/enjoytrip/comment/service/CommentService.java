@@ -1,16 +1,21 @@
 package com.ssafy.enjoytrip.comment.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.enjoytrip.attraction.exception.AttractionNotFoundException;
+import com.ssafy.enjoytrip.board.dto.BoardResponseDto;
 import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.board.repository.BoardRepository;
 import com.ssafy.enjoytrip.comment.dto.CommentDto;
+import com.ssafy.enjoytrip.comment.dto.CommentResponseDto;
 import com.ssafy.enjoytrip.comment.entity.Comment;
 import com.ssafy.enjoytrip.comment.repository.CommentRepository;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
@@ -42,7 +47,15 @@ public class CommentService {
 	}
 
 	public CommonResponse getByBoardId(Long boardId, Pageable pageable) {
-		Page<Comment> commentsPage = commentRepository.findByBoardId(boardId, pageable);
+		Page<Comment> comments = commentRepository.findByBoardId(boardId, pageable);
+		List<CommentResponseDto> commentResponseDtos = comments.stream()
+			.map(comment -> {
+				return CommentResponseDto.toCommentResponseDto(comment);
+			})
+			.collect(Collectors.toList());
+
+		return new CommonResponse(true, "Success to get comment.", new PageImpl<>(commentResponseDtos, comments.getPageable(), comments.getTotalElements()));
+
 		// return commentsPage.map(comment -> convertToDto(comment));
 		// return new CommonResponse(true, "Success to get comment.", commentsPage);
 	}

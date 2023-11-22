@@ -5,10 +5,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import com.ssafy.enjoytrip.board.dto.BoardDto;
 import com.ssafy.enjoytrip.board.dto.BoardResponseDto;
 import com.ssafy.enjoytrip.board.entity.Board;
@@ -72,7 +74,8 @@ public class BoardService {
 				return BoardResponseDto.toBoardResponseDto(board, commentCount);
 			})
 			.collect(Collectors.toList());
-		return new CommonResponse(true, "Success to get board.", boardResponseDtos);
+
+		return new CommonResponse(true, "Success to get board.", new PageImpl<>(boardResponseDtos, boards.getPageable(), boards.getTotalElements()));
 	}
 
 	public CommonResponse like(Long id, User user) {
