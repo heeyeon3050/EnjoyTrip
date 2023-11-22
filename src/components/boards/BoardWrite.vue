@@ -18,9 +18,14 @@ const content = ref("");
 const category = ref("NORMAL");
 const latitude = ref(0);
 const longitude = ref(0);
+const locationKey = ref("KEYWORD");
 
-const onChangeKey = (value) => {
+const onChangeBoardKey = (value) => {
   category.value = value;
+};
+
+const onChangeLocationKey = () => {
+  locationKey.value = value;
 };
 
 const onSubmit = () => {
@@ -50,7 +55,7 @@ const onSubmit = () => {
     <div class="w-full h-20 flex justify-between my-10">
       <VSelect
         :selectOption="boardCategory"
-        @onKeySelect="onChangeKey"
+        @onKeySelect="onChangeBoardKey"
         v-model="category"
         class="w-32 border-2 bg-gray-50 text-xl text-slate-700 text-center font-semibold border-slate-200 rounded-l-xl"
       />
@@ -105,18 +110,24 @@ const onSubmit = () => {
               </button>
             </div>
           </div>
-
-          <div
-            id="tooltip-fullscreen"
-            role="tooltip"
-            class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
-          >
-            Show full screen
-            <div class="tooltip-arrow" data-popper-arrow></div>
+        </div>
+        <div class="w-full h-60">
+          <div class="h-14 flex justify-between">
+            <VSelect
+              :selectOption="boardCategory"
+              @onKeySelect="onChangeLocationKey"
+              v-model="category"
+              class="w-32 border-2 bg-gray-50 text-xl text-slate-700 text-center font-semibold border-slate-200"
+            />
+            <input
+              type="text"
+              v-model="title"
+              class="w-full p-4 text-2xl placeholder:text-slate-950 placeholder:text-2xl border-2 border-slate-200 focus:outline-none"
+              placeholder="검색어 입력"
+            />
           </div>
         </div>
         <div class="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
-          <label for="editor" class="sr-only">Publish post</label>
           <textarea
             id="editor"
             rows="20"

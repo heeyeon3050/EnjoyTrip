@@ -1,7 +1,7 @@
 <script setup>
 import CommonBtn from "@/components/common/CommonBtn.vue";
 import CommentListItem from "@/components/comments/CommentListItem.vue";
-import { ref, watch, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { commentListByBoardId, createComment } from "@/api/comment";
 import { deleteBoard } from "@/api/board";
 import { getBoardById } from "@/api/board";
@@ -19,6 +19,10 @@ var boardMap;
 const board = ref({});
 const comments = ref([]);
 const commentContent = ref("");
+const currentCommentPage = ref(1);
+const totalCommentPage = ref(1);
+const commentsLoading = ref(false);
+const liked = ref(false);
 
 onMounted(() => {
   const boardId = route.params.boardId;
@@ -26,6 +30,7 @@ onMounted(() => {
     boardId,
     ({ data }) => {
       board.value = data.data;
+      liked.value = data.data.isLike;
       if (window.kakao && window.kakao.maps) {
         initMap();
       } else {
@@ -40,10 +45,11 @@ onMounted(() => {
 
       commentListByBoardId(
         boardId,
-        {},
+        { page: 1 },
         ({ data }) => {
           console.log(data.data);
-          comments.value = data.data;
+          comments.value = data.data.content;
+          totalCommentPage.value = data.data.totalPages;
         },
         (error) => {
           console.error(error);
@@ -110,7 +116,7 @@ const addComment = () => {
     },
     ({ data }) => {
       console.log(data);
-      comments.value = [data.data, ...comments.value];
+      comments.value = [{ ...data.data }, ...comments.value];
     },
     (error) => {
       console.log(error);
@@ -133,6 +139,42 @@ const onDelete = () => {
     }
   );
 };
+
+const onLike = () => {};
+
+window.addEventListener("scroll", () => {
+  if (commentsLoading.value) return;
+
+  const isScrollEnded =
+    window.innerHeight + window.scrollY + 10 >= document.body.offsetHeight;
+
+  if (isScrollEnded && currentCommentPage.value + 1 <= totalCommentPage.value) {
+    commentsLoading.value = true;
+    setTimeout(() => {
+      commentListByBoardId(
+        route.params.boardId,
+        { page: currentCommentPage.value + 1 },
+        ({ data }) => {
+          console.log(data.data);
+          comments.value = [...comments.value, ...data.data.content];
+          totalCommentPage.value = data.data.totalPages;
+          currentCommentPage.value = data.data.pageable.pageNumber + 1;
+          commentsLoading.value = false;
+        },
+        (error) => {
+          console.error(error);
+          commentsLoading.value = false;
+        }
+      );
+    }, 1000);
+  }
+});
+
+const onDeleteComment = (commentId) => {
+  comments.value = comments.value.filter((c) => {
+    c.id !== commentId;
+  });
+};
 </script>
 
 <template>
@@ -152,7 +194,7 @@ const onDelete = () => {
       class="h-12 border-y-[1px] border-slate-300 flex items-center p-4 justify-between"
     >
       <div class="flex px-2">
-        <h3 class="text-lg">{{ board.writer?.name }}</h3>
+        <h3 class="text-lg">{{ board.writerName }}</h3>
       </div>
       <div class="flex h-full w-32 justify-between items-center">
         <div class="flex space-x-2">
@@ -170,7 +212,7 @@ const onDelete = () => {
               d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z"
             />
           </svg>
-          <span>{{ board.board_users?.length }}</span>
+          <span>{{ board.likeCount }}</span>
         </div>
         <div class="flex space-x-2">
           <svg
@@ -187,7 +229,7 @@ const onDelete = () => {
               d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
             />
           </svg>
-          <span>{{ board.comments?.length }}</span>
+          <span>{{ board.commentCount }}</span>
         </div>
       </div>
     </div>
@@ -197,22 +239,31 @@ const onDelete = () => {
       </p>
     </div>
     <div id="boardMap" class="w-full h-80 my-4 border-4"></div>
-    <div class="w-full flex justify-end my-4 space-x-3">
-      <router-link
-        :to="{
-          name: 'board-update',
-          params: { boardId: route.params.boardId },
-        }"
-      >
-        <CommonBtn text="수정" />
-      </router-link>
-      <CommonBtn text="삭제" @click="onDelete" />
+    <div class="w-full flex justify-between my-14">
+      <div>
+        <CommonBtn
+          text="좋아요"
+          @click="onLike"
+          :class="{ 'bg-red-400': liked }"
+        />
+      </div>
+      <div class="flex justify-end space-x-3">
+        <router-link
+          :to="{
+            name: 'board-update',
+            params: { boardId: route.params.boardId },
+          }"
+        >
+          <CommonBtn text="수정" />
+        </router-link>
+        <CommonBtn text="삭제" @click="onDelete" />
+      </div>
     </div>
   </div>
 
   <div class="w-full flex flex-col my-4">
     <div class="w-full flex flex-col p-4 mb-12">
-      <h1 class="my-6 font-semibold text-xl">댓글 {{}}개</h1>
+      <h1 class="my-6 font-semibold text-xl">댓글 {{ comments.length }}개</h1>
       <div class="flex items-center space-x-6">
         <div class="w-16 h-16 rounded-full shrink-0 bg-slate-800"></div>
         <input
@@ -228,6 +279,7 @@ const onDelete = () => {
         <CommonBtn
           text="등록"
           @click="addComment"
+          @onDeleteComment="onDeleteComment"
           :disabled="commentContent === ''"
         />
       </div>

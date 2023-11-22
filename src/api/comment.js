@@ -3,7 +3,8 @@ import { localAxios } from "@/util/http-commons";
 const local = localAxios();
 
 function createComment(comment, success, fail) {
-  console.log("comment ", comment);
+  local.defaults.headers["Authorization"] =
+    "Bearer " + sessionStorage.getItem("accessToken");
   local
     .post(`/comment/create`, JSON.stringify(comment))
     .then(success)
@@ -17,4 +18,8 @@ function commentListByBoardId(boardId, param, success, fail) {
     .catch(fail);
 }
 
-export { createComment, commentListByBoardId };
+function deleteComment(commentId, success, fail) {
+  local.get(`/comment/${commentId}/delete`).then(success).catch(fail);
+}
+
+export { createComment, commentListByBoardId, deleteComment };

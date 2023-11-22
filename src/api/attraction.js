@@ -2,9 +2,9 @@ import { localAxios } from "@/util/http-commons";
 
 const local = localAxios();
 
-function searchAttraction(param, success, fail) {
+function listAttraction(param, success, fail) {
   local
-    .get(`/attraction/search`, {
+    .get(`/attraction/list`, {
       params: param,
       paramsSerializer: {
         indexes: null, // no brackets at all
@@ -14,4 +14,4 @@ function searchAttraction(param, success, fail) {
     .catch(fail);
 }
 
-export { searchAttraction };
+export { listAttraction };

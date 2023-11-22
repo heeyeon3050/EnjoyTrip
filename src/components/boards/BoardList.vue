@@ -1,44 +1,72 @@
 <script setup>
 import CommonBtn from "@/components/common/CommonBtn.vue";
 import BoardListItem from "@/components/boards/BoardListItem.vue";
-import { searchBoard } from "@/api/board";
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import VPageNavigation from "../common/VPageNavigation.vue";
+import VSelect from "../common/VSelect.vue";
+import { listBoard } from "@/api/board";
+import { ref, onMounted, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from "pinia";
 
+const memberStore = useMemberStore();
+
+const { isLogin } = storeToRefs(memberStore);
+
+const route = useRoute();
 const router = useRouter();
 
 const searchOption = ref("TITLE");
 const keyword = ref("");
+const category = ref("");
 
 const boards = ref([]);
 const currentPage = ref(1);
 const totalPage = ref(0);
-const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
-const param = ref({
-  pgno: currentPage.value,
-  spp: VITE_ARTICLE_LIST_SIZE,
-  key: "",
-  word: "",
-});
+
+const searchOptions = [
+  { value: "TITLE", text: "제목" },
+  { value: "WRITER", text: "작성자" },
+];
 
 onMounted(() => {
+  if (route.params.page) currentPage.value = route.params.page;
+  if (route.params.category) category.value = route.params.category;
+  if (route.params.keyword) keyword.value = route.params.keyword;
+  if (route.params.searchOption) searchOption.value = route.params.searchOption;
   getBoardList();
 });
 
-const changeKey = (val) => {
+watch(
+  () => category.value,
+  () => {
+    currentPage.value = 1;
+    keyword.value = "";
+    searchOption.value = "TITLE";
+    getBoardList();
+  },
+  { deep: true }
+);
+
+const onChangeKey = (val) => {
   console.log("BoarList에서 선택한 조건 : " + val);
-  param.value.key = val;
+  searchOption.value = val;
 };
 
 const getBoardList = () => {
-  console.log("서버에서 글목록 얻어오자!!!", param.value);
-  searchBoard(
-    param.value,
-    ({ data }) => {
-      console.log(data);
-      boards.value = data.data;
-      // currentPage.value = data.currentPage;
-      // totalPage.value = data.totalPageCount;
+  const query = {
+    page: currentPage.value,
+    category: category.value,
+    keyword: keyword.value,
+    searchOption: searchOption.value,
+  };
+  listBoard(
+    query,
+    ({ data: data }) => {
+      console.log(data.data);
+      boards.value = data.data.content;
+      totalPage.value = data.data.totalPages;
+      router.replace({ name: "board-list", query: query });
     },
     (error) => {
       console.error(error);
@@ -48,21 +76,17 @@ const getBoardList = () => {
 
 const search = () => {
   const query = {
-    option: searchOption.value,
+    page: currentPage.value,
+    category: category.value,
     keyword: keyword.value,
-    ...param.value,
+    searchOption: searchOption.value,
   };
-  searchBoard(
-    {
-      option: searchOption.value,
-      keyword: keyword.value,
-      ...param.value,
-    },
-    ({ data }) => {
-      console.log(data);
-      boards.value = data.data;
-      // currentPage.value = data.currentPage;
-      // totalPage.value = data.totalPageCount;
+  listBoard(
+    query,
+    ({ data: data }) => {
+      console.log(data.data);
+      boards.value = data.data.content;
+      totalPage.value = data.data.totalPages;
       router.replace({ name: "board-list", query: query });
       searchOption.value = "TITLE";
       keyword.value = "";
@@ -76,7 +100,6 @@ const search = () => {
 const onPageChange = (val) => {
   console.log(val + "번 페이지로 이동 준비 끝!!!");
   currentPage.value = val;
-  param.value.pgno = val;
   getBoardList();
 };
 
@@ -89,10 +112,22 @@ const moveWrite = () => {
   <div
     class="w-full px-3 flex space-x-2 py-10 mb-4 border-b-2 border-b-slate-400"
   >
-    <CommonBtn text="전체" />
-    <CommonBtn text="인기" />
-    <CommonBtn text="여행 팁" />
-    <CommonBtn text="후기" />
+    <CommonBtn text="전체" :disabled="category === ''" @click="category = ''" />
+    <CommonBtn
+      text="인기"
+      :disabled="category === 'POPULAR'"
+      @click="category = 'POPULAR'"
+    />
+    <CommonBtn
+      text="여행 팁"
+      :disabled="category === 'TIP'"
+      @click="category = 'TIP'"
+    />
+    <CommonBtn
+      text="후기"
+      :disabled="category === 'REVIEW'"
+      @click="category = 'REVIEW'"
+    />
   </div>
   <div class="w-full h-fit p-2 flex flex-col overflow-y-scroll scrollbar-hide">
     <div>
@@ -101,15 +136,12 @@ const moveWrite = () => {
   </div>
   <div class="w-full h-10 my-10 flex justify-between">
     <div>
-      <select
-        name="languages"
-        id="lang"
-        class="w-24 h-10 border-2 mr-3 rounded-md px-3 border-slate-500"
+      <VSelect
+        :selectOption="searchOptions"
+        @onKeySelect="onChangeKey"
         v-model="searchOption"
-      >
-        <option value="TITLE">제목</option>
-        <option value="WRITER">작성자</option>
-      </select>
+        class="w-24 h-10 border-2 mr-3 rounded-md px-3 border-slate-500"
+      />
       <input
         type="text"
         class="w-48 h-10 border-2 rounded-md p-2 border-slate-500"
@@ -117,20 +149,16 @@ const moveWrite = () => {
         @keyup.enter="search"
       />
     </div>
-    <router-link :to="{ name: 'board-write' }">
-      <CommonBtn text="+ 작성" />
+    <router-link v-if="isLogin" :to="{ name: 'board-write' }">
+      <CommonBtn text="글쓰기" />
     </router-link>
   </div>
-  <div class="w-full h-10 my-10 flex space-x-4 justify-center">
-    <button>&lt;</button>
-    <button>&lt;&lt;</button>
-    <button>1</button>
-    <button>2</button>
-    <button>3</button>
-    <button>4</button>
-    <button>5</button>
-    <button>&gt;</button>
-    <button>&gt;&gt;</button>
+  <div class="w-full h-10 my-10">
+    <VPageNavigation
+      :currentPage="currentPage"
+      :totalPage="totalPage"
+      @pageChange="onPageChange"
+    />
   </div>
 </template>
 

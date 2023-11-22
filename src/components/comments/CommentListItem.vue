@@ -1,5 +1,25 @@
 <script setup>
+import { deleteComment } from "@/api/comment";
+
 const params = defineProps({ comment: Object });
+const emit = defineEmits(["onDeleteComment"]);
+
+const onModify = () => {};
+const onDelete = () => {
+  const comfirmDelete = confirm("삭제하시겠습니까?");
+
+  if (!comfirmDelete) return;
+  deleteComment(
+    params.comment.id,
+    (response) => {
+      console.log(response);
+      emit("onDeleteComment", params.comment.id);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
 </script>
 
 <template>
@@ -11,6 +31,7 @@ const params = defineProps({ comment: Object });
         viewBox="0 0 24 24"
         stroke-width="1.5"
         stroke="currentColor"
+        @click="onModify"
         class="w-5 h-5 text-slate-500 hover:text-blue-400 cursor-pointer"
       >
         <path
@@ -25,6 +46,7 @@ const params = defineProps({ comment: Object });
         viewBox="0 0 24 24"
         stroke-width="1.5"
         stroke="currentColor"
+        @click="onDelete"
         class="w-5 h-5 text-slate-500 hover:text-red-500 cursor-pointer"
       >
         <path
@@ -39,7 +61,7 @@ const params = defineProps({ comment: Object });
     <div class="w-full flex flex-col space-y-2">
       <div class="flex space-x-6 items-center">
         <h3 class="text-slate-800 text-lg font-semibold">
-          @{{ params.comment.userId }}
+          @{{ params.comment.writerName }}
         </h3>
         <h4 class="text-slate-400 text-xs">10개월 전</h4>
       </div>

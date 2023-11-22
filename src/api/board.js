@@ -8,8 +8,8 @@ function createBoard(board, success, fail) {
   local.post(`/board/create`, JSON.stringify(board)).then(success).catch(fail);
 }
 
-function searchBoard(param, success, fail) {
-  local.get(`/board/search`, { params: param }).then(success).catch(fail);
+function listBoard(param, success, fail) {
+  local.get(`/board/list`, { params: param }).then(success).catch(fail);
 }
 
 function getBoardById(boardId, success, fail) {
@@ -25,4 +25,15 @@ function deleteBoard(boardId, success, fail) {
   local.patch(`/board/${boardId}/delete`).then(success).catch(fail);
 }
 
-export { createBoard, searchBoard, getBoardById, updateBoard, deleteBoard };
+function likeBoard(boardId, success, fail) {
+  local.post(`/board/${boardId}/like`).then(success).catch(fail);
+}
+
+export {
+  createBoard,
+  listBoard,
+  getBoardById,
+  updateBoard,
+  deleteBoard,
+  likeBoard,
+};
