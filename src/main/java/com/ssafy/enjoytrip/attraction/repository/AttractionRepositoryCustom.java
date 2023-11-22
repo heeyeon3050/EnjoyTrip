@@ -9,6 +9,6 @@ import com.ssafy.enjoytrip.attraction.entity.Attraction;
 import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 
 public interface AttractionRepositoryCustom {
-	Page<Attraction> findDynamicQueryAdvance(List<AttractionCategory> categories, String keyword, Pageable pageable);
+	Page<Attraction> findDynamicQueryAdvance(List<AttractionCategory> categories, String keyword, double x, double y, Pageable pageable);
 
 }

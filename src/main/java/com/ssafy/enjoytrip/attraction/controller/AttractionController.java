@@ -43,10 +43,16 @@ public class AttractionController {
 		return ResponseEntity.ok(attractionService.update(attractionId, attractionDto));
 	}
 
+	// @GetMapping("/list")
+	// public ResponseEntity<?> getItems(@RequestParam(required = false) List<AttractionCategory> categories,
+	// 	@RequestParam(required = false) String keyword, @PageableDefault(size = 5) Pageable pageable) {
+	// 	return ResponseEntity.ok(attractionService.getItems(categories, keyword, pageable));
+	// }
+
 	@GetMapping("/list")
 	public ResponseEntity<?> getItems(@RequestParam(required = false) List<AttractionCategory> categories,
-		@RequestParam(required = false) String keyword, @PageableDefault(size = 5) Pageable pageable) {
-		return ResponseEntity.ok(attractionService.getItems(categories, keyword, pageable));
+		@RequestParam(required = false) String keyword, @RequestParam(required = false) double x, @RequestParam(required = false) double y, @PageableDefault(size = 5) Pageable pageable) {
+		return ResponseEntity.ok(attractionService.getItems(categories, keyword, x, y, pageable));
 	}
 
 	@PostMapping("/{attractionId}/like")
