@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.enjoytrip.comment.dto.CommentDto;
 import com.ssafy.enjoytrip.comment.service.CommentService;
+import com.ssafy.enjoytrip.common.rq.Rq;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/comment")
 @RequiredArgsConstructor
 public class CommentController {
+	private final Rq rq;
 	private final CommentService commentService;
 
 	@PostMapping("/create")
 	public ResponseEntity<?> create(@RequestBody CommentDto commentDto) {
-		return ResponseEntity.ok(commentService.create(commentDto));
+		return ResponseEntity.ok(commentService.create(commentDto, rq.getUser()));
 	}
 
 	@PatchMapping("/{commentId}/delete")

@@ -34,14 +34,12 @@ public class CommentService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public CommonResponse create(CommentDto commentDto) {
-		User writer = userRepository.findByUserId(commentDto.getWriterId())
-			.orElseThrow(() -> new IllegalArgumentException("작성자 번호가 적정하지 않음"));
+	public CommonResponse create(CommentDto commentDto, User writer) {
 		Board board = boardRepository.findById(commentDto.getBoardId())
 			.orElseThrow(() -> new IllegalArgumentException("게시판 번호가 적정하지 않음"));
 		Comment saved = commentRepository.save(
 			Comment.toComment(commentDto.getContent(), writer, board));
-		return new CommonResponse(true, "Success to create comment", saved.getId());
+		return new CommonResponse(true, "Success to create comment", saved);
 	}
 
 	public CommonResponse getByWriterId(Long writerId) {
