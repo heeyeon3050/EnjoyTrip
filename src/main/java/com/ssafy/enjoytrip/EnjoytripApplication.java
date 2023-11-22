@@ -6,7 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 
-@SpringBootApplication
+@SpringBootApplication(
+	exclude = {
+		org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration.class,
+		org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration.class,
+		org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration.class
+	}
+)
 @EnableJpaAuditing
 public class EnjoytripApplication {
 

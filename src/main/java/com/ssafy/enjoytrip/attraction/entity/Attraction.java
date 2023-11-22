@@ -19,7 +19,6 @@ import org.hibernate.annotations.Where;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Where(clause = "is_deleted = false")
 public class Attraction{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

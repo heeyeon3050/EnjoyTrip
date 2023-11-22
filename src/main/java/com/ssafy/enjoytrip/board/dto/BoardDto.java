@@ -1,6 +1,9 @@
 package com.ssafy.enjoytrip.board.dto;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EnumType;
@@ -8,6 +11,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.board.entity.BoardCategory;
@@ -22,7 +27,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BoardDto {
+public class BoardDto implements Serializable {
 	private String title;
 	private String content;
 	@Enumerated(EnumType.STRING)
@@ -30,5 +35,6 @@ public class BoardDto {
 	private Double latitude;
 	private Double longitude;
 
+	private List<MultipartFile> images = new ArrayList<>();
 	private Set<Long> userIds;
 }

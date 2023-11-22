@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.board.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.enjoytrip.attraction.entity.AttractionCategory;
 import com.ssafy.enjoytrip.board.dto.BoardDto;
@@ -20,6 +22,9 @@ import com.ssafy.enjoytrip.board.repository.BoardRepository;
 import com.ssafy.enjoytrip.board.repository.BoardRepositoryCustom;
 import com.ssafy.enjoytrip.comment.repository.CommentRepository;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
+import com.ssafy.enjoytrip.common.s3.service.S3Uploader;
+import com.ssafy.enjoytrip.image.entity.Image;
+import com.ssafy.enjoytrip.image.service.ImageService;
 import com.ssafy.enjoytrip.user.entity.User;
 
 import lombok.RequiredArgsConstructor;
@@ -27,15 +32,31 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class BoardService {
+	private final S3Uploader s3Uploader;
 	private final BoardRepository boardRepository;
 	private final CommentRepository commentRepository;
 	private final BoardRepositoryCustom boardRepositoryCustom;
+	private final ImageService imageService;
 
 	@Transactional
-	public CommonResponse create(BoardDto boardDto, User user) {
-		Board board = Board.toBoard(boardDto, user);
+	public CommonResponse create(BoardDto boardDto, User user) throws IOException {
+		List<Image> images = boardDto.getImages().stream().map(i -> {
+				try {
+					return imageService.upload(i);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}).collect(Collectors.toList());
+		Board board = Board.toBoard(boardDto, user, images);
+
+
+		// System.out.println("image..............." + image);
+		// System.out.println("board...................." + board);
+		// imageService.upload(image);
+
 		return new CommonResponse(true, "Success to create board", boardRepository.save(board));
 	}
+
 
 	@Transactional
 	public CommonResponse update(Long id, BoardDto boardDto) {
@@ -103,5 +124,19 @@ public class BoardService {
 		}
 
 		throw new BoardNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", boardId));
+	}
+
+	public CommonResponse keepBoard(MultipartFile image, Board board) throws IOException {
+		System.out.println("Diary service saveDiary");
+		if(!image.isEmpty()) {
+			String storedFileName = s3Uploader.upload(image,"images");
+			Image newImage = Image.builder()
+				.url(storedFileName)
+				.board(board)
+				.build();
+			//board.getImages().add(newImage);
+		}
+		Board savedBoard = boardRepository.save(board);
+		return new CommonResponse(true, "Success to get board", savedBoard);
 	}
 }
