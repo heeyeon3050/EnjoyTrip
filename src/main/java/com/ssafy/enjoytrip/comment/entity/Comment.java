@@ -33,6 +33,7 @@ public class Comment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
+    @JsonIgnore
     private User writer;
 
     @ManyToOne(fetch = FetchType.LAZY)
