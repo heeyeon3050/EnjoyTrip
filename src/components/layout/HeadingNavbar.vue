@@ -7,15 +7,20 @@ import { ref } from "vue";
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
+import noProfile from "@/assets/no_profile.png";
 
 const router = useRouter();
 
 const memberStore = useMemberStore();
 const { userLogout } = memberStore;
 
-const { isLogin, loginUserName } = storeToRefs(memberStore);
+const { isLogin, userInfo } = storeToRefs(memberStore);
 
 const modalStatus = ref(ModalStatus.CLOSED);
+
+const replaceNoProfile = (event) => {
+  event.target.src = noProfile;
+};
 
 const logout = () => {
   userLogout();
@@ -96,11 +101,15 @@ const modalLogin = () => {
           }"
         >
           <div class="flex space-x-5 h-full px-6 w-44 items-center">
-            <div class="w-10 h-10 shrink-0 rounded-full bg-slate-500"></div>
+            <img
+              class="w-10 h-10 shrink-0 rounded-full bg-slate-500 bg-cover bg-center"
+              :src="userInfo.imageUrl || ''"
+              @error="replaceNoProfile"
+            />
             <h2
               class="font-medium text-lg text-overflow-clip overflow-ellipsis break-words line-clamp-1"
             >
-              {{ loginUserName }}
+              {{ userInfo.name }}
             </h2>
           </div>
         </router-link>

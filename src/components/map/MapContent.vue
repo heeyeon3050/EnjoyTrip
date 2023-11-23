@@ -23,14 +23,13 @@ const totalPage = ref(1);
 const loading = ref(false);
 
 const replaceRoute = () => {
-  changeCategory();
   const query = {
     keyword: keyword.value,
     categories: categories.value,
     page: currentPage.value,
   };
   router.push({ name: "map", query: query });
-  getAttractionLsit();
+  getAttractionList();
 };
 
 const changeCategory = () => {
@@ -49,7 +48,7 @@ watch(() => media.value, changeCategory, { deep: true });
 watch(() => train.value, changeCategory, { deep: true });
 
 onMounted(() => {
-  getAttractionLsit();
+  getAttractionList();
   const list = document.getElementById("list");
   if (list) {
     list.addEventListener("scroll", (e) => {
@@ -58,7 +57,7 @@ onMounted(() => {
 
       const isScrollEnded =
         window.innerHeight + window.scrollY + 10 >= document.body.offsetHeight;
-
+      console.log(isScrollEnded);
       if (isScrollEnded && currentPage.value + 1 <= totalPage.value) {
         loading.value = true;
         setTimeout(() => {
@@ -89,7 +88,8 @@ onMounted(() => {
   }
 });
 
-const getAttractionLsit = () => {
+const getAttractionList = () => {
+  loading.value = true;
   listAttraction(
     {
       keyword: keyword.value,
@@ -100,6 +100,7 @@ const getAttractionLsit = () => {
       attractionList.value = data.content;
       currentPage.value = 1;
       totalPage.value = data.totalPages;
+      loading.value = false;
     },
     (error) => {
       console.log(error);
@@ -122,6 +123,8 @@ const toggleMenu = () => {
     menuOpenBtn.classList.add("closeBtn");
   }
 };
+
+const likeAttraction = (attractionId, count) => {};
 </script>
 
 <template>

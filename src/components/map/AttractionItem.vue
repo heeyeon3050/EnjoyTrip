@@ -5,6 +5,10 @@ const params = defineProps({ attraction: Object });
 const replaceNoImg = (event) => {
   event.target.src = noImg;
 };
+
+const likeAttraction = () => {
+  console.log(123);
+};
 </script>
 
 <template>
@@ -16,6 +20,7 @@ const replaceNoImg = (event) => {
       stroke-width="1.5"
       stroke="currentColor"
       class="absolute w-6 h-6 right-3 top-3 cursor-pointer"
+      @click="likeAttraction"
     >
       <path
         stroke-linecap="round"

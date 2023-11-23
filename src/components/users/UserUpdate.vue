@@ -3,9 +3,11 @@ import CommonBtn from "@/components/common/CommonBtn.vue";
 
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { userUpdate } from "@/api/user";
+import noProfile from "@/assets/no_profile.png";
+import { createImage } from "@/api/image";
 
 const memberStore = useMemberStore();
 const router = useRouter();
@@ -13,11 +15,16 @@ const router = useRouter();
 const { userInfo, loginUserId } = storeToRefs(memberStore);
 const { getUserInfo } = memberStore;
 
+const replaceNoProfile = (event) => {
+  event.target.src = noProfile;
+};
+
 const name = ref(userInfo.value.name);
 const email = ref(userInfo.value.email);
 const password = ref("");
 const newPassword = ref("");
 const newPassword2 = ref("");
+const newImageUrl = ref("");
 
 const nameError = ref("");
 const emailError = ref("");
@@ -70,13 +77,74 @@ const onSubmit = () => {
     }
   );
 };
+
+const onChangeImage = () => {
+  let frm = new FormData();
+  let photoFile = document.getElementById("file");
+  frm.append("image", photoFile.files[0]);
+
+  createImage(
+    frm,
+    (response) => {
+      console.log(response);
+      newImageUrl.value = response.data;
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+
+watch(
+  () => newImageUrl.value,
+  () => {
+    let profileImg = document.getElementById("profile");
+    profileImg.src = newImageUrl.value;
+  },
+  { deep: true }
+);
 </script>
 
 <template>
   <div class="w-full space-y-20">
     <div class="w-full flex justify-between p-4 my-10">
       <div class="w-auto flex space-x-12">
-        <div class="w-32 h-32 bg-slate-700 rounded-full"></div>
+        <label for="file">
+          <div class="w-32 h-32 relative flex items-center justify-center">
+            <img
+              id="profile"
+              :src="userInfo.imageUrl || ''"
+              @error="replaceNoProfile"
+              class="absolute left-0 top-0 cursor-pointer w-32 h-32 bg-slate-700 rounded-full flex justify-center items-center bg-cover bg-center"
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 hidden"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
+              />
+            </svg>
+          </div>
+        </label>
+        <input
+          class="hidden"
+          type="file"
+          name="file"
+          id="file"
+          @change="onChangeImage"
+        />
         <div class="flex flex-col space-y-4 justify-center">
           <h3 class="text-5xl text-slate-400">@{{ userInfo.userId }}</h3>
         </div>

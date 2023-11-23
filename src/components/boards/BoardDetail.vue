@@ -11,6 +11,7 @@ import { getBoardById, deleteBoard, likeBoard } from "@/api/board";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
+import noImg from "@/assets/no_image.jpg";
 
 const memberStore = useMemberStore();
 const { isLogin, loginUserId } = storeToRefs(memberStore);
@@ -27,6 +28,10 @@ const totalCommentPage = ref(1);
 const commentsLoading = ref(false);
 const liked = ref(false);
 const modifyCommentId = ref(null);
+
+const replaceNoImg = (event) => {
+  event.target.src = noImg;
+};
 
 onMounted(() => {
   const boardId = route.params.boardId;
@@ -268,12 +273,20 @@ window.addEventListener("scroll", () => {
         </div>
       </div>
     </div>
-    <div class="w-full min-h-[50vh] p-5">
-      <p>
+    <div class="w-full p-5 space-y-20">
+      <div class="w-full flex flex-col items-center">
+        <img
+          class="bg-cover mr-3"
+          :src="board.imageUrl || ''"
+          @error="replaceNoImg"
+          alt=""
+        />
+      </div>
+      <p class="text-lg">
         {{ board.content }}
       </p>
     </div>
-    <div id="boardMap" class="w-full h-80 my-4 border-4"></div>
+    <div id="boardMap" class="w-full h-80 my-12 border-4"></div>
     <div class="w-full flex justify-between my-14">
       <div>
         <CommonBtn

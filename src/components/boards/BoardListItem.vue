@@ -14,8 +14,8 @@ const replaceNoImg = (event) => {
     class="w-full h-28 p-2 flex relative first:border-t-0 border-t-[1px] border-[#bbb]"
   >
     <img
-      class="h-full aspect-square mr-3"
-      :src="params.board.image_url || ''"
+      class="h-full aspect-square bg-cover mr-3"
+      :src="params.board.imageUrl || ''"
       @error="replaceNoImg"
       alt=""
     />

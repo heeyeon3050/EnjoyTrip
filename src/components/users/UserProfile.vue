@@ -2,6 +2,11 @@
 import CommonBtn from "@/components/common/CommonBtn.vue";
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
+import noProfile from "@/assets/no_profile.png";
+
+const replaceNoProfile = (event) => {
+  event.target.src = noProfile;
+};
 
 const memberStore = useMemberStore();
 
@@ -12,7 +17,11 @@ const { userInfo } = storeToRefs(memberStore);
   <div class="w-full space-y-20">
     <div class="w-full flex justify-between p-4 my-10">
       <div class="w-auto flex space-x-12">
-        <div class="w-32 h-32 bg-slate-700 rounded-full"></div>
+        <img
+          class="w-32 h-32 bg-slate-700 rounded-full bg-cover bg-center"
+          :src="userInfo.imageUrl || ''"
+          @error="replaceNoProfile"
+        />
         <div class="flex flex-col space-y-4 justify-center">
           <h1 class="text-5xl font-semibold">{{ userInfo.name }}</h1>
           <h3 class="text-lg text-slate-400">@{{ userInfo.userId }}</h3>

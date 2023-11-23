@@ -14,4 +14,8 @@ function listAttraction(param, success, fail) {
     .catch(fail);
 }
 
-export { listAttraction };
+function likeAttraction(boardId, success, fail) {
+  local.post(`/board/${boardId}/like`).then(success).catch(fail);
+}
+
+export { listAttraction, likeAttraction };
