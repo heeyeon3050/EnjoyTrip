@@ -97,13 +97,13 @@ const modalLogin = () => {
         <router-link
           :to="{
             name: 'user-profile',
-            params: { userId: 'ssafy' },
+            params: { userId: userInfo.userId },
           }"
         >
           <div class="flex space-x-5 h-full px-6 w-44 items-center">
             <img
               class="w-10 h-10 shrink-0 rounded-full bg-slate-500 bg-cover bg-center"
-              :src="userInfo.imageUrl || ''"
+              :src="userInfo.image_url || ''"
               @error="replaceNoProfile"
             />
             <h2

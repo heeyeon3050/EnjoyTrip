@@ -45,6 +45,7 @@ const onSubmit = () => {
   const updateUser = {
     name: name.value,
     email: email.value,
+    imageUrl: newImageUrl.value,
   };
 
   if (password.value !== "") {
@@ -70,7 +71,7 @@ const onSubmit = () => {
     async (response) => {
       console.log(response);
       await getUserInfo();
-      router.go(0);
+      router.replace({ name: "user-profile" });
     },
     (error) => {
       console.log(error);
@@ -113,7 +114,7 @@ watch(
           <div class="w-32 h-32 relative flex items-center justify-center">
             <img
               id="profile"
-              :src="userInfo.imageUrl || ''"
+              :src="userInfo.image_url || ''"
               @error="replaceNoProfile"
               class="absolute left-0 top-0 cursor-pointer w-32 h-32 bg-slate-700 rounded-full flex justify-center items-center bg-cover bg-center"
             />

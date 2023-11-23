@@ -17,7 +17,7 @@ async function findById(userid, success, fail) {
 async function userUpdate(userid, param, success, fail) {
   local.defaults.headers["Authorization"] =
     sessionStorage.getItem("accessToken");
-  await local.patch(`/user/${userid}`, param).then(success).catch(fail);
+  await local.patch(`/user/${userid}/update`, param).then(success).catch(fail);
 }
 
 async function idCheck(userId, success, fail) {
@@ -34,4 +34,15 @@ async function emailCheck(email, success, fail) {
   console.log("userJoin ok");
 }
 
-export { userJoin, findById, userUpdate, idCheck, nameCheck, emailCheck };
+async function deleteUser(userId, success, fail) {
+  await local.patch(`/user/${userId}/delete`).then(success).catch(fail);
+}
+export {
+  userJoin,
+  findById,
+  userUpdate,
+  idCheck,
+  nameCheck,
+  emailCheck,
+  deleteUser,
+};

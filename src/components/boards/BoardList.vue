@@ -102,10 +102,6 @@ const onPageChange = (val) => {
   currentPage.value = val;
   getBoardList();
 };
-
-const moveWrite = () => {
-  router.push({ name: "article-write" });
-};
 </script>
 
 <template>

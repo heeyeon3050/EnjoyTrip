@@ -209,10 +209,7 @@ const likeAttraction = (attractionId, count) => {};
         />
       </div>
     </div>
-    <div
-      id="list"
-      class="w-full h-full p-2 flex flex-col overflow-y-scroll scrollbar-hide"
-    >
+    <div id="list" class="w-full h-full p-2 flex flex-col overflow-y-scroll">
       <div class="space-y-2">
         <AttractionItem
           v-for="attraction in attractionList"

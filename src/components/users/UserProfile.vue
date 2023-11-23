@@ -2,15 +2,35 @@
 import CommonBtn from "@/components/common/CommonBtn.vue";
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
+import { deleteUser } from "@/api/user";
 import noProfile from "@/assets/no_profile.png";
+import { useRouter } from "vue-router";
+
+const memberStore = useMemberStore();
+const router = useRouter();
+
+const { userLogout } = memberStore;
+const { userInfo } = storeToRefs(memberStore);
 
 const replaceNoProfile = (event) => {
   event.target.src = noProfile;
 };
 
-const memberStore = useMemberStore();
+const onDeleteUser = () => {
+  const comfirmDelete = confirm("탈퇴하시겠습니까?");
+  if (!comfirmDelete) return;
 
-const { userInfo } = storeToRefs(memberStore);
+  deleteUser(
+    userInfo.value.userId,
+    ({ data }) => {
+      userLogout();
+      router.push("/");
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
 </script>
 
 <template>
@@ -19,7 +39,7 @@ const { userInfo } = storeToRefs(memberStore);
       <div class="w-auto flex space-x-12">
         <img
           class="w-32 h-32 bg-slate-700 rounded-full bg-cover bg-center"
-          :src="userInfo.imageUrl || ''"
+          :src="userInfo.image_url || ''"
           @error="replaceNoProfile"
         />
         <div class="flex flex-col space-y-4 justify-center">
@@ -31,12 +51,12 @@ const { userInfo } = storeToRefs(memberStore);
         <router-link
           :to="{
             name: 'user-update',
-            params: { userId: 'ssafy' },
+            params: { userId: userInfo.userId },
           }"
         >
           <CommonBtn text="수정" />
         </router-link>
-        <CommonBtn text="탈퇴" />
+        <CommonBtn text="탈퇴" @click="onDeleteUser" />
       </div>
     </div>
     <div class="w-full space-y-2">

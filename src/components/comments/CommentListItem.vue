@@ -1,6 +1,7 @@
 <script setup>
 import { deleteComment } from "@/api/comment";
 import { ref } from "vue";
+import noProfile from "@/assets/no_profile.png";
 
 const params = defineProps({
   comment: Object,
@@ -31,6 +32,10 @@ const onDelete = () => {
       console.log(error);
     }
   );
+};
+
+const replaceNoProfile = (event) => {
+  event.target.src = noProfile;
 };
 </script>
 
@@ -107,7 +112,11 @@ const onDelete = () => {
       </template>
     </div>
 
-    <div class="w-12 h-12 rounded-full shrink-0 bg-slate-800"></div>
+    <img
+      class="w-12 h-12 shrink-0 rounded-full bg-slate-500 bg-cover bg-center"
+      :src="params.comment.writerImageUrl || ''"
+      @error="replaceNoProfile"
+    />
     <div class="w-full flex flex-col space-y-2">
       <div class="flex space-x-6 items-center">
         <h3 class="text-slate-800 text-lg font-semibold">

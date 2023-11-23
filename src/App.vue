@@ -1,5 +1,10 @@
 <script setup>
+import { onMounted } from "vue";
 import { RouterView } from "vue-router";
+import { addMessage } from "@/util/message";
+onMounted(() => {
+  addMessage("123");
+});
 </script>
 
 <template>

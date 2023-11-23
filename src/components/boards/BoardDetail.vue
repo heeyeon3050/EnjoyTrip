@@ -12,9 +12,11 @@ import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
 import noImg from "@/assets/no_image.jpg";
+import noProfile from "@/assets/no_profile.png";
 
 const memberStore = useMemberStore();
-const { isLogin, loginUserId } = storeToRefs(memberStore);
+const { isLogin, loginUserId, userInfo } = storeToRefs(memberStore);
+
 const route = useRoute();
 const router = useRouter();
 
@@ -31,6 +33,9 @@ const modifyCommentId = ref(null);
 
 const replaceNoImg = (event) => {
   event.target.src = noImg;
+};
+const replaceNoProfile = (event) => {
+  event.target.src = noProfile;
 };
 
 onMounted(() => {
@@ -223,7 +228,7 @@ window.addEventListener("scroll", () => {
       <span class="text-sm font-medium">{{ board.category }}</span>
     </div>
     <div
-      class="h-20 bg-slate-200 flex items-center p-4 justify-between border-y-2 border-slate-300"
+      class="h-20 bg-slate-200/40 flex items-center p-4 justify-between border-y-2 border-slate-300"
     >
       <h1 class="font-bold text-2xl px-5">{{ board.title }}</h1>
       <h3 class="px-5 font-medium text-slate-500">
@@ -275,12 +280,14 @@ window.addEventListener("scroll", () => {
     </div>
     <div class="w-full p-5 space-y-20">
       <div class="w-full flex flex-col items-center">
-        <img
-          class="bg-cover mr-3"
-          :src="board.imageUrl || ''"
-          @error="replaceNoImg"
-          alt=""
-        />
+        <template v-if="board.imageUrl && board.imageUrl !== ''">
+          <img
+            class="bg-cover mr-3"
+            :src="board.imageUrl || ''"
+            @error="replaceNoImg"
+            alt=""
+          />
+        </template>
       </div>
       <p class="text-lg">
         {{ board.content }}
@@ -313,7 +320,11 @@ window.addEventListener("scroll", () => {
     <div class="w-full flex flex-col p-4 mb-12">
       <h1 class="my-6 font-semibold text-xl">댓글 {{ comments.length }}개</h1>
       <div class="flex items-center space-x-6">
-        <div class="w-16 h-16 rounded-full shrink-0 bg-slate-800"></div>
+        <img
+          class="w-16 h-16 rounded-full shrink-0 bg-slate-800"
+          :src="userInfo.image_url || ''"
+          @error="replaceNoProfile"
+        />
         <input
           type="text"
           name=""

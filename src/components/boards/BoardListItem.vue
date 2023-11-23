@@ -1,11 +1,16 @@
 <script setup>
 import noImg from "@/assets/no_image.jpg";
+import noProfile from "@/assets/no_profile.png";
 import { formatDate } from "@/util/utils";
 
 const params = defineProps({ board: Object });
 
 const replaceNoImg = (event) => {
   event.target.src = noImg;
+};
+
+const replaceNoProfile = (event) => {
+  event.target.src = noProfile;
 };
 </script>
 
@@ -36,7 +41,14 @@ const replaceNoImg = (event) => {
         <h4 class="text-sm text-slate-500">{{ params.board.category }}</h4>
       </div>
       <div class="w-2/5 h-full flex justify-around items-center">
-        <div>{{ params.board.writerName }}</div>
+        <div class="flex items-center space-x-2">
+          <img
+            class="w-8 h-8 shrink-0 rounded-full bg-slate-500 bg-cover bg-center"
+            :src="params.board.writerImageUrl || ''"
+            @error="replaceNoProfile"
+          />
+          <h3>{{ params.board.writerName }}</h3>
+        </div>
         <div class="font-semibold">
           {{ params.board?.createdAt && formatDate(params.board?.createdAt) }}
         </div>
