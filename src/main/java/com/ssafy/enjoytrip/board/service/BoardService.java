@@ -133,18 +133,18 @@ public class BoardService {
 
 		throw new BoardNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", boardId));
 	}
-
-	public CommonResponse keepBoard(MultipartFile image, Board board) throws IOException {
-		System.out.println("Diary service saveDiary");
-		if(!image.isEmpty()) {
-			String storedFileName = s3Uploader.upload(image,"images");
-			Image newImage = Image.builder()
-				.url(storedFileName)
-				.board(board)
-				.build();
-			//board.getImages().add(newImage);
-		}
-		Board savedBoard = boardRepository.save(board);
-		return new CommonResponse(true, "Success to get board", savedBoard);
-	}
+	//
+	// public CommonResponse keepBoard(MultipartFile image, Board board) throws IOException {
+	// 	System.out.println("Diary service saveDiary");
+	// 	if(!image.isEmpty()) {
+	// 		String storedFileName = s3Uploader.upload(image,"images");
+	// 		Image newImage = Image.builder()
+	// 			.url(storedFileName)
+	// 			.board(board)
+	// 			.build();
+	// 		//board.getImages().add(newImage);
+	// 	}
+	// 	Board savedBoard = boardRepository.save(board);
+	// 	return new CommonResponse(true, "Success to get board", savedBoard);
+	// }
 }

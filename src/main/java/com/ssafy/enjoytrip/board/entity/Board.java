@@ -61,9 +61,7 @@ public class Board extends BaseEntity{
 		inverseJoinColumns = @JoinColumn(name = "user_id")
 	)
 	private Set<User> board_users = new HashSet<>();
-	@OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
-	@JsonManagedReference
-	private List<Image> images;
+	private String imageUrl;
 
 	// public static Board toBoard(BoardDto boardDto, User writer, List<Image> images) {
 	// 	return Board.builder()

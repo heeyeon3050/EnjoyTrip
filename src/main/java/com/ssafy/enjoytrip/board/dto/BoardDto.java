@@ -35,6 +35,6 @@ public class BoardDto implements Serializable {
 	private Double latitude;
 	private Double longitude;
 
-	private List<MultipartFile> images = new ArrayList<>();
+	private String imageUrl;
 	private Set<Long> userIds;
 }

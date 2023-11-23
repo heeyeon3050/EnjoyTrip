@@ -32,6 +32,7 @@ public class BoardResponseDto {
 	private Long commentCount;
 	private Long likeCount;
 	private Boolean isLike;
+	private String imageUrl;
 
 	public static BoardResponseDto toBoardResponseDto(Board board, Long commentCount, Boolean isLike) {
 		if (board == null) {
@@ -51,6 +52,7 @@ public class BoardResponseDto {
 			.commentCount(commentCount)
 			.createdAt(board.getCreatedAt())
 			.isLike(isLike)
+			.imageUrl(board.getImageUrl())
 			.build();
 	}
 }
