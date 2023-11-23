@@ -70,4 +70,5 @@ public class BoardController {
 	public ResponseEntity<?> around(@PageableDefault(size = 10) Pageable pageable) {
 		return ResponseEntity.ok(boardService.getBestItems(pageable));
 	}
+
 }
