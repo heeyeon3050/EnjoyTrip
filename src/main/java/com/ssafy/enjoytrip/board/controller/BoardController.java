@@ -67,7 +67,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/around")
-	public ResponseEntity<?> around(@PageableDefault(size = 10) Pageable pageable) {
+	public ResponseEntity<?> around(@PageableDefault(size = 15) Pageable pageable) {
 		return ResponseEntity.ok(boardService.getBestItems(pageable));
 	}
 
