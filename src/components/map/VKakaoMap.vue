@@ -7,7 +7,12 @@ var map;
 const positions = ref([]);
 const markers = ref([]);
 
-const props = defineProps({ list: Array, selected: Object });
+const props = defineProps({
+  list: Array,
+  selected: Object,
+  latitude: Number,
+  longitude: Number,
+});
 
 watch(
   () => props.selected.value,
@@ -64,7 +69,7 @@ watch(
 const initMap = () => {
   const container = document.getElementById("map");
   const options = {
-    center: new kakao.maps.LatLng(33.450701, 126.570667),
+    center: new kakao.maps.LatLng(props.latitude, props.longitude),
     level: 3,
   };
   map = new kakao.maps.Map(container, options);

@@ -1,4 +1,11 @@
-<script setup></script>
+<script setup>
+const params = defineProps({
+  comment: Object,
+  modify: Boolean,
+  cancelModify: Function,
+});
+const emit = defineEmits(["modifyStart", "onDeleteComment", "onModifyComment"]);
+</script>
 
 <template>
   <div

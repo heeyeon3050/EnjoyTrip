@@ -1,26 +1,43 @@
 <script setup>
+import { likeAttraction } from "@/api/attraction";
 import noImg from "@/assets/no_image.jpg";
+
 const params = defineProps({ attraction: Object });
+const emit = defineEmits(["like"]);
 
 const replaceNoImg = (event) => {
   event.target.src = noImg;
 };
 
-const likeAttraction = () => {
-  console.log(123);
+const onLikeAttraction = () => {
+  likeAttraction(
+    params.attraction.id,
+    ({ data: data }) => {
+      console.log(data.data);
+      emit("like", data.data);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
 };
 </script>
 
 <template>
-  <div class="w-full h-44 p-2 bg-blue-100 shadow-md flex relative">
+  <div
+    class="w-full h-44 p-2 bg-gray-600 shadow-md flex relative text-slate-200"
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       stroke-width="1.5"
       stroke="currentColor"
-      class="absolute w-6 h-6 right-3 top-3 cursor-pointer"
-      @click="likeAttraction"
+      :class="{
+        'absolute w-6 h-6 right-3 top-3 cursor-pointer': true,
+        'fill-red-400 text-red-400': attraction.isLiked,
+      }"
+      @click.stop="onLikeAttraction"
     >
       <path
         stroke-linecap="round"
@@ -36,21 +53,21 @@ const likeAttraction = () => {
       alt=""
     />
     <div class="flex flex-col justify-between p-2 overflow-hidden">
-      <h3 class="text-slate-900 font-bold text-sm ml-1">
+      <h3 class="text-slate-300 font-bold text-sm ml-1">
         {{ params.attraction.category }}
       </h3>
       <h1
-        class="text-overflow-clip overflow-ellipsis break-words line-clamp-1 text-slate-900 font-semibold text-3xl"
+        class="text-overflow-clip overflow-ellipsis break-words line-clamp-1 text-slate-200 font-semibold text-3xl"
       >
         {{ params.attraction.title }}
       </h1>
       <h4
-        class="text-overflow-clip overflow-ellipsis break-words line-clamp-1 text-sm text-slate-500"
+        class="text-overflow-clip overflow-ellipsis break-words line-clamp-1 text-sm text-slate-400"
       >
         {{ params.attraction.address1 }}
       </h4>
       <p
-        class="text-overflow-clip overflow-ellipsis break-words line-clamp-1 text-sm text-slate-600"
+        class="text-overflow-clip overflow-ellipsis break-words line-clamp-1 text-sm text-slate-300"
       >
         {{ params.attraction.description }}
       </p>

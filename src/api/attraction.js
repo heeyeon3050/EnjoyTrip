@@ -3,6 +3,8 @@ import { localAxios } from "@/util/http-commons";
 const local = localAxios();
 
 function listAttraction(param, success, fail) {
+  local.defaults.headers["Authorization"] =
+    "Bearer " + sessionStorage.getItem("accessToken");
   local
     .get(`/attraction/list`, {
       params: param,
@@ -14,8 +16,10 @@ function listAttraction(param, success, fail) {
     .catch(fail);
 }
 
-function likeAttraction(boardId, success, fail) {
-  local.post(`/board/${boardId}/like`).then(success).catch(fail);
+function likeAttraction(attractionId, success, fail) {
+  local.defaults.headers["Authorization"] =
+    "Bearer " + sessionStorage.getItem("accessToken");
+  local.post(`/attraction/${attractionId}/like`).then(success).catch(fail);
 }
 
 export { listAttraction, likeAttraction };

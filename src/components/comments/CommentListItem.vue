@@ -8,7 +8,12 @@ const params = defineProps({
   modify: Boolean,
   cancelModify: Function,
 });
-const emit = defineEmits(["modifyStart", "onDeleteComment", "onModifyComment"]);
+const emit = defineEmits([
+  "modifyStart",
+  "modifyCancel",
+  "onDeleteComment",
+  "onModifyComment",
+]);
 
 const content = ref(params.comment.content);
 
@@ -119,16 +124,21 @@ const replaceNoProfile = (event) => {
     />
     <div class="w-full flex flex-col space-y-2">
       <div class="flex space-x-6 items-center">
-        <h3 class="text-slate-800 text-lg font-semibold">
+        <h3 class="text-slate-400 text-lg font-semibold">
           @{{ params.comment.writerName }}
         </h3>
-        <h4 class="text-slate-400 text-xs">10개월 전</h4>
+        <h4 class="text-slate-500 text-xs">10개월 전</h4>
       </div>
       <template v-if="modify">
-        <input autofocus type="text" v-model="content" />
+        <input
+          autofocus
+          type="text"
+          class="focus:outline-none p-1 rounded-md bg-blue-950/30 text-slate-200"
+          v-model="content"
+        />
       </template>
       <template v-else>
-        <p>
+        <p class="text-slate-200">
           {{ params.comment.content }}
         </p>
       </template>

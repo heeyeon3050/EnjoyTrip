@@ -61,24 +61,24 @@ const onSubmit = () => {
       <VSelect
         :selectOption="boardCategory"
         v-model="category"
-        class="w-32 border-2 bg-gray-50 text-xl text-slate-700 text-center font-semibold border-slate-200 rounded-l-xl"
+        class="w-32 border-[2px] text-xl text-slate-200 text-center font-semibold border-slate-400 rounded-l-xl bg-slate-400/30"
       />
       <input
         type="text"
         v-model="title"
-        class="w-full p-4 text-2xl placeholder:text-slate-950 placeholder:text-2xl border-2 border-slate-200 rounded-r-xl focus:outline-none"
+        class="w-full p-4 text-2xl placeholder:text-slate-300 placeholder:text-2xl border-[2px] border-slate-400 rounded-r-xl focus:outline-none bg-slate-400/30 text-slate-200"
         placeholder="게시글 제목..."
       />
     </div>
     <div class="w-full">
-      <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50">
-        <div class="px-4 py-2 bg-white rounded-lg dark:bg-gray-800">
+      <div class="w-full mb-4 border border-gray-200 rounded-lg">
+        <div class="px-4 py-2 bg-slate-600/30 rounded-lg">
           <label for="editor" class="sr-only">Publish post</label>
           <textarea
             id="editor"
             rows="20"
             v-model="content"
-            class="resize-none block w-full p-10 text-xl text-gray-800 bg-white border-0 focus:outline-none"
+            class="resize-none block w-full p-10 text-xl text-slate-200 bg-transparent border-0 focus:outline-none"
             placeholder="내용을 입력하세요.."
             required
           ></textarea>

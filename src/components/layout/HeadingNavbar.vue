@@ -44,12 +44,14 @@ const modalLogin = () => {
 };
 </script>
 <template>
-  <nav class="w-full h-24 flex justify-between col-span-12">
+  <nav class="glow w-full h-24 flex justify-between col-span-12">
     <div class="flex">
-      <router-link :to="{ name: 'main' }" class="mx-5 flex items-center">
+      <router-link :to="{ name: 'main' }" class="mx-3 flex items-center">
         <div class="flex items-center">
-          <img src="@/assets/logo.png" alt="..." class="h-14" />
-          <h1 class="font-bold text-2xl flex items-center">EnjoyTrip</h1>
+          <img src="@/assets/logo.png" alt="..." class="h-20 mx-7 px-2" />
+          <!-- <h1 class="eng glow font-bold text-xl flex items-center">
+            ENJOY TRIP
+          </h1> -->
         </div>
       </router-link>
       <ul class="flex justify-between space-x-10 items-center ml-10">
@@ -102,19 +104,19 @@ const modalLogin = () => {
         >
           <div class="flex space-x-5 h-full px-6 w-44 items-center">
             <img
-              class="w-10 h-10 shrink-0 rounded-full bg-slate-500 bg-cover bg-center"
+              class="w-10 h-10 shrink-0 rounded-full bg-slate-500 bg-cover bg-center shadow-lg"
               :src="userInfo.image_url || ''"
               @error="replaceNoProfile"
             />
             <h2
-              class="font-medium text-lg text-overflow-clip overflow-ellipsis break-words line-clamp-1"
+              class="font-medium text-sm text-overflow-clip overflow-ellipsis break-words line-clamp-1"
             >
               {{ userInfo.name }}
             </h2>
           </div>
         </router-link>
         <div
-          class="flex justify-center items-center cursor-pointer"
+          class="flex text-sm justify-center items-center cursor-pointer"
           @click="logout"
         >
           로그아웃
@@ -137,4 +139,16 @@ const modalLogin = () => {
   <FindPasswordModal v-if="modalStatus === ModalStatus.FIND_PASSWORD" />
 </template>
 
-<style scoped></style>
+<style scoped>
+@import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+
+.glow {
+  color: rgb(235, 243, 252);
+  text-shadow: 0 0 0.1rem #def;
+  font-family: "Nanum Myeongjo", serif;
+}
+
+.eng {
+  font-family: "SF_HambakSnow";
+}
+</style>

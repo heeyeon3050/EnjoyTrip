@@ -1,8 +1,7 @@
-export function addMessage(message) {
+export function addMessage(message, classes) {
   const div = document.createElement("div");
 
-  div.className =
-    "message fixed flex justify-center items-center bg-green-200 bottom-10 left-16 w-96 h-24 rounded-xl";
+  div.className = `message fixed flex justify-center items-center bottom-10 left-16 w-96 h-24 rounded-xl ${classes}`;
   div.innerHTML += `
     <path
       stroke-linecap="round"

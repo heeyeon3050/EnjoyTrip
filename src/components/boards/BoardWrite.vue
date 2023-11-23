@@ -41,7 +41,10 @@ onMounted(() => {
 });
 
 const locationSearch = () => {
-  if (locationKeyword.value === "") return;
+  if (locationKeyword.value === "") {
+    locationData.value = [];
+    return;
+  }
   ps.keywordSearch(locationKeyword.value, (data, status, pagination) => {
     if (status === kakao.maps.services.Status.OK) {
       locationData.value = data;
@@ -112,31 +115,33 @@ const handleFileChange = (e) => {
         :selectOption="boardCategory"
         @onKeySelect="onChangeBoardKey"
         v-model="category"
-        class="w-32 border-2 bg-gray-50 text-xl text-slate-700 text-center font-semibold border-slate-200 rounded-l-xl"
+        class="w-32 border-[2px] text-xl text-slate-200 text-center font-semibold border-slate-400 rounded-l-xl bg-slate-400/30"
       />
       <input
         type="text"
         v-model="title"
-        class="w-full p-4 text-2xl placeholder:text-slate-950 placeholder:text-2xl border-2 border-slate-200 rounded-r-xl focus:outline-none"
+        class="w-full p-4 text-2xl placeholder:text-slate-300 placeholder:text-2xl border-[2px] border-slate-400 rounded-r-xl focus:outline-none bg-slate-400/30 text-slate-200"
         placeholder="게시글 제목..."
       />
     </div>
     <div class="w-full">
-      <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50">
+      <div
+        class="w-full bg-slate-600/30 mb-4 border border-gray-200 rounded-lg bg-gray-50"
+      >
         <div class="flex items-center justify-between px-3 py-2 border-b">
           <div class="flex flex-wrap items-center divide-gray-200">
             <div class="flex items-center space-x-1">
               <div
-                class="p-2 text-gray-500 flex items-center space-x-2 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                class="p-2 text-gray-200 flex items-center space-x-2 rounded cursor-pointer hover:text-gray-400"
               >
                 <label for="file">
                   <div
-                    class="p-2 space-x-3 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100"
+                    class="p-2 space-x-3 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-500/50"
                   >
                     <svg
                       :class="{
                         'w-4 h-4': true,
-                        'text-blue-600': selectedImage !== '',
+                        'text-blue-100': selectedImage !== '',
                       }"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
@@ -164,13 +169,13 @@ const handleFileChange = (e) => {
               </div>
               <div
                 @click="locationOpen = !locationOpen"
-                class="p-2 text-gray-500 flex items-center space-x-2 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                class="p-2 flex items-center space-x-2 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-500/50"
               >
-                <div>
+                <div class="text-gray-500">
                   <svg
                     :class="{
                       'w-4 h-4': true,
-                      'text-blue-600': selectedLocation !== null,
+                      'text-blue-100': selectedLocation !== null,
                     }"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
@@ -182,7 +187,9 @@ const handleFileChange = (e) => {
                     />
                   </svg>
                 </div>
-                {{ selectedLocation?.place_name }}
+                <span class="text-gray-200">{{
+                  selectedLocation?.place_name
+                }}</span>
                 <span class="sr-only">Embed map</span>
               </div>
             </div>
@@ -194,30 +201,35 @@ const handleFileChange = (e) => {
               <input
                 type="text"
                 v-model="locationKeyword"
-                class="w-full p-4 text-2xl placeholder:text-slate-950 placeholder:text-2xl border-2 border-slate-200 focus:outline-none"
-                placeholder="검색어 입력"
+                class="w-full p-4 bg-slate-600 text-slate-200 text-2xl placeholder:text-slate-300 placeholder:text-2xl border-[1px] border-slate-200 focus:outline-none"
+                placeholder="검색어 입력.."
               />
             </div>
-            <div class="w-full h-44 overflow-y-scroll scrollbar-hide">
-              <div class="w-full">
+            <div
+              class="w-full max-h-44 overflow-y-scroll scrollbar-hide border-[1px] border-slate-100"
+            >
+              <div class="w-full bg-slate-400/30 text-slate-300">
                 <div
                   v-for="location in locationData"
                   :key="location"
-                  class="w-full h-10"
+                  class="w-full h-14 text-sm text-slate-500 p-4 border-b-[1px] border-slate-500"
                   @click="setLocation(location)"
                 >
-                  {{ location.place_name }} ( {{ location.address_name }})
+                  <span class="text-lg text-slate-300">{{
+                    location.place_name
+                  }}</span>
+                  ( {{ location.address_name }})
                 </div>
               </div>
             </div>
           </div>
         </template>
-        <div class="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
+        <div class="px-4 py-2 bg-transparent rounded-b-lg">
           <textarea
             id="editor"
             rows="20"
             v-model="content"
-            class="resize-none block w-full p-10 text-xl text-gray-800 bg-white border-0 focus:outline-none"
+            class="resize-none block w-full p-10 text-xl text-slate-200 bg-transparent border-0 focus:outline-none"
             placeholder="내용을 입력하세요.."
             required
           ></textarea>

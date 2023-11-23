@@ -28,7 +28,6 @@ const commentContent = ref("");
 const currentCommentPage = ref(1);
 const totalCommentPage = ref(1);
 const commentsLoading = ref(false);
-const liked = ref(false);
 const modifyCommentId = ref(null);
 
 const replaceNoImg = (event) => {
@@ -44,7 +43,6 @@ onMounted(() => {
     boardId,
     ({ data }) => {
       board.value = data.data;
-      liked.value = data.data.isLike;
       if (window.kakao && window.kakao.maps) {
         initMap();
       } else {
@@ -131,6 +129,7 @@ const addComment = () => {
     ({ data }) => {
       console.log(data);
       comments.value = [{ ...data.data }, ...comments.value];
+      commentContent.value = "";
     },
     (error) => {
       console.log(error);
@@ -157,8 +156,8 @@ const onDelete = () => {
 const onLike = () => {
   likeBoard(
     route.params.boardId,
-    (response) => {
-      console.log(response);
+    ({ data: data }) => {
+      board.value = data.data;
     },
     (error) => {
       console.log(error);
@@ -169,6 +168,10 @@ const onLike = () => {
 const modifyStart = (commentId) => {
   modifyCommentId.value = commentId;
 };
+const cancelModify = () => {
+  modifyCommentId.value = null;
+};
+
 const onDeleteComment = (commentId) => {
   comments.value = comments.value.filter((c) => c.id !== commentId);
   modifyCommentId.value = null;
@@ -223,7 +226,7 @@ window.addEventListener("scroll", () => {
 </script>
 
 <template>
-  <div class="w-full h-fit flex flex-col mt-10">
+  <div class="w-full h-fit flex flex-col mt-10 text-slate-200">
     <div class="w-full h-8 px-3">
       <span class="text-sm font-medium">{{ board.category }}</span>
     </div>
@@ -231,7 +234,7 @@ window.addEventListener("scroll", () => {
       class="h-20 bg-slate-200/40 flex items-center p-4 justify-between border-y-2 border-slate-300"
     >
       <h1 class="font-bold text-2xl px-5">{{ board.title }}</h1>
-      <h3 class="px-5 font-medium text-slate-500">
+      <h3 class="px-5 font-medium text-slate-300">
         {{ board.createdAt?.replaceAll("T", " ") }}
       </h3>
     </div>
@@ -296,11 +299,29 @@ window.addEventListener("scroll", () => {
     <div id="boardMap" class="w-full h-80 my-12 border-4"></div>
     <div class="w-full flex justify-between my-14">
       <div>
-        <CommonBtn
-          text="좋아요"
+        <button
           @click="onLike"
-          :class="{ 'bg-red-400': liked }"
-        />
+          class="hover:bg-slate-100/10 p-3 rounded-md flex space-x-2 items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            :class="{
+              'w-6 h-6 mb-1': true,
+              'fill-blue-100 text-blue-200': board.isLike,
+            }"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z"
+            />
+          </svg>
+          <h1>{{ board.isLike ? "좋아요 취소" : "좋아요" }}</h1>
+        </button>
       </div>
       <div class="flex justify-end space-x-3">
         <router-link
@@ -318,7 +339,9 @@ window.addEventListener("scroll", () => {
 
   <div class="w-full flex flex-col my-4">
     <div class="w-full flex flex-col p-4 mb-12">
-      <h1 class="my-6 font-semibold text-xl">댓글 {{ comments.length }}개</h1>
+      <h1 class="my-6 font-semibold text-xl text-slate-200">
+        댓글 {{ comments.length }}개
+      </h1>
       <div class="flex items-center space-x-6">
         <img
           class="w-16 h-16 rounded-full shrink-0 bg-slate-800"
@@ -331,7 +354,7 @@ window.addEventListener("scroll", () => {
           id=""
           placeholder="댓글 작성..."
           v-model="commentContent"
-          class="w-full h-16 bg-blue-50/30 rounded-t-md focus:outline-none px-4 focus:border-b-2 focus:border-blue-600"
+          class="w-full text-slate-200 placeholder:text-slate-400 h-16 bg-blue-950/30 rounded-t-md focus:outline-none px-4 focus:border-b-2 focus:border-blue-200"
         />
       </div>
       <div class="flex justify-end p-4">
@@ -354,6 +377,7 @@ window.addEventListener("scroll", () => {
           :key="comment.id"
           :comment="comment"
           :modify="modifyCommentId === comment.id"
+          :cancelModify="cancelModify"
           @modifyStart="modifyStart"
           @onDeleteComment="onDeleteComment"
           @onModifyComment="onModifyComment"

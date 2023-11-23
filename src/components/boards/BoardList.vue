@@ -88,8 +88,6 @@ const search = () => {
       boards.value = data.data.content;
       totalPage.value = data.data.totalPages;
       router.replace({ name: "board-list", query: query });
-      searchOption.value = "TITLE";
-      keyword.value = "";
     },
     (error) => {
       console.error(error);
@@ -136,11 +134,11 @@ const onPageChange = (val) => {
         :selectOption="searchOptions"
         @onKeySelect="onChangeKey"
         v-model="searchOption"
-        class="w-24 h-10 border-2 mr-3 rounded-md px-3 border-slate-500"
+        class="w-24 h-10 border-2 mr-3 rounded-md px-3 border-slate-500 bg-blue-950/30 text-slate-200 focus:outline-none"
       />
       <input
         type="text"
-        class="w-48 h-10 border-2 rounded-md p-2 border-slate-500"
+        class="w-48 h-10 border-2 rounded-md p-2 border-slate-500 bg-blue-950/30 text-slate-200 focus:outline-none"
         v-model="keyword"
         @keyup.enter="search"
       />

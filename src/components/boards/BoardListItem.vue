@@ -16,11 +16,11 @@ const replaceNoProfile = (event) => {
 
 <template>
   <div
-    class="w-full h-28 p-2 flex relative first:border-t-0 border-t-[1px] border-[#bbb]"
+    class="w-full h-28 p-2 flex relative first:border-t-0 border-t-[1px] border-[#bbb] text-slate-200"
   >
     <img
       class="h-full aspect-square bg-cover mr-3"
-      :src="params.board.imageUrl || ''"
+      :src="params.board.imageUrl"
       @error="replaceNoImg"
       alt=""
     />
@@ -38,18 +38,18 @@ const replaceNoProfile = (event) => {
             {{ params.board.title }} [{{ params.board.commentCount }}]
           </h1>
         </router-link>
-        <h4 class="text-sm text-slate-500">{{ params.board.category }}</h4>
+        <h4 class="text-sm text-slate-400">{{ params.board.category }}</h4>
       </div>
       <div class="w-2/5 h-full flex justify-around items-center">
         <div class="flex items-center space-x-2">
           <img
             class="w-8 h-8 shrink-0 rounded-full bg-slate-500 bg-cover bg-center"
-            :src="params.board.writerImageUrl || ''"
+            :src="params.board.writerImageUrl"
             @error="replaceNoProfile"
           />
           <h3>{{ params.board.writerName }}</h3>
         </div>
-        <div class="font-semibold">
+        <div class="font-medium">
           {{ params.board?.createdAt && formatDate(params.board?.createdAt) }}
         </div>
         <div class="flex space-x-2">
