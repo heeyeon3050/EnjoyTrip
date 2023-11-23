@@ -28,7 +28,6 @@ public class Attraction{
     private Double longitude;
     private String image_url;
     private String address1;
-    private String address2;
     @Enumerated(EnumType.STRING)
     private AttractionCategory category;
     private String description;
@@ -48,7 +47,6 @@ public class Attraction{
                 .longitude(attractionDto.getLongitude())
                 .image_url(attractionDto.getImageUrl())
                 .address1(attractionDto.getAddress1())
-                .address2(attractionDto.getAddress2())
                 .category(attractionDto.getCategory())
                 .description(attractionDto.getDescription())
                 .build();
