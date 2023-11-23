@@ -5,8 +5,13 @@ import com.ssafy.enjoytrip.auth.entity.Authority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.enjoytrip.board.dto.BoardDto;
+import com.ssafy.enjoytrip.board.entity.Board;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
+import com.ssafy.enjoytrip.image.entity.Image;
+import com.ssafy.enjoytrip.image.service.ImageService;
 import com.ssafy.enjoytrip.user.dto.UpdateDto;
 import com.ssafy.enjoytrip.user.dto.UserDto;
 import com.ssafy.enjoytrip.user.entity.User;
@@ -17,13 +22,17 @@ import com.ssafy.enjoytrip.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final ImageService imageService;
 
 	@Transactional
 	public CommonResponse join(UserDto userDto) {
@@ -97,5 +106,12 @@ public class UserService {
 
 	public CommonResponse checkEmailDuplication(String email) {
 		return new CommonResponse(true, "Success to check email.", userRepository.existsByEmail(email));
+	}
+
+	@Transactional
+	public CommonResponse upload(MultipartFile image, UpdateDto updateDto, User user) throws IOException {
+		imageService.upload(image);
+		user.update(updateDto, passwordEncoder);
+		return new CommonResponse(true, "Success to create board", userRepository.save(user));
 	}
 }

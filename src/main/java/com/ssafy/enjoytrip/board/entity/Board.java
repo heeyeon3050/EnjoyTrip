@@ -65,7 +65,18 @@ public class Board extends BaseEntity{
 	@JsonManagedReference
 	private List<Image> images;
 
-	public static Board toBoard(BoardDto boardDto, User writer, List<Image> images) {
+	// public static Board toBoard(BoardDto boardDto, User writer, List<Image> images) {
+	// 	return Board.builder()
+	// 		.title(boardDto.getTitle())
+	// 		.writer(writer)
+	// 		.content(boardDto.getContent())
+	// 		.category(boardDto.getCategory())
+	// 		.latitude(boardDto.getLatitude())
+	// 		.longitude(boardDto.getLongitude())
+	// 		.images(images)
+	// 		.build();
+	// }
+	public static Board toBoard(BoardDto boardDto, User writer) {
 		return Board.builder()
 			.title(boardDto.getTitle())
 			.writer(writer)
@@ -73,7 +84,6 @@ public class Board extends BaseEntity{
 			.category(boardDto.getCategory())
 			.latitude(boardDto.getLatitude())
 			.longitude(boardDto.getLongitude())
-			.images(images)
 			.build();
 	}
 

@@ -1,7 +1,13 @@
 package com.ssafy.enjoytrip.user.controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.enjoytrip.common.rq.Rq;
 import com.ssafy.enjoytrip.user.dto.UpdateDto;

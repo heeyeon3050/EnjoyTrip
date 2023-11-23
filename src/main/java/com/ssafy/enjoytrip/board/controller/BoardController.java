@@ -36,12 +36,18 @@ public class BoardController {
 	private final Rq rq;
 	private final BoardService boardService;
 
+	// @ResponseBody
+	// @PostMapping(value="/create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	// public ResponseEntity<?> create(@RequestParam(value = "image") MultipartFile image, BoardDto boardDto) throws
+	// 	IOException {
+	// 	boardDto.getImages().add(image);
+	// 	System.out.println(boardDto.getTitle());
+	// 	return ResponseEntity.ok(boardService.create(boardDto, rq.getUser()));
+	// }
+
 	@ResponseBody
-	@PostMapping(value="/create",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<?> create(@RequestParam(value = "image") MultipartFile image, BoardDto boardDto) throws
-		IOException {
-		boardDto.getImages().add(image);
-		System.out.println(boardDto.getTitle());
+	@PostMapping(value="/create")
+	public ResponseEntity<?> create(BoardDto boardDto) {
 		return ResponseEntity.ok(boardService.create(boardDto, rq.getUser()));
 	}
 

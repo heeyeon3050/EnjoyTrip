@@ -38,21 +38,29 @@ public class BoardService {
 	private final BoardRepositoryCustom boardRepositoryCustom;
 	private final ImageService imageService;
 
+	// @Transactional
+	// public CommonResponse create(BoardDto boardDto, User user) throws IOException {
+	// 	List<Image> images = boardDto.getImages().stream().map(i -> {
+	// 			try {
+	// 				return imageService.upload(i);
+	// 			} catch (IOException e) {
+	// 				throw new RuntimeException(e);
+	// 			}
+	// 		}).collect(Collectors.toList());
+	// 	Board board = Board.toBoard(boardDto, user, images);
+	//
+	//
+	// 	// System.out.println("image..............." + image);
+	// 	// System.out.println("board...................." + board);
+	// 	// imageService.upload(image);
+	//
+	// 	return new CommonResponse(true, "Success to create board", boardRepository.save(board));
+	// }
+
 	@Transactional
-	public CommonResponse create(BoardDto boardDto, User user) throws IOException {
-		List<Image> images = boardDto.getImages().stream().map(i -> {
-				try {
-					return imageService.upload(i);
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			}).collect(Collectors.toList());
-		Board board = Board.toBoard(boardDto, user, images);
+	public CommonResponse create(BoardDto boardDto, User user)  {
 
-
-		// System.out.println("image..............." + image);
-		// System.out.println("board...................." + board);
-		// imageService.upload(image);
+		Board board = Board.toBoard(boardDto, user);
 
 		return new CommonResponse(true, "Success to create board", boardRepository.save(board));
 	}

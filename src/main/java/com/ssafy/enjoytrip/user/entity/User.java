@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ssafy.enjoytrip.attraction.entity.Attraction;
 import com.ssafy.enjoytrip.auth.entity.Authority;
@@ -40,6 +41,7 @@ public class User extends BaseEntity {
 	private Authority authority;
 	@ManyToMany(mappedBy = "board_users")
 	@JsonIgnoreProperties("board_users")
+	@JsonIgnore
 	private Set<Board> boards = new HashSet<>();
 	@ManyToMany(mappedBy = "attraction_users")
 	@JsonIgnoreProperties("attraction_users")
@@ -51,6 +53,7 @@ public class User extends BaseEntity {
 			.email(userDto.getEmail())
 			.password(passwordEncoder.encode(userDto.getPassword()))
 			.name(userDto.getName())
+			.image_url(userDto.getImageUrl())
 			.authority(authority)
 			.build();
 	}
@@ -64,6 +67,9 @@ public class User extends BaseEntity {
 		}
 		if (updateDto.getName() != null) {
 			this.name = updateDto.getName();
+		}
+		if (updateDto.getImageUrl() != null) {
+			this.image_url = updateDto.getImageUrl();
 		}
 	}
 }
