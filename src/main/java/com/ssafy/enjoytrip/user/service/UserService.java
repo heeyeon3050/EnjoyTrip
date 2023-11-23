@@ -14,6 +14,7 @@ import com.ssafy.enjoytrip.image.entity.Image;
 import com.ssafy.enjoytrip.image.service.ImageService;
 import com.ssafy.enjoytrip.user.dto.UpdateDto;
 import com.ssafy.enjoytrip.user.dto.UserDto;
+import com.ssafy.enjoytrip.user.dto.UserResponseDto;
 import com.ssafy.enjoytrip.user.entity.User;
 import com.ssafy.enjoytrip.user.exception.PasswordNotEqualException;
 import com.ssafy.enjoytrip.user.exception.UserExistException;
@@ -49,11 +50,11 @@ public class UserService {
 		}
 
 		User user = User.toUser(userDto, Authority.USER, passwordEncoder);
-		return new CommonResponse(true, "Success to create user", userRepository.save(user));
+		return new CommonResponse(true, "Success to create user", UserResponseDto.toUserResponseDto(userRepository.save(user)));
 	}
 
 	public CommonResponse getById(String userId) {
-		return new CommonResponse(true, "Success to get User.", userRepository.findByUserId(userId));
+		return new CommonResponse(true, "Success to get User.", UserResponseDto.toUserResponseDto(userRepository.findByUserId(userId).orElse(null)));
 	}
 
 	@Transactional
@@ -72,7 +73,7 @@ public class UserService {
 		existUser.update(updateDto, passwordEncoder);
 		userRepository.save(existUser);
 
-		return new CommonResponse(true, "Success to update User.", existUser);
+		return new CommonResponse(true, "Success to update User.", UserResponseDto.toUserResponseDto(existUser));
 	}
 
 	@Transactional

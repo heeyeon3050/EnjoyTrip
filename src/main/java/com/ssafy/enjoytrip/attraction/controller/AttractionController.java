@@ -45,8 +45,8 @@ public class AttractionController {
 
 	@GetMapping("/list")
 	public ResponseEntity<?> getItems(@RequestParam(required = false) List<AttractionCategory> categories,
-		@RequestParam(required = false) String keyword, @RequestParam(required = false, defaultValue = "37.5") double latitude, @RequestParam(required = false, defaultValue = "127.0") double longitude, @PageableDefault(size = 10) Pageable pageable) {
-		return ResponseEntity.ok(attractionService.getItems(categories, keyword, latitude, longitude, pageable));
+		@RequestParam(required = false) String keyword, @RequestParam(required = false, defaultValue = "37.5012739267") double latitude, @RequestParam(required = false, defaultValue = "127.0396131393") double longitude, @PageableDefault(size = 10) Pageable pageable) {
+		return ResponseEntity.ok(attractionService.getItems(categories, keyword, latitude, longitude, rq.getUser(), pageable));
 	}
 
 	@PostMapping("/{attractionId}/like")
