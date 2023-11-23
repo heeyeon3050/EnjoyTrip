@@ -82,6 +82,7 @@ public class Board extends BaseEntity{
 			.category(boardDto.getCategory())
 			.latitude(boardDto.getLatitude())
 			.longitude(boardDto.getLongitude())
+			.imageUrl(boardDto.getImageUrl())
 			.build();
 	}
 

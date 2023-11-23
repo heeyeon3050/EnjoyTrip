@@ -22,6 +22,7 @@ public class BoardResponseDto {
 	private Long id;
 	private String writerId;
 	private String writerName;
+	private String writerImageUrl;
 	private String title;
 	private String content;
 	@Enumerated(EnumType.STRING)
@@ -44,6 +45,7 @@ public class BoardResponseDto {
 			.title(board.getTitle())
 			.writerId(board.getWriter().getUserId())
 			.writerName(board.getWriter().getName())
+			.writerImageUrl(board.getWriter().getImage_url())
 			.content(board.getContent())
 			.category(board.getCategory())
 			.latitude(board.getLatitude())
