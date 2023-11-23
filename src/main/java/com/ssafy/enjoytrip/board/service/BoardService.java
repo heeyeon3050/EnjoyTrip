@@ -137,7 +137,7 @@ public class BoardService {
 	}
 
 	public CommonResponse getBestItems(Pageable pageable) {
-		Page<Board> boards = boardRepository.findAllOrderByLikes(pageable);
+		Page<Board> boards = boardRepository.findAllOrderByBoardUsersSizeDesc(pageable);
 
 		List<BoardResponseDto> boardResponseDtos = boards.getContent()
 			.stream()
