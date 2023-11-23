@@ -1,7 +1,6 @@
 package com.ssafy.enjoytrip.board.dto;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -54,6 +53,27 @@ public class BoardResponseDto {
 			.commentCount(commentCount)
 			.createdAt(board.getCreatedAt())
 			.isLike(isLike)
+			.imageUrl(board.getImageUrl())
+			.build();
+	}
+
+	public static BoardResponseDto toBoardResponseDto(Board board) {
+		if (board == null) {
+			return null;
+		}
+
+		return BoardResponseDto.builder()
+			.id(board.getId())
+			.title(board.getTitle())
+			.writerId(board.getWriter().getUserId())
+			.writerName(board.getWriter().getName())
+			.writerImageUrl(board.getWriter().getImage_url())
+			.content(board.getContent())
+			.category(board.getCategory())
+			.latitude(board.getLatitude())
+			.longitude(board.getLongitude())
+			.likeCount(Long.valueOf(board.getBoard_users().size()))
+			.createdAt(board.getCreatedAt())
 			.imageUrl(board.getImageUrl())
 			.build();
 	}
