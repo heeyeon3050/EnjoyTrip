@@ -45,9 +45,8 @@ public class BoardController {
 	// 	return ResponseEntity.ok(boardService.create(boardDto, rq.getUser()));
 	// }
 
-	@ResponseBody
 	@PostMapping(value="/create")
-	public ResponseEntity<?> create(BoardDto boardDto) {
+	public ResponseEntity<?> create(@RequestBody BoardDto boardDto) {
 		return ResponseEntity.ok(boardService.create(boardDto, rq.getUser()));
 	}
 
