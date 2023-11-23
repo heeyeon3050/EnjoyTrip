@@ -17,6 +17,7 @@ public class CommentResponseDto {
 	private Long id;
 	private Long boardId;
 	private String writerName;
+	private String writerImageUrl;
 	private LocalDateTime createdAt;
 	private String content;
 
@@ -31,6 +32,7 @@ public class CommentResponseDto {
 			.createdAt(comment.getCreatedAt())
 			.boardId(comment.getBoard().getId())
 			.content(comment.getContent())
+			.writerImageUrl(comment.getWriter().getImage_url())
 			.build();
 	}
 }

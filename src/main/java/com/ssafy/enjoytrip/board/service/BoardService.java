@@ -114,7 +114,9 @@ public class BoardService {
 			else
 				board.getBoard_users().add(user);
 
-			return new CommonResponse(true, "Success to like board", boardRepository.save(board));
+			Board saved = boardRepository.save(board);
+
+			return new CommonResponse(true, "Success to like board", BoardResponseDto.toBoardResponseDto(saved, Long.valueOf(saved.getComments().size()), saved.getBoard_users().contains(user)));
 		}
 
 		throw new BoardNotFoundException(String.format("게시판(%s)을 찾을 수 없습니다.", id));
