@@ -1,12 +1,5 @@
 package com.ssafy.enjoytrip.user.dto;
 
-import java.util.Set;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
-import com.ssafy.enjoytrip.auth.entity.Authority;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

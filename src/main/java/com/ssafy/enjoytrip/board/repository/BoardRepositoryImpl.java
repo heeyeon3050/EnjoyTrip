@@ -56,7 +56,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 				.where(boardSub.id.eq(board.id));
 
 			// 메인 쿼리에 서브쿼리를 통합하여 좋아요 개수가 10개 이상인 경우만 필터링
-			return likesCountSubQuery.goe(1);
+			return likesCountSubQuery.goe(10);
 		}
 
 		return board.category.eq(category);

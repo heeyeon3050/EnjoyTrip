@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -48,6 +49,7 @@ public class Board extends BaseEntity{
 	@JsonManagedReference
 	private List<Comment> comments;
 	private String title;
+	@Column(columnDefinition = "TEXT")
 	private String content;
 	@Enumerated(EnumType.STRING)
 	private BoardCategory category;

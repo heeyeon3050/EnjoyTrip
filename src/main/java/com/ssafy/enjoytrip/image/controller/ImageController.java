@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.enjoytrip.board.entity.Board;
-import com.ssafy.enjoytrip.board.service.BoardService;
-import com.ssafy.enjoytrip.image.entity.Image;
 import com.ssafy.enjoytrip.image.service.ImageService;
 
 import lombok.RequiredArgsConstructor;

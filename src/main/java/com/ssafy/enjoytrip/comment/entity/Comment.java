@@ -27,38 +27,40 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Where(clause = "is_deleted = false")
 public class Comment extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String content;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer_id")
-    @JsonIgnore
-    private User writer;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "writer_id")
+	@JsonIgnore
+	private User writer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id") // 데이터베이스의 FK 컬럼
-    @JsonIgnore
-    private Board board;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "board_id") // 데이터베이스의 FK 컬럼
+	@JsonIgnore
+	private Board board;
 
-    public static Comment toComment(String content, User writer, Board board) {
-        return Comment.builder()
-                .content(content)
-                .writer(writer)
-                .board(board)
-                .build();
-    }
+	public static Comment toComment(String content, User writer, Board board) {
+		return Comment.builder()
+			.content(content)
+			.writer(writer)
+			.board(board)
+			.build();
+	}
 
-    @Builder
-    private Comment(String content, User writer, Board board) {
-        this.content = content;
-        this.writer = writer;
-        this.board = board;
-        board.getComments().add(this);
-    }
+	@Builder
+	private Comment(String content, User writer, Board board) {
+		this.content = content;
+		this.writer = writer;
+		this.board = board;
+		board.getComments().add(this);
+	}
 
-    public void update(CommentDto commentDto) {
-        if (commentDto.getContent() != null) { this.content = commentDto.getContent(); }
-    }
+	public void update(CommentDto commentDto) {
+		if (commentDto.getContent() != null) {
+			this.content = commentDto.getContent();
+		}
+	}
 }

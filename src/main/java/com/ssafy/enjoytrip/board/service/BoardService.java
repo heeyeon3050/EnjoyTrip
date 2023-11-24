@@ -148,7 +148,6 @@ public class BoardService {
 			new PageImpl<>(boardResponseDtos, boards.getPageable(), boards.getTotalElements()));
 	}
 
-	//
 	// public CommonResponse keepBoard(MultipartFile image, Board board) throws IOException {
 	// 	System.out.println("Diary service saveDiary");
 	// 	if(!image.isEmpty()) {

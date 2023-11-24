@@ -5,9 +5,6 @@ import java.io.IOException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.enjoytrip.board.entity.Board;
-import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
-import com.ssafy.enjoytrip.image.entity.Image;
 import com.ssafy.enjoytrip.image.repository.ImageRepository;
 
 import lombok.RequiredArgsConstructor;

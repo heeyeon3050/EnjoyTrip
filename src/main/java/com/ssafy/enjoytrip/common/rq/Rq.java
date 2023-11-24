@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
 import org.springframework.security.core.userdetails.User;
+
 import com.ssafy.enjoytrip.user.service.UserService;
 
 @Component
@@ -32,7 +33,7 @@ public class Rq {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		if (authentication.getPrincipal() instanceof User) {
-			this.security_user = (User) authentication.getPrincipal();
+			this.security_user = (User)authentication.getPrincipal();
 		} else {
 			this.security_user = null;
 		}

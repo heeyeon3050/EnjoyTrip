@@ -1,22 +1,10 @@
 package com.ssafy.enjoytrip.user.dto;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ssafy.enjoytrip.attraction.entity.Attraction;
 import com.ssafy.enjoytrip.auth.entity.Authority;
 import com.ssafy.enjoytrip.board.entity.Board;
-import com.ssafy.enjoytrip.board.entity.BoardCategory;
 import com.ssafy.enjoytrip.user.entity.User;
 
 import lombok.AllArgsConstructor;

@@ -19,7 +19,6 @@ import com.ssafy.enjoytrip.comment.entity.Comment;
 import com.ssafy.enjoytrip.comment.repository.CommentRepository;
 import com.ssafy.enjoytrip.common.dto.response.CommonResponse;
 import com.ssafy.enjoytrip.user.entity.User;
-import com.ssafy.enjoytrip.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

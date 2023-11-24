@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.user.dto;
 import java.util.Set;
 
 import com.ssafy.enjoytrip.auth.entity.Authority;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

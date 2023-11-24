@@ -3,10 +3,11 @@ package com.ssafy.enjoytrip.common.s3.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,22 +47,22 @@ public class S3Uploader {
 	private String putS3(File uploadFile, String fileName) {
 		amazonS3Client.putObject(
 			new PutObjectRequest(bucket, fileName, uploadFile)
-				.withCannedAcl(CannedAccessControlList.PublicRead)	// PublicRead 권한으로 업로드 됨
+				.withCannedAcl(CannedAccessControlList.PublicRead)    // PublicRead 권한으로 업로드 됨
 		);
 		return amazonS3Client.getUrl(bucket, fileName).toString();
 	}
 
 	private void removeNewFile(File targetFile) {
-		if(targetFile.delete()) {
+		if (targetFile.delete()) {
 			log.info("파일이 삭제되었습니다.");
-		}else {
+		} else {
 			log.info("파일이 삭제되지 못했습니다.");
 		}
 	}
 
-	private Optional<File> convert(MultipartFile file) throws  IOException {
+	private Optional<File> convert(MultipartFile file) throws IOException {
 		File convertFile = new File(file.getOriginalFilename());
-		if(convertFile.createNewFile()) {
+		if (convertFile.createNewFile()) {
 			try (FileOutputStream fos = new FileOutputStream(convertFile)) {
 				fos.write(file.getBytes());
 			}
