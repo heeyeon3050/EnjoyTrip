@@ -5,6 +5,7 @@ import { defineStore } from "pinia";
 import { findById } from "@/api/user";
 import { login, tokenRegeneration, logout } from "@/api/auth";
 import { httpStatusCode } from "@/util/http-status";
+import { addMessage } from "@/util/message";
 
 export const useMemberStore = defineStore(
   "memberStore",
@@ -46,6 +47,7 @@ export const useMemberStore = defineStore(
             console.log("sessiontStorage에 담았다", isLogin.value);
           } else {
             console.log("로그인 실패했다");
+            addMessage("로그인에 실패했습니다", "bg-red-400");
             isLogin.value = false;
             isLoginError.value = true;
             isValidToken.value = false;
@@ -53,6 +55,7 @@ export const useMemberStore = defineStore(
           }
         },
         (error) => {
+          addMessage("로그인에 실패했습니다", "bg-red-400");
           console.error(error);
         }
       );
