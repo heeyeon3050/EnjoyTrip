@@ -40,18 +40,16 @@ onMounted(() => {
     boardId,
     ({ data }) => {
       board.value = data.data;
-      if (board.value.latitude > 0 && board.value.longitude > 0) {
-        if (window.kakao && window.kakao.maps) {
-          initMap();
-        } else {
-          const script = document.createElement("script");
-          script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
-            import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
-          }&libraries=services,clusterer`;
-          /* global kakao */
-          script.onload = () => kakao.maps.load(() => initMap());
-          document.head.appendChild(script);
-        }
+      if (window.kakao && window.kakao.maps) {
+        initMap();
+      } else {
+        const script = document.createElement("script");
+        script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
+          import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
+        }&libraries=services,clusterer`;
+        /* global kakao */
+        script.onload = () => kakao.maps.load(() => initMap());
+        document.head.appendChild(script);
       }
 
       commentListByBoardId(
@@ -293,9 +291,7 @@ window.addEventListener("scroll", () => {
         {{ board.content }}
       </p>
     </div>
-    <template v-if="board.latitude > 0 && board.longitude > 0">
-      <div id="boardMap" class="w-full h-80 my-12 border-4"></div>
-    </template>
+    <div id="boardMap" class="w-full h-80 my-12 border-4"></div>
     <div class="w-full flex justify-between my-14">
       <div>
         <button
