@@ -16,6 +16,7 @@ const onSelect = () => {
       v-for="option in selectOption"
       :key="option.value"
       :value="option.value"
+      class="bg-gray-600"
       :disabled="option.value === '' ? true : false"
     >
       {{ option.text }}

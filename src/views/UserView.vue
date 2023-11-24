@@ -1,5 +1,6 @@
 <script setup>
 import HeadingNavbar from "@/components/layout/HeadingNavbar.vue";
+import Footer from "@/components/layout/Footer.vue";
 </script>
 
 <template>

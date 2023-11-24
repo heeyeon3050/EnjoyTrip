@@ -128,9 +128,7 @@ const handleFileChange = (e) => {
       />
     </div>
     <div class="w-full">
-      <div
-        class="w-full bg-slate-600/30 mb-4 border border-gray-200 rounded-lg bg-gray-50"
-      >
+      <div class="w-full bg-slate-600/30 mb-4 border border-gray-200 rounded-lg bg-gray-50">
         <div class="flex items-center justify-between px-3 py-2 border-b">
           <div class="flex flex-wrap items-center divide-gray-200">
             <div class="flex items-center space-x-1">
@@ -190,9 +188,7 @@ const handleFileChange = (e) => {
                     />
                   </svg>
                 </div>
-                <span class="text-gray-200">{{
-                  selectedLocation?.place_name
-                }}</span>
+                <span class="text-gray-200">{{ selectedLocation?.place_name }}</span>
                 <span class="sr-only">Embed map</span>
               </div>
             </div>
@@ -215,12 +211,10 @@ const handleFileChange = (e) => {
                 <div
                   v-for="location in locationData"
                   :key="location"
-                  class="w-full h-14 text-sm text-slate-500 p-4 border-b-[1px] border-slate-500"
+                  class="w-full h-14 text-sm text-slate-500 p-4 border-b-[1px] border-slate-500 cursor-pointer"
                   @click="setLocation(location)"
                 >
-                  <span class="text-lg text-slate-300">{{
-                    location.place_name
-                  }}</span>
+                  <span class="text-lg text-slate-300">{{ location.place_name }}</span>
                   ( {{ location.address_name }})
                 </div>
               </div>
@@ -242,11 +236,7 @@ const handleFileChange = (e) => {
         <router-link :to="{ name: 'board-list' }">
           <CommonBtn text="취소" />
         </router-link>
-        <CommonBtn
-          text="등록"
-          @click="onSubmit"
-          :disabled="title === '' || content === ''"
-        />
+        <CommonBtn text="등록" @click="onSubmit" :disabled="title === '' || content === ''" />
       </div>
     </div>
   </div>

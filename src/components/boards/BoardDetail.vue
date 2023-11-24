@@ -319,15 +319,17 @@ window.addEventListener("scroll", () => {
         </button>
       </div>
       <div class="flex justify-end space-x-3">
-        <router-link
-          :to="{
-            name: 'board-update',
-            params: { boardId: route.params.boardId },
-          }"
-        >
-          <CommonBtn text="수정" />
-        </router-link>
-        <CommonBtn text="삭제" @click="onDelete" />
+        <template v-if="loginUserId === board.writerId">
+          <router-link
+            :to="{
+              name: 'board-update',
+              params: { boardId: route.params.boardId },
+            }"
+          >
+            <CommonBtn text="수정" />
+          </router-link>
+          <CommonBtn text="삭제" @click="onDelete" />
+        </template>
       </div>
     </div>
   </div>
