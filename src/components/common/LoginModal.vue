@@ -55,9 +55,7 @@ const login = async () => {
     <div
       class="absolute border-slate-950 border-[1px] w-[32.5rem] h-[17.44rem] -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 rounded-3xl flex flex-col items-center"
     >
-      <h1
-        class="w-full text-center font-black text-6xl border-b-[1px] border-slate-950 py-3"
-      >
+      <h1 class="w-full text-center font-black text-6xl border-b-[1px] border-slate-950 py-3">
         TRAIN TICKET
       </h1>
       <div class="w-full h-full flex">

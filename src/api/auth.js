@@ -9,8 +9,8 @@ async function login(param, success, fail) {
 }
 
 async function tokenRegeneration(user, success, fail) {
-  local.defaults.headers["refreshToken"] =
-    sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
+  local.defaults.headers["Authorization"] = sessionStorage.getItem("accessToken");
+  local.defaults.headers["refreshToken"] = sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
   await local.post(`/api/auth/reissue`, user).then(success).catch(fail);
 }
 

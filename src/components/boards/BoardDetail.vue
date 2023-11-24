@@ -2,11 +2,7 @@
 import CommonBtn from "@/components/common/CommonBtn.vue";
 import CommentListItem from "@/components/comments/CommentListItem.vue";
 import { ref, onMounted } from "vue";
-import {
-  commentListByBoardId,
-  createComment,
-  updateComment,
-} from "@/api/comment";
+import { commentListByBoardId, createComment, updateComment } from "@/api/comment";
 import { getBoardById, deleteBoard, likeBoard } from "@/api/board";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
@@ -44,16 +40,18 @@ onMounted(() => {
     boardId,
     ({ data }) => {
       board.value = data.data;
-      if (window.kakao && window.kakao.maps) {
-        initMap();
-      } else {
-        const script = document.createElement("script");
-        script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
-          import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
-        }&libraries=services,clusterer`;
-        /* global kakao */
-        script.onload = () => kakao.maps.load(() => initMap());
-        document.head.appendChild(script);
+      if (board.value.latitude > 0 && board.value.longitude > 0) {
+        if (window.kakao && window.kakao.maps) {
+          initMap();
+        } else {
+          const script = document.createElement("script");
+          script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
+            import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
+          }&libraries=services,clusterer`;
+          /* global kakao */
+          script.onload = () => kakao.maps.load(() => initMap());
+          document.head.appendChild(script);
+        }
       }
 
       commentListByBoardId(
@@ -66,10 +64,7 @@ onMounted(() => {
         },
         (error) => {
           console.error(error);
-          addMessage(
-            "댓글 목록을 가져오는 중 에러가 발생했습니다",
-            "bg-red-400"
-          );
+          addMessage("댓글 목록을 가져오는 중 에러가 발생했습니다", "bg-red-400");
         }
       );
     },
@@ -166,10 +161,7 @@ const onLike = () => {
     route.params.boardId,
     ({ data: data }) => {
       board.value = data.data;
-      addMessage(
-        "좋아하는 게시글 목록에 성공적으로 추가했습니다",
-        "bg-green-400"
-      );
+      addMessage("좋아하는 게시글 목록에 성공적으로 추가했습니다", "bg-green-400");
     },
     (error) => {
       console.log(error);
@@ -212,8 +204,7 @@ const onModifyComment = (commentId, content) => {
 window.addEventListener("scroll", () => {
   if (commentsLoading.value) return;
 
-  const isScrollEnded =
-    window.innerHeight + window.scrollY + 10 >= document.body.offsetHeight;
+  const isScrollEnded = window.innerHeight + window.scrollY + 10 >= document.body.offsetHeight;
 
   if (isScrollEnded && currentCommentPage.value + 1 <= totalCommentPage.value) {
     commentsLoading.value = true;
@@ -251,9 +242,7 @@ window.addEventListener("scroll", () => {
         {{ board.createdAt?.replaceAll("T", " ") }}
       </h3>
     </div>
-    <div
-      class="h-12 border-y-[1px] border-slate-300 flex items-center p-4 justify-between"
-    >
+    <div class="h-12 border-y-[1px] border-slate-300 flex items-center p-4 justify-between">
       <div class="flex px-2">
         <h3 class="text-lg">{{ board.writerName }}</h3>
       </div>
@@ -297,19 +286,16 @@ window.addEventListener("scroll", () => {
     <div class="w-full p-5 space-y-20">
       <div class="w-full flex flex-col items-center">
         <template v-if="board.imageUrl && board.imageUrl !== ''">
-          <img
-            class="bg-cover mr-3"
-            :src="board.imageUrl || ''"
-            @error="replaceNoImg"
-            alt=""
-          />
+          <img class="bg-cover mr-3" :src="board.imageUrl || ''" @error="replaceNoImg" alt="" />
         </template>
       </div>
       <p class="text-lg">
         {{ board.content }}
       </p>
     </div>
-    <div id="boardMap" class="w-full h-80 my-12 border-4"></div>
+    <template v-if="board.latitude > 0 && board.longitude > 0">
+      <div id="boardMap" class="w-full h-80 my-12 border-4"></div>
+    </template>
     <div class="w-full flex justify-between my-14">
       <div>
         <button
@@ -352,9 +338,7 @@ window.addEventListener("scroll", () => {
 
   <div class="w-full flex flex-col my-4">
     <div class="w-full flex flex-col p-4 mb-12">
-      <h1 class="my-6 font-semibold text-xl text-slate-200">
-        댓글 {{ comments.length }}개
-      </h1>
+      <h1 class="my-6 font-semibold text-xl text-slate-200">댓글 {{ comments.length }}개</h1>
       <div class="flex items-center space-x-6">
         <img
           class="w-16 h-16 rounded-full shrink-0 bg-slate-800"
@@ -381,9 +365,7 @@ window.addEventListener("scroll", () => {
       <div class="w-full"></div>
     </div>
 
-    <div
-      class="w-full h-fit p-2 flex flex-col overflow-y-scroll scrollbar-hide"
-    >
+    <div class="w-full h-fit p-2 flex flex-col overflow-y-scroll scrollbar-hide">
       <div class="space-y-5">
         <CommentListItem
           v-for="comment in comments"

@@ -1,7 +1,7 @@
 export function addMessage(message, classes) {
   const div = document.createElement("div");
 
-  div.className = `message fixed flex justify-center font-semibold text-lg text-slate-700 items-center bottom-10 left-16 w-96 h-24 rounded-xl ${classes}`;
+  div.className = `message fixed flex justify-center p-2 text-center font-semibold text-lg text-slate-700 items-center bottom-10 left-16 w-96 h-24 rounded-xl ${classes}`;
   div.innerHTML += `
     <path
       stroke-linecap="round"

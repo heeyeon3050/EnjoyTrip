@@ -7,23 +7,17 @@ const emit = defineEmits(["pageChange"]);
 const navigationSize = parseInt(import.meta.env.VITE_ARTICLE_NAVIGATION_SIZE);
 
 const startPage = computed(() => {
-  return (
-    parseInt((props.currentPage - 1) / navigationSize) * navigationSize + 1
-  );
+  return parseInt((props.currentPage - 1) / navigationSize) * navigationSize + 1;
 });
 
 const endPage = computed(() => {
   let lastPage =
-    parseInt((props.currentPage - 1) / navigationSize) * navigationSize +
-    navigationSize;
+    parseInt((props.currentPage - 1) / navigationSize) * navigationSize + navigationSize;
   return props.totalPage < lastPage ? props.totalPage : lastPage;
 });
 
 const endRange = computed(() => {
-  return (
-    parseInt((props.totalPage - 1) / navigationSize) * navigationSize <
-    props.currentPage
-  );
+  return parseInt((props.totalPage - 1) / navigationSize) * navigationSize < props.currentPage;
 });
 
 function range(start, end) {
@@ -42,7 +36,7 @@ function onPageChange(pg) {
 </script>
 
 <template>
-  <div class="w-full flex items-center justify-center">
+  <div class="w-full flex items-center justify-center text-slate-200">
     <div class="flex space-x-7 mr-5">
       <div class="flex justify-center items-center">
         <a class="" @click="onPageChange(1)"
@@ -72,11 +66,7 @@ function onPageChange(pg) {
             stroke="currentColor"
             class="w-6 h-6"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15.75 19.5L8.25 12l7.5-7.5"
-            />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>
         </a>
       </div>
@@ -87,8 +77,8 @@ function onPageChange(pg) {
           <li
             :class="
               currentPage === pg
-                ? 'text-slate-100 bg-gray-800 w-10 h-10 flex justify-center items-center rounded font-semibold'
-                : 'w-10 h-10 flex justify-center items-center rounded font-semibold'
+                ? 'text-slate-900 bg-gray-200 w-10 h-10 flex justify-center items-center rounded font-semibold'
+                : 'w-10 h-10 flex justify-center items-center rounded font-semibold text-slate-200'
             "
           >
             <a class="" @click="onPageChange(pg)">{{ pg }}</a>
@@ -107,11 +97,7 @@ function onPageChange(pg) {
             stroke="currentColor"
             class="w-6 h-6"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M8.25 4.5l7.5 7.5-7.5 7.5"
-            />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
           </svg>
         </a>
       </div>
