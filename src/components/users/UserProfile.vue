@@ -7,6 +7,7 @@ import noProfile from "@/assets/no_profile.png";
 import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 import noImg from "@/assets/no_image.jpg";
+import { addMessage } from "@/util/message";
 
 const memberStore = useMemberStore();
 const router = useRouter();
@@ -25,6 +26,7 @@ onMounted(() => {
     },
     (error) => {
       console.log(error);
+      addMessage("사용자 정보를 가져오는 중 에러가 발생했습니다", "bg-red-400");
     }
   );
 });
@@ -46,9 +48,11 @@ const onDeleteUser = () => {
     ({ data }) => {
       userLogout();
       router.push("/");
+      addMessage("성공적으로 탈퇴되었습니다", "bg-green-400");
     },
     (error) => {
       console.log(error);
+      addMessage("탈퇴하는 중 에러가 발생했습니다", "bg-green-400");
     }
   );
 };

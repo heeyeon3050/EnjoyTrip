@@ -5,6 +5,7 @@ import { createBoard } from "@/api/board";
 import { createImage } from "@/api/image";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
+import { addMessage } from "@/util/message";
 
 const router = useRouter();
 
@@ -82,9 +83,11 @@ const onSubmit = () => {
         },
         (response) => {
           console.log(response);
+          addMessage("성공적으로 게시글을 저장했습니다", "bg-green-400");
           router.replace(`/board/${response.data.data.id}`);
         },
         (error) => {
+          addMessage("게시글을 저장하는 중 오류가 발생했습니다", "bg-red-400");
           console.log(error);
         }
       );

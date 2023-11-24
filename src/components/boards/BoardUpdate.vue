@@ -4,6 +4,7 @@ import CommonBtn from "../common/CommonBtn.vue";
 import { getBoardById, updateBoard } from "@/api/board";
 import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
+import { addMessage } from "@/util/message";
 
 const route = useRoute();
 const router = useRouter();
@@ -46,10 +47,12 @@ const onSubmit = () => {
     },
     ({ data }) => {
       console.log(data);
+      addMessage("성공적으로 게시글을 업데이트했습니다", "bg-green-400");
       router.replace(`/board/${route.params.boardId}`);
     },
     (error) => {
       console.log(error);
+      addMessage("게시글을 업데이트하는 중 에러가 발생했습니다", "bg-red-400");
     }
   );
 };

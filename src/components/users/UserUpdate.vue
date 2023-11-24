@@ -8,6 +8,7 @@ import { useRouter } from "vue-router";
 import { userUpdate } from "@/api/user";
 import noProfile from "@/assets/no_profile.png";
 import { createImage } from "@/api/image";
+import { addMessage } from "@/util/message";
 
 const memberStore = useMemberStore();
 const router = useRouter();
@@ -64,17 +65,17 @@ const onSubmit = () => {
     updateUser.password = newPassword.value;
   }
 
-  console.log(updateUser);
   userUpdate(
     loginUserId.value,
     updateUser,
     async (response) => {
-      console.log(response);
+      addMessage("성공적으로 업데이트되었습니다", "bg-green-300");
       await getUserInfo();
       router.replace({ name: "user-profile" });
     },
     (error) => {
       console.log(error);
+      addMessage("업데이트 중 에러가 발생했습니다", "bg-red-400");
     }
   );
 };

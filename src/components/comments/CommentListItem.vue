@@ -2,6 +2,7 @@
 import { deleteComment } from "@/api/comment";
 import { ref } from "vue";
 import noProfile from "@/assets/no_profile.png";
+import { addMessage } from "@/util/message";
 
 const params = defineProps({
   comment: Object,
@@ -31,9 +32,11 @@ const onDelete = () => {
     params.comment.id,
     (response) => {
       console.log(response);
+      addMessage("성공적으로 삭제되었습니다", "bg-green-400");
       emit("onDeleteComment", params.comment.id);
     },
     (error) => {
+      addMessage("삭제하는 중 오류가 발생했습니다", "bg-red-400");
       console.log(error);
     }
   );

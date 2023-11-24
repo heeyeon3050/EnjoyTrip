@@ -8,6 +8,7 @@ import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import noProfile from "@/assets/no_profile.png";
+import { addMessage } from "@/util/message";
 
 const router = useRouter();
 
@@ -25,6 +26,7 @@ const replaceNoProfile = (event) => {
 const logout = () => {
   userLogout();
   router.push("/");
+  addMessage("성공적으로 로그아웃되었습니다", "bg-green-400");
 };
 
 const modalFindPassword = () => {

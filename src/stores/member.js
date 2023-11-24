@@ -63,7 +63,6 @@ export const useMemberStore = defineStore(
         loginUserId.value,
         (response) => {
           if (response.status === httpStatusCode.OK) {
-            console.log("zxczxc", response.data.data);
             userInfo.value = response.data.data;
             loginUserName.value = userInfo.value.name;
             console.log("3. getUserInfo data >> ", userInfo.value.name);

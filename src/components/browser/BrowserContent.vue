@@ -26,7 +26,6 @@ const getBoardList = () => {
   aroundBoard(
     query,
     ({ data: data }) => {
-      console.log(data.data);
       boards.value = data.data.content;
       totalPage.value = data.data.totalPages;
       router.replace({ name: "browser", query: query });

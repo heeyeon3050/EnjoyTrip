@@ -5,6 +5,7 @@ import AttractionItem from "@/components/map/AttractionItem.vue";
 import { listAttraction } from "@/api/attraction";
 import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { addMessage } from "@/util/message";
 
 const router = useRouter();
 const route = useRoute();
@@ -60,14 +61,11 @@ onMounted(() => {
   const list = document.getElementById("list");
   if (list) {
     list.addEventListener("scroll", (e) => {
-      console.log(e);
-      console.log(e.target.scrollTop + " / " + e.target.scrollHeight);
-
       if (loading.value) return;
 
       const isScrollEnded =
         window.innerHeight + e.target.scrollTop + 10 >= e.target.scrollHeight;
-      console.log(isScrollEnded);
+
       if (isScrollEnded && currentPage.value + 1 <= totalPage.value) {
         loading.value = true;
         setTimeout(() => {
@@ -89,6 +87,7 @@ onMounted(() => {
             },
             (error) => {
               console.error(error);
+              addMessage("목록을 불러오는데 오류가 발생했습니다", "bg-red-400");
               loading.value = false;
             }
           );

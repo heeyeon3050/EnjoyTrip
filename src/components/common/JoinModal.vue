@@ -3,6 +3,7 @@ import ModalInput from "@/components/modal/ModalInput.vue";
 import ModalBtn from "@/components/modal/ModalBtn.vue";
 import { userJoin, idCheck, nameCheck, emailCheck } from "@/api/user";
 import { ref } from "vue";
+import { addMessage } from "@/util/message";
 
 const params = defineProps({ login: Function });
 
@@ -51,15 +52,15 @@ const onSubmit = () => {
     email: email.value,
   };
 
-  console.log(newUser);
   userJoin(
     newUser,
     (response) => {
-      console.log(response);
+      addMessage("성공적으로 회원가입되었습니다", "bg-green-400");
       params.login();
     },
     (error) => {
       console.log(error);
+      addMessage("회원가입 하는 중 에러가 발생했습니다", "bg-red-400");
     }
   );
 };

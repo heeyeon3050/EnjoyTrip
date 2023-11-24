@@ -1,5 +1,6 @@
 <script setup>
 import { aroundBoard } from "@/api/board";
+import { addMessage } from "@/util/message";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -20,6 +21,7 @@ onMounted(() => {
     },
     (error) => {
       console.error(error);
+      addMessage("목록을 가져오는 중 에러가 발생했습니다", "bg-red-400");
     }
   );
 });
@@ -40,13 +42,13 @@ window.addEventListener("scroll", () => {
       aroundBoard(
         { page: currentPage.value + 1 },
         ({ data }) => {
-          console.log(data.data);
           boards.value = [...boards.value, ...data.data.content];
           totalPage.value = data.data.totalPages;
           currentPage.value = data.data.pageable.pageNumber + 1;
           loading.value = false;
         },
         (error) => {
+          addMessage("목록을 가져오는 중 에러가 발생했습니다", "bg-red-400");
           console.error(error);
           loading.value = false;
         }

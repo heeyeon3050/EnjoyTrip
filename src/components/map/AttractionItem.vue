@@ -1,6 +1,7 @@
 <script setup>
 import { likeAttraction } from "@/api/attraction";
 import noImg from "@/assets/no_image.jpg";
+import { addMessage } from "@/util/message";
 
 const params = defineProps({ attraction: Object });
 const emit = defineEmits(["like"]);
@@ -14,9 +15,11 @@ const onLikeAttraction = () => {
     params.attraction.id,
     ({ data: data }) => {
       console.log(data.data);
+      addMessage("좋아하는 관광지에 성공적으로 추가되었습니다", "bg-green-400");
       emit("like", data.data);
     },
     (error) => {
+      addMessage("좋아요를 처리하는 중 에러가 발생했습니다", "bg-red-400");
       console.log(error);
     }
   );

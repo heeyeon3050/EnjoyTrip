@@ -225,7 +225,6 @@ function raf() {
   material.uniforms.texture1.value = gallery[curslide];
   material.uniforms.texture2.value = gallery[nextslide];
 
-  // console.log(curslide, nextslide);
   window.requestAnimationFrame(raf);
 }
 </script>

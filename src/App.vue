@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted } from "vue";
 import { RouterView } from "vue-router";
+import { addMessage } from "./util/message";
 
 onMounted(() => {
   var canvas = document.getElementById("container");
@@ -15,7 +16,6 @@ onMounted(() => {
   var ww = window.innerWidth;
   var wh = window.innerHeight;
 
-  console.log(ww, wh);
   canvas.width = ww;
   canvas.height = wh;
   var partCount = 100;
@@ -23,7 +23,6 @@ onMounted(() => {
 
   function particle() {
     this.color = "rgba(255,255,255," + Math.random() / 3 + ")";
-    console.log(this.color);
     this.x = randomInt(0, ww);
     this.y = randomInt(0, wh);
     this.direction = {

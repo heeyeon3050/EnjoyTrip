@@ -28,14 +28,10 @@ const onChangePassword = (event) => {
 };
 
 const login = async () => {
-  console.log("login ing!!!! !!!");
   await userLogin(loginUser.value);
   let token = sessionStorage.getItem("accessToken");
-  console.log("111. ", token);
-  console.log("isLogin: ", isLogin);
 
   if (isLogin) {
-    console.log("로그인 성공아닌가???");
     await getUserInfo();
     router.go(0);
   }

@@ -8,6 +8,7 @@ import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
+import { addMessage } from "@/util/message";
 
 const memberStore = useMemberStore();
 
@@ -70,6 +71,7 @@ const getBoardList = () => {
     },
     (error) => {
       console.error(error);
+      addMessage("목록을 가져오는 중 에러가 발생했습니다", "bg-red-400");
     }
   );
 };
@@ -91,6 +93,7 @@ const search = () => {
     },
     (error) => {
       console.error(error);
+      addMessage("목록을 가져오는 중 에러가 발생했습니다", "bg-red-400");
     }
   );
 };

@@ -13,6 +13,7 @@ import { storeToRefs } from "pinia";
 import { useMemberStore } from "@/stores/member";
 import noImg from "@/assets/no_image.jpg";
 import noProfile from "@/assets/no_profile.png";
+import { addMessage } from "@/util/message";
 
 const memberStore = useMemberStore();
 const { isLogin, loginUserId, userInfo } = storeToRefs(memberStore);
@@ -65,11 +66,16 @@ onMounted(() => {
         },
         (error) => {
           console.error(error);
+          addMessage(
+            "댓글 목록을 가져오는 중 에러가 발생했습니다",
+            "bg-red-400"
+          );
         }
       );
     },
     (error) => {
       console.log(error);
+      addMessage("게시글을 가져오는 중 에러가 발생했습니다", "bg-red-400");
     }
   );
 });
@@ -128,11 +134,13 @@ const addComment = () => {
     },
     ({ data }) => {
       console.log(data);
+      addMessage("성공적으로 댓글을 작성했습니다", "bg-green-400");
       comments.value = [{ ...data.data }, ...comments.value];
       commentContent.value = "";
     },
     (error) => {
       console.log(error);
+      addMessage("댓글을 작성하는 중 에러가 발생했습니다", "bg-red-400");
     }
   );
 };
@@ -158,9 +166,14 @@ const onLike = () => {
     route.params.boardId,
     ({ data: data }) => {
       board.value = data.data;
+      addMessage(
+        "좋아하는 게시글 목록에 성공적으로 추가했습니다",
+        "bg-green-400"
+      );
     },
     (error) => {
       console.log(error);
+      addMessage("게시글을 작성하는 중 오류가 발생했습니다", "bg-red-400");
     }
   );
 };
