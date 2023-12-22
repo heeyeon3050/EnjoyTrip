@@ -1,0 +1,71 @@
+### server port
+server:
+  port: 8080
+
+### database
+spring:
+  profiles:
+    active: dev
+    include: secret
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username:
+    password:
+    url:
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  redis:
+    host:
+    port:
+cloud:
+  aws:
+    s3:
+      bucket: <S3 버킷 이름>
+    credentials:
+      access-key: <저장해놓은 액세스 키>
+      secret-key: <저장해놓은 비밀 액세스 키>
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+    auth-code-expiration-millis: 1800000  # 30 * 60 * 1000 == 30분
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
+### 환경변수
+jwt:
+  secret:
