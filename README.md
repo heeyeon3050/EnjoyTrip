@@ -4,7 +4,7 @@
 <br/>
       
 ## Trailer
-[![Video Label](./Thumbnail.jpg)](https://youtu.be/uLR1RNqJ1Mw?t=0s)
+[![Video Label](./Thumbnail.jpg)](https://www.youtube.com/watch?v=lFWR3kN-MPc)
 
 <br/>
 
