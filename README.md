@@ -1,13 +1,12 @@
 # EnjoyTrip 
 ### 2023 SSAFY 10기 1학기 관통 프로젝트
    
-   
-      
+<br/>
       
 ## Trailer
+[![Video Label](./Thumbnail.jpg)](https://youtu.be/uLR1RNqJ1Mw?t=0s)
 
-[<img src="https://github.com/rheeeuro/enjoytrip/assets/47638660/10d91f81-5134-49f6-9886-42455ad2ee29" width="50%">](https://youtu.be/lFWR3kN-MPc?si=zKTZ-K-UJ3lG9fOd)
-
+<br/>
 
 ## 1. Title
 
@@ -28,6 +27,8 @@
 ----|----|----|----|
 김희연|팀장|kho200a@naver.com|https://github.com/heeyeon3050
 이유로|팀원|eurohand@naver.com|https://github.com/rheeeuro
+
+<br/>
   
 ## 3. Brief description
 
@@ -36,6 +37,8 @@
 * 카테고리별 게시글 작성 및 확인
 * 게시글 작성 시 검색을 통한 장소와 이미지 파일 첨부
 * 프로필 변경을 통한 프로필 이미지 등록
+
+<br/>
 
 ## 4. Required technologies for implementation
 
@@ -56,8 +59,7 @@
 [![](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)](#)
 [![](https://img.shields.io/badge/Amazon_S3-569A31?style=for-the-badge&logo=amazons3&logoColor=white)](#)
 
-
- 
+<br/>
 
 ## 5. Primary  responsibility for parts
 
